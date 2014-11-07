@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">The Basic Series</string>
+    <string name="hello_world">CS SWAGGER</string>
+    <string name="action_settings">Settings</string>
+    <string name="developers"> Julian Alex Zakey Ryan Davey</string>
+
+</resources>
