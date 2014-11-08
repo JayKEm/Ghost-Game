@@ -1,52 +1,55 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@drawable/background3"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="edu.virginia.cs2110.rlc4sv.thebasics.SplashScreen" 
-    android:background="@drawable/background1" >
+    tools:context="edu.virginia.cs2110.rlc4sv.thebasics.SplashScreen" >
 
-    
-    
+    <Button
+        android:id="@+id/tutorial4"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/white_background2"
+        android:text="@string/hello_world4"
+        android:textSize="25sp" />
+
+    <Button
+        android:id="@+id/tutorial3"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_above="@+id/tutorial4"
+        android:layout_alignLeft="@+id/tutorial4"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/white_background2"
+        android:text="@string/hello_world3"
+        android:textSize="25sp" />
+
+    <Button
+        android:id="@+id/tutorial2"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_above="@+id/tutorial3"
+        android:layout_alignLeft="@+id/tutorial3"
+        android:layout_marginBottom="18dp"
+        android:background="@drawable/white_background2"
+        android:text="@string/hello_world2"
+        android:textSize="25sp" />
+
     <Button
         android:id="@+id/tutorial1"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@+id/tutorial2"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/white_background2"
         android:text="@string/hello_world"
-        android:textSize="25sp"
-        android:layout_marginTop="25sp"
-        />
-    
-     <Button
-         android:id="@+id/tutorial2"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world2"
-        android:textSize="25sp"
-        android:layout_marginTop="25sp"
-        />
-     
-     <Button
-         android:id="@+id/tutorial3"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world3"
-        android:textSize="25sp"
-        android:layout_marginTop="25sp"
-        />
-     
-          <Button
-         android:id="@+id/tutorial4"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world4"
-        android:textSize="25sp"
-        android:layout_marginTop="25sp"
-        />
+        android:textSize="25sp" />
 
-
-</LinearLayout>
+</RelativeLayout>

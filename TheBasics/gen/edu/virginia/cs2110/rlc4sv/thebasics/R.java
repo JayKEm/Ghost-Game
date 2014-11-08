@@ -34,7 +34,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     }
     public static final class drawable {
         public static final int background1=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
+        public static final int background3=0x7f020001;
+        public static final int ic_launcher=0x7f020002;
+        public static final int white_background2=0x7f020003;
     }
     public static final class id {
         public static final int action_settings=0x7f0a0015;
@@ -54,10 +56,10 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int rgGravity=0x7f0a000f;
         public static final int rgStyle=0x7f0a000b;
         public static final int textView1=0x7f0a0000;
-        public static final int tutorial1=0x7f0a0001;
-        public static final int tutorial2=0x7f0a0002;
-        public static final int tutorial3=0x7f0a0003;
-        public static final int tutorial4=0x7f0a0004;
+        public static final int tutorial1=0x7f0a0004;
+        public static final int tutorial2=0x7f0a0003;
+        public static final int tutorial3=0x7f0a0002;
+        public static final int tutorial4=0x7f0a0001;
         public static final int tvChange=0x7f0a0013;
         public static final int tvGravity=0x7f0a000a;
         public static final int tvStyle=0x7f0a0009;
