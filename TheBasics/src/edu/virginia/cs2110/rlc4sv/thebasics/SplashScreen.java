@@ -8,7 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class MainActivity extends Activity {
+public class SplashScreen extends Activity {
 	
 	MediaPlayer logoMusic;
     @Override
@@ -17,13 +17,13 @@ public class MainActivity extends Activity {
         setContentView(R.layout.splash);
        
         
-        logoMusic = MediaPlayer.create(MainActivity.this, R.raw.splash_sound);
+        logoMusic = MediaPlayer.create(SplashScreen.this, R.raw.splash_sound);
         logoMusic.start();
         
         Thread logoTimer = new Thread(){
         	public void run() {
         		try{
-        			sleep(10000);
+        			sleep(5000);
         			Intent menuIntent = new Intent("edu.virginia.cs2110.rlc4sv.thebasics.MENU");
         			startActivity(menuIntent);
         		} catch (InterruptedException e) {

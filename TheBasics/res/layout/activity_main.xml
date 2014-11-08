@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="edu.virginia.cs2110.rlc4sv.thebasics.MainActivity" 
+    tools:context="edu.virginia.cs2110.rlc4sv.thebasics.SplashScreen" 
     android:background="@drawable/background1" >
 
     
@@ -25,7 +25,7 @@
          android:id="@+id/tutorial2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world"
+        android:text="@string/hello_world2"
         android:textSize="25sp"
         android:layout_marginTop="25sp"
         />
@@ -34,45 +34,19 @@
          android:id="@+id/tutorial3"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world"
+        android:text="@string/hello_world3"
         android:textSize="25sp"
         android:layout_marginTop="25sp"
         />
      
-     <Button
+          <Button
          android:id="@+id/tutorial4"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world"
+        android:text="@string/hello_world4"
         android:textSize="25sp"
         android:layout_marginTop="25sp"
         />
-     
-     <Button
-         android:id="@+id/tutorial5"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world"
-        android:textSize="25sp"
-        android:layout_marginTop="25sp"
-        />
-     
-     <Button
-         android:id="@+id/tutorial6"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world"
-        android:textSize="25sp"
-        android:layout_marginTop="25sp"
-        />
-     
-     <Button
-         android:id="@+id/tutorial7"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world"
-        android:textSize="25sp"
-        android:layout_marginTop="25sp"
-        />
+
 
 </LinearLayout>
