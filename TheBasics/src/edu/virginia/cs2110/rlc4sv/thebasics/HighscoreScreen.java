@@ -31,4 +31,8 @@ public class HighscoreScreen extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	public void voidloadHighscores(){
+		
+	}
 }

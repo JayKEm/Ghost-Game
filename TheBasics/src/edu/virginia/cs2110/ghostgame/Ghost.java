@@ -8,7 +8,11 @@ public class Ghost extends Entity {
 	}
 	
 	public void handleCollision() {
-		
+		for(Entity e : world){
+			if(e instanceof Wall){
+				reAdjust();
+			}
+		}
 	}
 
 }
