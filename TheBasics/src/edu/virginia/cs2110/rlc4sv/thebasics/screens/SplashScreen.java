@@ -1,5 +1,6 @@
-package edu.virginia.cs2110.rlc4sv.thebasics;
+package edu.virginia.cs2110.rlc4sv.thebasics.screens;
 
+import edu.virginia.cs2110.rlc4sv.thebasics.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -8,22 +9,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class MainActivity extends Activity {
-	
-	MediaPlayer logoMusic;
-    @Override
+public class SplashScreen extends Activity {
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
-       
-        
-        logoMusic = MediaPlayer.create(MainActivity.this, R.raw.splash_sound);
-        logoMusic.start();
         
         Thread logoTimer = new Thread(){
         	public void run() {
         		try{
-        			sleep(1000);
+        			sleep(5000);
         			Intent menuIntent = new Intent("edu.virginia.cs2110.rlc4sv.thebasics.MENU");
         			startActivity(menuIntent);
         		} catch (InterruptedException e) {
@@ -31,29 +26,23 @@ public class MainActivity extends Activity {
 				}
         		
         		finally {
-        			
+        			finish();
         		}
         	}
         };
         logoTimer.start();
     }
 
-
-    @Override
 	protected void onPause() {
 		super.onPause();
-		logoMusic.release();
 	}
 
-
-	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long

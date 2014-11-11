@@ -1,5 +1,6 @@
-package edu.virginia.cs2110.rlc4sv.thebasics;
+package edu.virginia.cs2110.rlc4sv.thebasics.screens;
 
+import edu.virginia.cs2110.rlc4sv.thebasics.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -11,7 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class MainMenu extends Activity {
+public class menu extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -19,21 +20,20 @@ public class MainMenu extends Activity {
 		setContentView(R.layout.activity_main);
 		
 		//Button Sound
-		final MediaPlayer buttonSound = MediaPlayer.create(MainMenu.this, R.raw.button_click);
+		final MediaPlayer buttonSound = MediaPlayer.create(menu.this, R.raw.button_click);
 		
 		
 		//Setting up the button references
 		Button tut1 = (Button)findViewById(R.id.tutorial1);
 		Button tut2 = (Button)findViewById(R.id.tutorial2);
-		Button tut3 = (Button)findViewById(R.id.tutorial3);
-		Button tut4 = (Button)findViewById(R.id.tutorial4);
+		Button SFX = (Button)findViewById(R.id.tutorial3);
 		
 		tut1.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 			buttonSound.start();	
-			startActivity(new Intent("edu.virginia.cs2110.rlc4sv.thebasics.MAINGAME"));	
+			startActivity(new Intent("edu.virginia.cs2110.rlc4sv.thebasics.TUTORIALONE"));	
 			}
 		});
 		
@@ -43,25 +43,16 @@ public class MainMenu extends Activity {
 			@Override
 			public void onClick(View v) {
 			buttonSound.start();		
-			startActivity(new Intent("edu.virginia.cs2110.rlc4sv.thebasics.HIGHSCORESCREEN"));	
+			startActivity(new Intent("edu.virginia.cs2110.rlc4sv.thebasics.TUTORIALFOUR"));	
 			}
 		});
 		
-		tut3.setOnClickListener(new View.OnClickListener() {
+		SFX.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 			buttonSound.start();		
-			startActivity(new Intent("edu.virginia.cs2110.rlc4sv.thebasics.SETTINGSMENU"));	
-			}
-		});
-		
-		tut4.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-			buttonSound.start();		
-			startActivity(new Intent("edu.virginia.cs2110.rlc4sv.thebasics.HELPSCREEN"));	
+			startActivity(new Intent("edu.virginia.cs2110.rlc4sv.thebasics.SURFACEVIEWEXAMPLE"));	
 			}
 		});
 	}
@@ -86,7 +77,7 @@ public class MainMenu extends Activity {
 			startActivity(new Intent("edu.virginia.cs2110.rlc4sv.thebasics.SWEET"));
 			return true;
 		case R.id.menuToast:
-				Toast andEggs =Toast.makeText(MainMenu.this, "This is a toast", Toast.LENGTH_LONG);
+				Toast andEggs =Toast.makeText(menu.this, "This is a toast", Toast.LENGTH_LONG);
 				andEggs.show();
 			return true;
 		}

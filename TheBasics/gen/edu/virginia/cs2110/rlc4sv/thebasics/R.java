@@ -77,9 +77,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int activity_main=0x7f030003;
         public static final int activity_main_game=0x7f030004;
         public static final int activity_settings_menu=0x7f030005;
-        public static final int collision_tester=0x7f030006;
-        public static final int splash=0x7f030007;
-        public static final int tutorial1=0x7f030008;
+        public static final int splash=0x7f030006;
+        public static final int tutorial1=0x7f030007;
     }
     public static final class menu {
         public static final int help_screen=0x7f090000;

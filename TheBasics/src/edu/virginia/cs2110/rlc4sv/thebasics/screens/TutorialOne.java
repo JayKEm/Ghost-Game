@@ -1,5 +1,6 @@
-package edu.virginia.cs2110.rlc4sv.thebasics;
+package edu.virginia.cs2110.rlc4sv.thebasics.screens;
 
+import edu.virginia.cs2110.rlc4sv.thebasics.R;
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -16,7 +17,7 @@ public class TutorialOne extends Activity implements OnCheckedChangeListener{
 	TextView textOut;
 	EditText textIn;
 	RadioGroup gravityG, styleG;
-	@Override
+
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.tutorial1);
@@ -31,16 +32,12 @@ public class TutorialOne extends Activity implements OnCheckedChangeListener{
 		Button gen = (Button) findViewById(R.id.bGenerate);
 		
 		gen.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				textOut.setText(textIn.getText());
 			}
 		});
 	}
 
-	@Override
 	public void onCheckedChanged(RadioGroup group, int checkedId) {
 		switch(checkedId){
 		case R.id.rbLeft:
@@ -62,7 +59,5 @@ public class TutorialOne extends Activity implements OnCheckedChangeListener{
 			textOut.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD), Typeface.BOLD);
 			break;
 		}
-		
 	}
-
 }

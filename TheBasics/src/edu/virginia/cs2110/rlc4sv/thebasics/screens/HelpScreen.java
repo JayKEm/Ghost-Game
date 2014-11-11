@@ -1,22 +1,23 @@
-package edu.virginia.cs2110.rlc4sv.thebasics;
+package edu.virginia.cs2110.rlc4sv.thebasics.screens;
 
+import edu.virginia.cs2110.rlc4sv.thebasics.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class HighscoreScreen extends Activity {
+public class HelpScreen extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_highscore_screen);
+		setContentView(R.layout.activity_help_screen);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.highscore_screen, menu);
+		getMenuInflater().inflate(R.menu.help_screen, menu);
 		return true;
 	}
 
@@ -30,9 +31,5 @@ public class HighscoreScreen extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-	
-	public void voidloadHighscores(){
-		
 	}
 }

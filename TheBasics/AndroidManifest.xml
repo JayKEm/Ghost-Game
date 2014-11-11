@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".SplashScreen"
+            android:name=".screens.SplashScreen"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainMenu"
+            android:name=".screens.MainMenu"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="edu.virginia.cs2110.rlc4sv.thebasics.MENU" />
@@ -32,7 +32,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".TutorialOne"
+            android:name=".screens.TutorialOne"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="edu.virginia.cs2110.rlc4sv.thebasics.TUTORIALONE" />
@@ -41,19 +41,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Sweet"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.Dialog" >
-            <intent-filter>
-                <action android:name="edu.virginia.cs2110.rlc4sv.thebasics.SWEET" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".HelpScreen"
+            android:name=".screens.HelpScreen"
             android:label="@string/title_activity_help_screen"
-            android:parentActivityName=".MainMenu" >
+            android:parentActivityName=".screens.MainMenu" >
             <intent-filter>
                 <action android:name="edu.virginia.cs2110.rlc4sv.thebasics.HELPSCREEN" />
 
@@ -65,9 +55,9 @@
                 android:value="edu.virginia.cs2110.rlc4sv.thebasics.MainMenu" />
         </activity>
         <activity
-            android:name=".HighscoreScreen"
+            android:name=".screens.HighscoreScreen"
             android:label="@string/title_activity_highscore_screen"
-            android:parentActivityName=".MainMenu" >
+            android:parentActivityName=".screens.MainMenu" >
             <intent-filter>
                 <action android:name="edu.virginia.cs2110.rlc4sv.thebasics.HIGHSCORESCREEN" />
 
@@ -79,7 +69,7 @@
                 android:value="edu.virginia.cs2110.rlc4sv.thebasics.MainMenu" />
         </activity>
         <activity
-            android:name=".MainGame"
+            android:name=".screens.MainGame"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_main_game"
             android:theme="@style/FullscreenTheme" >
@@ -90,9 +80,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsMenu"
+            android:name=".screens.SettingsMenu"
             android:label="@string/title_activity_settings_menu"
-            android:parentActivityName=".MainMenu" >
+            android:parentActivityName=".screens.MainMenu" >
             <intent-filter>
                 <action android:name="edu.virginia.cs2110.rlc4sv.thebasics.SETTINGSMENU" />
 
