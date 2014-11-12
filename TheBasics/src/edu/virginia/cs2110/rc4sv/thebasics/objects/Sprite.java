@@ -14,21 +14,26 @@ import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 @SuppressLint("DrawAllocation")
 public abstract class Sprite extends Entity {
 
-	protected int[] speed = new int[2]; //2d vector format
+	//2d vector format
+	//magnitude must be less than MAX_SPEED, which means we have to implement the
+	//location of the hit box with floats or doubles, not ints
+	protected int[] velocity = new int[2]; 
 	protected int currentFrame = 0;
 	protected int changeFrame = 0;
 	protected int direction = 0;
 	protected boolean move = false;
 	
 	protected static final int DEFAULT_SPEED = 5;
+	protected static int MAX_SPEED;
 	
 	public Sprite(OurView ourView, Bitmap src, int x, int y) {
 		super(ourView, src, x, y);
 		this.x = x;
 		this.y = y;
 		
-		speed[0] = DEFAULT_SPEED;
-		speed[1] = 0;
+		MAX_SPEED = DEFAULT_SPEED;
+		velocity[0] = DEFAULT_SPEED;
+		velocity[1] = 0;
 		
 		world = new ArrayList<Sprite>();
 	}
@@ -48,31 +53,27 @@ public abstract class Sprite extends Entity {
 		//0 down 1 right 2 up 3 left
 
 		//facing down
-		if(x > ov.getWidth() - width * 2 - speed[0]){
-			speed[0] = 0;
-			speed[1] = DEFAULT_SPEED;
+		if(x > ov.getWidth() - width * 2 - velocity[0]){
+			setVelocity(0, DEFAULT_SPEED);
 			direction = 0;
 		}
 		
 		//facing left
-		if(y > ov.getHeight() - height * 2 - speed[1]) {
-			speed[0] = -DEFAULT_SPEED;
-			speed[1] = 0;
+		if(y > ov.getHeight() - height * 2 - velocity[1]) {
+			setVelocity(-DEFAULT_SPEED, 0);
 			direction = 3;
 		}
 		
 		//facing up
-		if (x + speed[0] <0) {
+		if (x + velocity[0] <0) {
 			x = 0;
-			speed[0] = 0;
-			speed[1] = -DEFAULT_SPEED;
+			setVelocity(0, -DEFAULT_SPEED);
 			direction = 2;
 		}
 		//facing right
-		if( y + speed[1] < 0) {
-			y=0;
-			speed[0] = DEFAULT_SPEED;
-			speed[1] =0;
+		if( y + velocity[1] < 0) {
+			y = 0;
+			setVelocity(DEFAULT_SPEED, 0);
 			direction = 1; 
 		}
 
@@ -89,10 +90,10 @@ public abstract class Sprite extends Entity {
 		}
 		
 		if(move){
-			x += speed[0];
-			y += speed[1];
+			x += velocity[0];
+			y += velocity[1];
 			
-			bounds.offset(speed[0], speed[1]);
+			bounds.offset(velocity[0], velocity[1]);
 		}
 		
 		try{
@@ -100,6 +101,18 @@ public abstract class Sprite extends Entity {
 		} catch(NullPointerException e){
 			Log.d("Entity", "World must be set before collision can handled.");
 		}
+	}
+	
+	public void setVelocity(int x, int y){
+		double speed = Math.sqrt((double) (x*x + y*y));
+		if (speed > MAX_SPEED){
+			double theta = Math.acos(x / speed);
+			x = (int) (MAX_SPEED * Math.cos(theta));
+			y = (int) (MAX_SPEED * Math.sin(theta));
+		}
+			
+		velocity[0] = x;
+		velocity[1] = y;
 	}
 
 	public boolean isMove() {
@@ -111,19 +124,19 @@ public abstract class Sprite extends Entity {
 	}
 
 	public int getxSpeed() {
-		return speed[0];
+		return velocity[0];
 	}
 
 	public void setxSpeed(int xSpeed) {
-		this.speed[0] = xSpeed;
+		this.velocity[0] = xSpeed;
 	}
 
 	public int getySpeed() {
-		return speed[1];
+		return velocity[1];
 	}
 
 	public void setySpeed(int ySpeed) {
-		this.speed[1] = ySpeed;
+		this.velocity[1] = ySpeed;
 	}
 
 	public int getCurrentFrame() {
@@ -144,36 +157,32 @@ public abstract class Sprite extends Entity {
 	
 	public void setDirection(String dir){
 		if(dir.equals("left")){
-			speed[0] = -DEFAULT_SPEED;
-			speed[1] = 0;
+			setVelocity(-DEFAULT_SPEED, 0);
 			direction = 3;
 		}
 		
 		if(dir.equals("right")){
-			speed[0] = DEFAULT_SPEED;
-			speed[1] = 0;
+			setVelocity(DEFAULT_SPEED, 0);
 			direction = 1; 
 		}
 		
 		if(dir.equals("down")){
-			speed[0] = 0;
-			speed[1] = DEFAULT_SPEED;
+			setVelocity(0, DEFAULT_SPEED);
 			direction = 0;
 		}
 		
 		if(dir.equals("up")){
-			speed[0] = 0;
-			speed[1] = -DEFAULT_SPEED;
+			setVelocity(0, -DEFAULT_SPEED);
 			direction = 2;	
 		}	
 	}
 
-	//put the sprite back where it was before it tried to touch the wall
+	//put the sprite back where it was before it collided
 	public void reAdjust(){
-		x = x - speed[0];
-		y = y - speed[1];
+		x = x - velocity[0];
+		y = y - velocity[1];
 		
-		bounds.offset(-speed[0], -speed[1]);
+		bounds.offset(-velocity[0], -velocity[1]);
 		move = false;
 	}
 	

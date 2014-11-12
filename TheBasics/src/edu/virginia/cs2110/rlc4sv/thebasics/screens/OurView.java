@@ -62,7 +62,11 @@ public class OurView extends SurfaceView implements Runnable{
 			onDraw(c);
 			holder.unlockCanvasAndPost(c);
 		}
-	} 
+	}
+	
+	public boolean addToWorld(Sprite s){
+		return world.add(s);
+	}
 
 	protected void onDraw(Canvas canvas) {
 		canvas.drawARGB(255, 150, 150, 10);

@@ -49,7 +49,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int icon=0x7f02000d;
         public static final int spritechar=0x7f02000e;
         public static final int spritesheet=0x7f02000f;
-        public static final int white_background2=0x7f020010;
+        public static final int wall_tile=0x7f020010;
+        public static final int white_background2=0x7f020011;
     }
     public static final class id {
         public static final int action_settings=0x7f0a0018;
