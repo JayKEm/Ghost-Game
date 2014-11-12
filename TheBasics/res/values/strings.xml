@@ -31,5 +31,6 @@
         Picking up coins will help you to increase your score.
         ]]>
     </string>
+    <string name="credits">Brought to you by Ryan, Julian, Alex, Zakey, and Davy.</string>
     
 </resources>
