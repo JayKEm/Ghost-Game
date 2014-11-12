@@ -33,6 +33,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int activity_vertical_margin=0x7f060001;
     }
     public static final class drawable {
+<<<<<<< HEAD
         public static final int background3=0x7f020000;
         public static final int directions=0x7f020001;
         public static final int explode=0x7f020002;
@@ -41,32 +42,53 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int ic_launcher=0x7f020005;
         public static final int spritesheet=0x7f020006;
         public static final int white_background2=0x7f020007;
+=======
+        public static final int background1=0x7f020000;
+        public static final int background2=0x7f020001;
+        public static final int background3=0x7f020002;
+        public static final int backgroundhelp=0x7f020003;
+        public static final int blueball=0x7f020004;
+        public static final int coin_gold=0x7f020005;
+        public static final int coin_goldpart=0x7f020006;
+        public static final int directions=0x7f020007;
+        public static final int explode=0x7f020008;
+        public static final int gspritechar=0x7f020009;
+        public static final int gspritesheet=0x7f02000a;
+        public static final int ic_launcher=0x7f02000b;
+        public static final int icon=0x7f02000c;
+        public static final int spritechar=0x7f02000d;
+        public static final int spritesheet=0x7f02000e;
+        public static final int white_background2=0x7f02000f;
+>>>>>>> origin/master
     }
     public static final class id {
-        public static final int action_settings=0x7f0a0015;
-        public static final int bGenerate=0x7f0a0014;
-        public static final int dummy_button=0x7f0a0007;
-        public static final int editText1=0x7f0a0008;
-        public static final int fullscreen_content=0x7f0a0005;
-        public static final int fullscreen_content_controls=0x7f0a0006;
-        public static final int menuSweet=0x7f0a0016;
-        public static final int menuToast=0x7f0a0017;
-        public static final int rbBold=0x7f0a000e;
-        public static final int rbCenter=0x7f0a0011;
-        public static final int rbItalic=0x7f0a000d;
-        public static final int rbLeft=0x7f0a0010;
-        public static final int rbNormal=0x7f0a000c;
-        public static final int rbRight=0x7f0a0012;
-        public static final int rgGravity=0x7f0a000f;
-        public static final int rgStyle=0x7f0a000b;
+        public static final int action_settings=0x7f0a0018;
+        public static final int bGenerate=0x7f0a0017;
+        public static final int dummy_button=0x7f0a000a;
+        public static final int editText1=0x7f0a000b;
+        public static final int fullscreen_content=0x7f0a0008;
+        public static final int fullscreen_content_controls=0x7f0a0009;
+        public static final int imageView1=0x7f0a0001;
+        public static final int imageView2=0x7f0a0002;
+        public static final int imageView3=0x7f0a0003;
+        public static final int menuSweet=0x7f0a0019;
+        public static final int menuToast=0x7f0a001a;
+        public static final int rbBold=0x7f0a0011;
+        public static final int rbCenter=0x7f0a0014;
+        public static final int rbItalic=0x7f0a0010;
+        public static final int rbLeft=0x7f0a0013;
+        public static final int rbNormal=0x7f0a000f;
+        public static final int rbRight=0x7f0a0015;
+        public static final int rgGravity=0x7f0a0012;
+        public static final int rgStyle=0x7f0a000e;
         public static final int textView1=0x7f0a0000;
-        public static final int tutorial1=0x7f0a0004;
-        public static final int tutorial2=0x7f0a0003;
-        public static final int tutorial3=0x7f0a0002;
-        public static final int tutorial4=0x7f0a0001;
-        public static final int tvChange=0x7f0a0013;
-        public static final int tvGravity=0x7f0a000a;
-        public static final int tvStyle=0x7f0a0009;
+        public static final int tutorial1=0x7f0a0007;
+        public static final int tutorial2=0x7f0a0006;
+        public static final int tutorial3=0x7f0a0005;
+        public static final int tutorial4=0x7f0a0004;
+        public static final int tvChange=0x7f0a0016;
+        public static final int tvGravity=0x7f0a000d;
+        public static final int tvStyle=0x7f0a000c;
     }
     public static final class layout {
         public static final int about=0x7f030000;
@@ -99,6 +121,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int hello_world2=0x7f070004;
         public static final int hello_world3=0x7f070005;
         public static final int hello_world4=0x7f070006;
+        public static final int help_text=0x7f07000d;
         public static final int title_activity_help_screen=0x7f070007;
         public static final int title_activity_highscore_screen=0x7f070008;
         public static final int title_activity_main_game=0x7f070009;

@@ -14,5 +14,22 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_settings_menu">SettingsMenu</string>
-
+    <string name="help_text">
+        <![CDATA[
+        This is your character! You can make him run around and the goal is to attack ghosts
+        and collect coins.
+        \n
+        \n
+        This is a ghost. You should do your best to avoid them until you are able to destroy
+        them. There are special items you can use to eviscerate these floating fiends!
+        \n
+        \n
+        These are the special items that you can use to takedown the ghosts. Just run your
+        character over them to pick them up.
+        \n
+        \n
+        Picking up coins will help you to increase your score.
+        ]]>
+    </string>
+    
 </resources>
