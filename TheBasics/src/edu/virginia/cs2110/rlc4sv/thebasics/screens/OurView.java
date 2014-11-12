@@ -24,7 +24,7 @@ public class OurView extends SurfaceView implements Runnable{
 	private Bitmap playerSprites, ghostSprites, directions;
 	
 	private Player player;
-	private Ghost[] ghosts = new Ghost[6];
+	private Ghost[] ghosts = new Ghost[2];
 	private ArrayList<Sprite> world;
 	private int dw, dh;
 	
