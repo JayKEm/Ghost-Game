@@ -49,8 +49,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int icon=0x7f02000d;
         public static final int spritechar=0x7f02000e;
         public static final int spritesheet=0x7f02000f;
-        public static final int wall_tile=0x7f020010;
-        public static final int white_background2=0x7f020011;
+        public static final int swag=0x7f020010;
+        public static final int wall_tile=0x7f020011;
+        public static final int white_background2=0x7f020012;
     }
     public static final class id {
         public static final int action_settings=0x7f0a0018;
@@ -105,6 +106,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     public static final class string {
         public static final int action_settings=0x7f070002;
         public static final int app_name=0x7f070000;
+        public static final int credits=0x7f07000e;
         public static final int developers=0x7f070003;
         public static final int dummy_button=0x7f07000a;
         public static final int dummy_content=0x7f07000b;
