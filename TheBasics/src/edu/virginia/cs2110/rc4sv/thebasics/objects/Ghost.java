@@ -22,24 +22,28 @@ public class Ghost extends Sprite {
 		//facing down
 		if(x> ov.getWidth()-width*2-speed[0]){
 			//x=ov.getWidth()-width*2-speed[0];
+			reAdjust();
 			randomDirection();
 		}
 		
 		//facing left
 		if(y>ov.getHeight() - height*2 - speed[1]) {
 			//y=ov.getHeight() - height*2 - speed[1];
+			reAdjust();
 			randomDirection();
 		}
 		
 		//facing up
 		if (x + speed[0] <0) {
 			//x=0;
+			reAdjust();
 			randomDirection();
 		}
 		
 		//facing right
 		if( y + speed[1] < 0) {
 			//y=0;
+			reAdjust();
 			randomDirection();
 		}
 
@@ -93,7 +97,7 @@ public class Ghost extends Sprite {
 			}
 		case 1:
 			if(x < 25)
-				setDirection("right");
+				setDirection("up");
 			else if(x < 50)
 				setDirection("left");
 			else{
@@ -101,7 +105,7 @@ public class Ghost extends Sprite {
 			}
 		case 2:
 			if(x < 25)
-				setDirection("up");
+				setDirection("left");
 			else if(x < 50)
 				setDirection("right");
 			else{
@@ -109,7 +113,7 @@ public class Ghost extends Sprite {
 			}
 		case 3:
 			if(x < 25)
-				setDirection("left");
+				setDirection("right");
 			else if(x < 50)
 				setDirection("up");
 			else{
@@ -128,7 +132,8 @@ public class Ghost extends Sprite {
 	public void handleCollision() {
 		for(Entity s : world){
 			if(isColliding(s)&& !this.equals(s)){
-				randomDirection();
+				reAdjust();
+				//randomDirection();
 			}
 		}
 	}
