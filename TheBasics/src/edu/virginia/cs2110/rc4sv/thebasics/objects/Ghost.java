@@ -11,6 +11,7 @@ public class Ghost extends Sprite {
 	public Ghost(OurView ourView, Bitmap src, int x, int y) {
 		super(ourView, src, x, y);
 		width = image.getWidth() / 3;  //3 columns
+		this.health = 1;
 		bounds = new Rect(x + width/4, y, x + width*2, y + height*2);
 		randomDirection();
 	} 
@@ -94,6 +95,9 @@ public class Ghost extends Sprite {
 			if(isColliding(s)){
 				reAdjust();
 				randomDirection();
+			}
+			if(isColliding(s) && s instanceof Player) {
+				this.damage();
 			}
 		}
 	}

@@ -10,13 +10,16 @@ import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 public class Player extends Sprite {
 
 	public int score;
-	private int health;
+	public int health;
+	private int cooldown;
 	
 	public static int MAX_HEALTH = 3;
 	public static final int MIN_HEALTH = 0;
+	public static final int DAMAGE_TIMER = 3000;
 	
 	public Player(OurView ov, Bitmap src, int x, int y){
 		super(ov, src , x, y);
+		this.health = MAX_HEALTH;
 	}
 	
 	@SuppressLint("DrawAllocation")
@@ -26,19 +29,17 @@ public class Player extends Sprite {
 	}
 	
 	public void handleCollision() {
+		this.cooldown =- 100;
 		for (Entity s : world)
 			if(isColliding(s)){
 				if(s instanceof Ghost)
-//					if(time >= damageDelay)
+					if (this.cooldown <= 0) {
 						damage();
+						this.cooldown = DAMAGE_TIMER;
+					}
 //				if(s instanceof Wall)
 //					reAdjust();
 			}
-	}
-	
-	public void damage(){
-		if(health > MIN_HEALTH)
-			health--;
 	}
 	
 	public int getHealth() {

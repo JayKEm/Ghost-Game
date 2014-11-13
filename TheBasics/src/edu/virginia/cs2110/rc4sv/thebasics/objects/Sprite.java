@@ -22,6 +22,8 @@ public abstract class Sprite extends Entity {
 	protected int changeFrame = 0;
 	protected int direction = 0;
 	protected boolean move = false;
+	protected int health;
+	protected boolean isDead = false;
 	
 	protected static final int DEFAULT_SPEED = 5;
 	protected static int MAX_SPEED;
@@ -184,6 +186,15 @@ public abstract class Sprite extends Entity {
 		
 		bounds.offset(-velocity[0], -velocity[1]);
 		move = false;
+	}
+	
+	public void damage() {
+		if (this.health <= 1) {
+			this.isDead = true;
+		}
+		else {
+			this.health --;
+		}
 	}
 	
 	public abstract void handleCollision();
