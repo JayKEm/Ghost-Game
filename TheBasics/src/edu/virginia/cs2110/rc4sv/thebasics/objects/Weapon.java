@@ -11,9 +11,10 @@ public class Weapon extends Entity {
 	}
 
 	public void handleCollision() {
-		for (Sprite s : world) {
+		for (Entity s : world) {
 			if(this.isColliding(s) && s instanceof Player) {
-				s.getWeapon();
+				Player p = (Player) s;
+				p.getWeapon();
 				//remove weapon from view
 			}
 		}
