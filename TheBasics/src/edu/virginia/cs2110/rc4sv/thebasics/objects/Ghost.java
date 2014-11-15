@@ -97,8 +97,17 @@ public class Ghost extends Sprite {
 				randomDirection();
 			}
 			if(isColliding(s) && s instanceof Player) {
+				Player n = (Player) s;
+				if (n.getHasWeapon() == true) {
 				this.damage();
+				}
 			}
 		}
+	}
+
+	@Override
+	public void getWeapon() {
+		// potentially add a weapon for ghosts to randomly collect
+		
 	}
 }
