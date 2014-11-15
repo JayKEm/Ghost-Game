@@ -1,10 +1,12 @@
 package edu.virginia.cs2110.rc4sv.thebasics.objects;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.util.Log;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 
 @SuppressLint("WrongCall")
@@ -13,10 +15,11 @@ public class Room {
 	private OurView ov;
 	private Player player;
 	private ArrayList<Entity> items;
+	private HashSet<int[]> emptyCells;
 	private Level level;
 	private Room[] adjacentRooms = new Room[4];
 	private Wall[] walls = new Wall[4];
-	private int[][] doorLocations;
+//	private int[][] doorLocations;
 	public int x, y, width, height;
 	
 	private Rect bounds;
@@ -36,16 +39,23 @@ public class Room {
 	}
 	
 	public Room(OurView ov, Player player, Level level, int x, int y){
+		//Create a room with a random size, from 10 to 20 tiles
+		//for now, we're only testing that a room can be created, so it's within the bounds of the view
+		this(ov, player, level, x, y, (int) (Math.random()*(600/Tile.SIZE - 1) + 1) * Tile.SIZE, 
+				(int) (Math.random()*(1000/Tile.SIZE - 1) + 1) * Tile.SIZE);
+	}
+	
+	public Room(OurView ov, Player player, Level level, int x, int y, int width, int height){
 		this.ov = ov;
 		this.player = player;
 		this.level = level;
 		this.x = x;
 		this.y = y;
-		
-		//Create a room with a random size, from 10 to 20 tiles
-		width = (int) (Math.random()*20 - Math.random()*10) * Tile.SIZE;
-		height = (int) (Math.random()*20 - Math.random()*10) * Tile.SIZE;
+		this.width = width;
+		this.height = height;
+
 		bounds = new Rect(x, y, width, height);
+		create();
 	}
 	
 	public void onDraw(Canvas canvas) {
@@ -59,7 +69,7 @@ public class Room {
 	//generated room must be inside the world boundaries
 	public void generateAdjacentRoom(int location){
 		if(adjacentRooms[location]!= null) return;
-		
+		if(level.getRooms().size() == level.MAX_ROOMS) return;
 		boolean noIntersections = false;
 		
 		while(!noIntersections){
@@ -79,12 +89,34 @@ public class Room {
 	
 	//create all walls and items, and ghosts
 	public void create() {
-		walls[UP] = new Wall(ov, x, y, width/Tile.SIZE - 1, 1);
-		walls[DOWN] = new Wall(ov, x + Tile.SIZE, y + height - Tile.SIZE, width/Tile.SIZE - 1, 1);
-		walls[LEFT] = new Wall(ov, x + width - Tile.SIZE, y, 1, height/Tile.SIZE - 1);
-		walls[RIGHT] = new Wall(ov, x, y + Tile.SIZE, 1, height/Tile.SIZE - 1);
+		emptyCells = new HashSet<int[]>();
+		for (int i = 0; i < width; i += Tile.SIZE)
+			for (int j = 0; j < height; j += Tile.SIZE){
+				int[] vector = new int[2];
+				vector[0] = i; //x position of cell
+				vector[1] = j; //y position of cell
+				emptyCells.add(vector);
+			}
 		
+		walls[UP] = new Wall(ov, x, y, width/Tile.SIZE - 1, 1);
+//		walls[DOWN] = new Wall(ov, x + Tile.SIZE, y + height - Tile.SIZE, width/Tile.SIZE - 1, 1);
+		walls[DOWN] = new Wall(ov, 0,0,0,0);
+		walls[LEFT] = new Wall(ov, x + width - Tile.SIZE, y + Tile.SIZE, 1, height/Tile.SIZE - 1);
+		walls[RIGHT] = new Wall(ov, x, y, 1, height/Tile.SIZE - 1);
+//		walls[RIGHT] = new Wall(ov, 0,0,0,0);
+		
+		for(Wall w: walls){
+			if(w != null)
+				for(Tile t: w.getTiles()){
+					emptyCells.remove(t.getLocationVector());
+					level.addToWorld(t);
+				}
+//			level.addToWorld(w);
+		}
+				
 		items = new ArrayList<Entity>();
+		// instantiate objects
+		// remove item cells from emptycells 
 	}
 	
 	public void setAdjacentRoom(Room r, int adjacent) {
@@ -99,9 +131,11 @@ public class Room {
 		return bounds;
 	}
 	
+	public HashSet<int[]> getEmptyCells(){
+		return emptyCells;
+	}
+	
 	public boolean isIntersecting(Room room){
-		if(Rect.intersects(room.getBounds(), level.getBounds()))
-			return true;
 		for(Room r : level.getRooms())
 			if(Rect.intersects(room.getBounds(), r.getBounds()))
 				return true;
