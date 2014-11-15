@@ -33,16 +33,11 @@ public abstract class Sprite extends Entity {
 		this.x = x;
 		this.y = y;
 		
-		height = image.getHeight() / 4; //4 rows
-		width = image.getWidth() / 4;  //4 columns
-		
-		bounds = new Rect(x + width/4, y, x + width*2, y + height*2);
-		
 		MAX_SPEED = DEFAULT_SPEED;
 		velocity[0] = DEFAULT_SPEED;
 		velocity[1] = 0;
 		
-		world = new ArrayList<Entity>();
+		world = new ArrayList<Sprite>();
 	}
 
 	public void onDraw(Canvas canvas) {
@@ -60,29 +55,29 @@ public abstract class Sprite extends Entity {
 		//0 down 1 right 2 up 3 left
 
 		//facing down
-//		if(x > ov.getWidth() - width * 2 - velocity[0]){
-//			setVelocity(0, DEFAULT_SPEED);
-//			direction = 0;
-//		}
-//		
-//		//facing left
-//		if(y > ov.getHeight() - height * 2 - velocity[1]) {
-//			setVelocity(-DEFAULT_SPEED, 0);
-//			direction = 3;
-//		}
-//		
-//		//facing up
-//		if (x + velocity[0] <0) {
-//			x = 0;
-//			setVelocity(0, -DEFAULT_SPEED);
-//			direction = 2;
-//		}
-//		//facing right
-//		if( y + velocity[1] < 0) {
-//			y = 0;
-//			setVelocity(DEFAULT_SPEED, 0);
-//			direction = 1; 
-//		}
+		if(x > ov.getWidth() - width * 2 - velocity[0]){
+			setVelocity(0, DEFAULT_SPEED);
+			direction = 0;
+		}
+		
+		//facing left
+		if(y > ov.getHeight() - height * 2 - velocity[1]) {
+			setVelocity(-DEFAULT_SPEED, 0);
+			direction = 3;
+		}
+		
+		//facing up
+		if (x + velocity[0] <0) {
+			x = 0;
+			setVelocity(0, -DEFAULT_SPEED);
+			direction = 2;
+		}
+		//facing right
+		if( y + velocity[1] < 0) {
+			y = 0;
+			setVelocity(DEFAULT_SPEED, 0);
+			direction = 1; 
+		}
 
 		try {
 			Thread.sleep(0);
@@ -106,7 +101,7 @@ public abstract class Sprite extends Entity {
 		try{
 			handleCollision();
 		} catch(NullPointerException e){
-			Log.d(id, "World must be set before collision can handled.");
+			Log.d("Entity", "World must be set before collision can handled.");
 		}
 	}
 	
@@ -154,7 +149,7 @@ public abstract class Sprite extends Entity {
 		this.currentFrame = currentFrame;
 	}
 	
-	public void setWorld(ArrayList<Entity> world){
+	public void setWorld(ArrayList<Sprite> world){
 		this.world = world;
 	}
 
