@@ -1,7 +1,10 @@
 package edu.virginia.cs2110.rc4sv.thebasics.objects;
 
+import java.util.ArrayList;
+
 import android.graphics.Bitmap;
 import android.graphics.Rect;
+import android.util.Log;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 
 public class Ghost extends Sprite {
@@ -10,6 +13,7 @@ public class Ghost extends Sprite {
 
 	public Ghost(OurView ourView, Bitmap src, int x, int y) {
 		super(ourView, src, x, y);
+		id = "Ghost";
 		width = image.getWidth() / 3;  //3 columns
 		this.health = 1;
 		bounds = new Rect(x + width/4, y, x + width*2, y + height*2);
@@ -41,7 +45,7 @@ public class Ghost extends Sprite {
 				}
 				
 				//facing right
-				if( y + velocity[1] < 0) {
+				if(y + velocity[1] < 0) {
 					//y=0;
 					reAdjust();
 					randomDirection();
@@ -67,9 +71,10 @@ public class Ghost extends Sprite {
 		if(move==false){
 			x+=velocity[0];
 			y+=velocity[1];
-			
 			bounds.offset(velocity[0], velocity[1]);
 		}
+		
+		handleCollision();
 	}
 
 	public void setDirection(int direction) {
@@ -90,24 +95,19 @@ public class Ghost extends Sprite {
 			setDirection("down");
 	}
 
+	@SuppressWarnings("unchecked")
 	public void handleCollision() {
 		for(Entity s : world){
-			if(isColliding(s)){
+			if(isColliding(s) && !(s instanceof Player) && !this.equals(s)){
 				reAdjust();
 				randomDirection();
-			}
-			if(isColliding(s) && s instanceof Player) {
-				Player n = (Player) s;
-				if (n.getHasWeapon() == true) {
-				this.damage();
-				}
 			}
 		}
 	}
 
 	@Override
 	public void getWeapon() {
-		// potentially add a weapon for ghosts to randomly collect
+		// TODO Auto-generated method stub
 		
 	}
 }
