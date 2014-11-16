@@ -38,9 +38,13 @@ public abstract class Entity {
 
 	public void onDraw(Canvas canvas) {
 //		Rect src = new Rect(0, 0, width, height);
-		Rect dst = new Rect(x, y, x + width*2, y + height*2);
+		Rect dst = new Rect(x + ov.offsetX, y + ov.offsetY, 
+				x + ov.offsetX + width*2, y + ov.offsetY + height*2);
 		canvas.drawRect(bounds, new Paint(Color.RED));
 		canvas.drawBitmap(image, null, dst, null);
+		
+		bounds.set(x + ov.offsetX + width/4, y + ov.offsetY, 
+				x + ov.offsetX + width*2, y + ov.offsetY + height*2);
 	}
 
 	public boolean isColliding(Entity s){

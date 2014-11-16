@@ -27,6 +27,7 @@ public class OurView extends SurfaceView implements Runnable{
 	private Level myLevel;
 	private Player player;
 	private int dw, dh;
+	public int offsetX, offsetY; //visual offset of level
 	
 	public OurView(Context context) {
 		super(context);

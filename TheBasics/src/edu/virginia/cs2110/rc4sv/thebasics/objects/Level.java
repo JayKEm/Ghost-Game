@@ -58,10 +58,7 @@ public class Level {
 	}
 
 	public Player spawnPlayer(OurView ourView, Bitmap playerSprites) {
-		int[] cell = (int[]) emptyCells.toArray()[(int) (Math.random()*emptyCells.size())];
-
-		emptyCells.remove(cell);
-		return new Player(ourView, playerSprites, cell[0], cell[1]);
+		return new Player(ourView, playerSprites, 300, 500);
 	}
 	
 	//spawn a ghost in a random empty cell

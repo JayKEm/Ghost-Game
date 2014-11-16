@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.Log;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 
@@ -25,10 +26,42 @@ public class Player extends Sprite {
 		this.health = MAX_HEALTH;
 		id = "Player";
 	}
-	
+
+	public void update() {
+		try {
+			Thread.sleep(0);
+		} catch (InterruptedException e)  {
+			e.printStackTrace();
+		}
+		
+		changeFrame++;
+		if(changeFrame == 20){
+			currentFrame = ++currentFrame % 4;
+			changeFrame=0;
+		}
+		
+		if(move){
+			ov.offsetX -= velocity[0];
+			ov.offsetY -= velocity[1];
+		}
+		
+		try{
+			handleCollision();
+		} catch(NullPointerException e){
+			Log.d(id, "World must be set before collision can handled.");
+		}
+	}
+
 	@SuppressLint("DrawAllocation")
-	public void onDraw(Canvas canvas){
-		super.onDraw(canvas);
+	public void onDraw(Canvas canvas) {
+		update();
+		
+		int srcY = direction * height;
+		int srcX = currentFrame * width;
+		Rect src = new Rect(srcX, srcY, srcX + width, srcY + height);
+		Rect dst = new Rect(x, y, x + width*2, y + height*2);
+		canvas.drawRect(bounds, new Paint(Color.RED));
+		canvas.drawBitmap(image, src, dst, null);
 		canvas.drawText("" + health, 0, 0, new Paint(Color.BLUE));
 	}
 
@@ -52,5 +85,10 @@ public class Player extends Sprite {
 	
 	public void setHealth(int health) {
 		this.health = health;
+	}
+	
+	public void reAdjust(){
+		ov.offsetX += velocity[0];
+		ov.offsetY += velocity[1];
 	}
 }

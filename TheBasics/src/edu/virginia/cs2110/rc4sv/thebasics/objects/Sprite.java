@@ -44,71 +44,8 @@ public abstract class Sprite extends Entity {
 		
 		world = new ArrayList<Entity>();
 	}
-
-	public void onDraw(Canvas canvas) {
-		update();
-		
-		int srcY = direction * height;
-		int srcX = currentFrame * width;
-		Rect src = new Rect(srcX, srcY, srcX + width, srcY + height);
-		Rect dst = new Rect(x, y, x + width*2, y + height*2);
-		canvas.drawRect(bounds, new Paint(Color.RED));
-		canvas.drawBitmap(image, src, dst, null);
-	}
-
-	protected void update() {
-		//0 down 1 right 2 up 3 left
-
-		//facing down
-//		if(x > ov.getWidth() - width * 2 - velocity[0]){
-//			setVelocity(0, DEFAULT_SPEED);
-//			direction = 0;
-//		}
-//		
-//		//facing left
-//		if(y > ov.getHeight() - height * 2 - velocity[1]) {
-//			setVelocity(-DEFAULT_SPEED, 0);
-//			direction = 3;
-//		}
-//		
-//		//facing up
-//		if (x + velocity[0] <0) {
-//			x = 0;
-//			setVelocity(0, -DEFAULT_SPEED);
-//			direction = 2;
-//		}
-//		//facing right
-//		if( y + velocity[1] < 0) {
-//			y = 0;
-//			setVelocity(DEFAULT_SPEED, 0);
-//			direction = 1; 
-//		}
-
-		try {
-			Thread.sleep(0);
-		} catch (InterruptedException e)  {
-			e.printStackTrace();
-		}
-		
-		changeFrame++;
-		if(changeFrame == 20){
-			currentFrame = ++currentFrame % 4;
-			changeFrame=0;
-		}
-		
-		if(move){
-			x += velocity[0];
-			y += velocity[1];
-			
-			bounds.offset(velocity[0], velocity[1]);
-		}
-		
-		try{
-			handleCollision();
-		} catch(NullPointerException e){
-			Log.d(id, "World must be set before collision can handled.");
-		}
-	}
+	
+	public abstract void update();
 	
 	public void setVelocity(int x, int y){
 		double speed = Math.sqrt((double) (x*x + y*y));
