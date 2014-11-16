@@ -10,14 +10,17 @@ public class Weapon extends Entity {
 		// TODO Auto-generated constructor stub
 	}
 
-	public void handleCollision() {
-		for (Entity s : world) {
-			if(this.isColliding(s) && s instanceof Player) {
-				Player p = (Player) s;
-				p.getWeapon();
-				//remove weapon from view
-			}
-		}
-	}
+	//ENITITES DO NOT MOVE, THEREFORE THEY DO NOT HANDLE COLLISION
+	//ONLY THINGS THAT MOVE CHECK IF THEY'RE COLLIDING WITH AN ENTITY
+	
+//	public void handleCollision() {
+//		for (Entity s : world) {
+//			if(this.isColliding(s) && s instanceof Player) {
+//				Player p = (Player) s;
+//				p.hasWeapon();
+//				//remove weapon from view
+//			}
+//		}
+//	}
 
 }

@@ -14,7 +14,7 @@ public class Level {
 
 	private int width, height;
 	private ArrayList<Room> rooms;
-	private ArrayList<Entity> world;
+	private ArrayList<Entity> world, toRemove;
 	private HashSet<int[]> emptyCells;
 
 	public int MAX_ROOMS, NUM_GHOSTS;
@@ -26,6 +26,7 @@ public class Level {
 	public Level(int maxRooms, int numGhosts) {
 		rooms = new ArrayList<Room>();
 		world = new ArrayList<Entity>();
+		toRemove = new ArrayList<Entity>();
 		emptyCells = new HashSet<int[]>();
 		this.MAX_ROOMS = maxRooms;
 		this.NUM_GHOSTS = numGhosts;
@@ -37,6 +38,8 @@ public class Level {
 		for(Entity s : world){
 			s.onDraw(canvas);
 		}
+		
+		removeFromWorld();
 	}
 
 	public ArrayList<Room> getRooms(){
@@ -51,6 +54,16 @@ public class Level {
 
 	public boolean addToWorld(Entity e){
 		return world.add(e);
+	}
+	
+	public boolean removeFromWorld(Entity e){
+		return toRemove.add(e);
+	}
+	
+	public boolean removeFromWorld(){
+		boolean removed = world.removeAll(toRemove);
+		toRemove = new ArrayList<Entity>();
+		return removed;
 	}
 	
 	public ArrayList<Entity> getWorld(){
@@ -82,6 +95,24 @@ public class Level {
 	public void spawnGhosts(OurView ov, Bitmap image){
 		for (int i = 0; i < NUM_GHOSTS; i++)
 			spawnGhost(ov, image);
+	}
+	
+	//spawn coins accros level
+	public void spawnCoins(OurView ov, Bitmap image){
+		int numCoins = (int)(Math.random()*(10 - 1) + 1);
+		for (int i = 0; i < numCoins; i++)
+			spawnCoin(ov, image);
+	}
+	
+	public Coin spawnCoin(OurView ov, Bitmap coinSprites){
+		Coin c = null;
+		int[] cell = (int[]) emptyCells.toArray()[(int) (Math.random()*emptyCells.size())];
+		
+		c = new Coin(ov, coinSprites, cell[0], cell[1]);
+		world.add(c);
+		emptyCells.remove(cell);
+		
+		return c;
 	}
 
 	//load a predefinied level

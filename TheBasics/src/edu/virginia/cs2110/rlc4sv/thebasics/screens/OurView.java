@@ -23,7 +23,7 @@ public class OurView extends SurfaceView implements Runnable{
 	private Thread t = null;
 	private SurfaceHolder holder;
 	private boolean isItOK = false;
-	private Bitmap playerSprites, ghostSprites, directions;
+	private Bitmap playerSprites, ghostSprites, coinSprites, directions;
 	private Level myLevel;
 	private Player player;
 	private int dw, dh;
@@ -36,17 +36,19 @@ public class OurView extends SurfaceView implements Runnable{
 
 		playerSprites = BitmapFactory.decodeResource(getResources(), R.drawable.spritesheet);
 		ghostSprites = BitmapFactory.decodeResource(getResources(), R.drawable.gspritesheet);
+		coinSprites = BitmapFactory.decodeResource(getResources(), R.drawable.coin_gold);
 		
 		directions = BitmapFactory.decodeResource(getResources(), R.drawable.directions);
 		dw = directions.getWidth();
 		dh = directions.getHeight();
 
-		//create level//create level
-		myLevel.addRoom(new Room(this, player, myLevel, 0, 0));
-
+		//create level
+		myLevel.addRoom(new Room(this, player, myLevel, 0, 0)); //debug room
 		player = myLevel.spawnPlayer(this, playerSprites);
 		myLevel.addToWorld(player);
 		myLevel.spawnGhosts(this, ghostSprites);
+		myLevel.spawnCoins(this, coinSprites);
+		
 
 		for(Entity s : myLevel.getWorld())
 			if (s instanceof Sprite)
@@ -66,8 +68,8 @@ public class OurView extends SurfaceView implements Runnable{
 		}
 	}
 	
-	public boolean addToWorld(Sprite s){
-		return myLevel.addToWorld(s);
+	public Level getLevel(){
+		return myLevel;
 	}
 
 	//order of draw matters

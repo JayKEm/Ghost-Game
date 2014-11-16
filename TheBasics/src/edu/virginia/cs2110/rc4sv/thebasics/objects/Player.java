@@ -79,6 +79,14 @@ public class Player extends Sprite {
 					}
 				if(s instanceof Tile)
 					reAdjust();
+				if(s instanceof Coin){
+					score += ((Coin) s).getValue();
+					level.removeFromWorld(s);
+					if(s instanceof Weapon){
+						setHasWeapon();
+						level.removeFromWorld(s);
+					}
+				}
 			}
 	}
 	

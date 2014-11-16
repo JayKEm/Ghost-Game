@@ -113,17 +113,16 @@ public class Ghost extends Sprite {
 			setDirection("down");
 	}
 
-	@SuppressWarnings("unchecked")
 	public void handleCollision() {
 		for(Entity s : world){
-			if(isColliding(s) && !(s instanceof Player) && !this.equals(s)){
-				reAdjust();
-				randomDirection();
-			}
-			if(isColliding(s) && s instanceof Player && !this.equals(s)) {
-				Player n = (Player) s;
-				if (n.hasWeapon() == true) {
-					this.damage();
+			if(isColliding(s) && !(s instanceof Coin) && !this.equals(s)){
+				if(!(s instanceof Player)){
+					reAdjust();
+					randomDirection();
+				}
+				else
+					if (((Player) s).hasWeapon() == true) {
+						this.damage();
 				}
 			}
 		}

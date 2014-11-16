@@ -5,10 +5,7 @@ import java.util.ArrayList;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 
 @SuppressLint("DrawAllocation")
@@ -21,6 +18,8 @@ public abstract class Entity {
 	protected int height, width;
 	protected Bitmap image;
 	protected OurView ov;
+	protected Level level;
+	protected int X_FRAMES, FRAMES_Y;
 	
 	protected Rect bounds;
 	
@@ -32,6 +31,7 @@ public abstract class Entity {
 		ov = ourView;
 		this.x = x; 
 		this.y = y;
+		level = ov.getLevel();
 	}
 
 	public Entity() {}
@@ -40,7 +40,7 @@ public abstract class Entity {
 //		Rect src = new Rect(0, 0, width, height);
 		Rect dst = new Rect(x + ov.offsetX, y + ov.offsetY, 
 				x + ov.offsetX + width*2, y + ov.offsetY + height*2);
-		canvas.drawRect(bounds, new Paint(Color.RED));
+//		canvas.drawRect(bounds, new Paint(Color.RED));
 		canvas.drawBitmap(image, null, dst, null);
 		
 		bounds.set(x + ov.offsetX + width/4, y + ov.offsetY, 
