@@ -16,6 +16,7 @@ public class Player extends Sprite {
 	public int score;
 	public int health;
 	private int cooldown;
+	private boolean hasWeapon;
 	
 	public static int MAX_HEALTH = 3;
 	public static final int MIN_HEALTH = 0;
@@ -25,6 +26,8 @@ public class Player extends Sprite {
 		super(ov, src , x, y);
 		this.health = MAX_HEALTH;
 		id = "Player";
+		this.cooldown = DAMAGE_TIMER;
+		hasWeapon = false;
 	}
 
 	public void update() {
@@ -69,7 +72,7 @@ public class Player extends Sprite {
 	public void handleCollision() {this.cooldown =- 100;
 		for (Entity s : world)
 			if(isColliding(s) && !this.equals(s)){
-				if(s instanceof Ghost)
+				if(s instanceof Ghost && !hasWeapon)
 					if (this.cooldown <= 0) {
 						damage();
 						this.cooldown = DAMAGE_TIMER;
@@ -90,5 +93,13 @@ public class Player extends Sprite {
 	public void reAdjust(){
 		ov.offsetX += velocity[0];
 		ov.offsetY += velocity[1];
+	}
+	
+	public void setHasWeapon(){
+		hasWeapon = true;
+	}
+	
+	public boolean hasWeapon() {
+		return hasWeapon;
 	}
 }

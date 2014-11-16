@@ -122,7 +122,7 @@ public class Ghost extends Sprite {
 			}
 			if(isColliding(s) && s instanceof Player && !this.equals(s)) {
 				Player n = (Player) s;
-				if (n.getHasWeapon() == true) {
+				if (n.hasWeapon() == true) {
 					this.damage();
 				}
 			}
@@ -130,7 +130,7 @@ public class Ghost extends Sprite {
 	}
 
 	@Override
-	public void getWeapon() {
+	public void setHasWeapon() {
 		// TODO Auto-generated method stub
 		
 	}

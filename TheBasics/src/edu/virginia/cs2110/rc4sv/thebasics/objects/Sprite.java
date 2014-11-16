@@ -140,5 +140,5 @@ public abstract class Sprite extends Entity {
 	}
 	
 	public abstract void handleCollision();
-	public abstract void getWeapon();
+	public abstract void setHasWeapon();
 }
