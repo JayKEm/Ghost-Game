@@ -67,3 +67,6 @@ public abstract class Entity {
 		return location;
 	}
 }
+
+
+

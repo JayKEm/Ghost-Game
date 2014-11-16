@@ -120,6 +120,18 @@ public class Ghost extends Sprite {
 				reAdjust();
 				randomDirection();
 			}
+			if(isColliding(s) && s instanceof Player && !this.equals(s)) {
+				Player n = (Player) s;
+				if (n.getHasWeapon() == true) {
+					this.damage();
+				}
+			}
 		}
+	}
+
+	@Override
+	public void getWeapon() {
+		// TODO Auto-generated method stub
+		
 	}
 }
