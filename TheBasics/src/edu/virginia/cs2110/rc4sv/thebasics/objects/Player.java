@@ -18,7 +18,7 @@ public class Player extends Sprite {
 	private int cooldown;
 	private boolean hasWeapon;
 	
-	public static int MAX_HEALTH = 3;
+	public static int MAX_HEALTH = 5;
 	public static final int MIN_HEALTH = 0;
 	public static final int DAMAGE_TIMER = 3000;
 	
@@ -72,7 +72,7 @@ public class Player extends Sprite {
 	public void handleCollision() {this.cooldown =- 100;
 		for (Entity s : world)
 			if(isColliding(s) && !this.equals(s)){
-				if(s instanceof Ghost && !hasWeapon)
+				if(s instanceof Ghost && !this.hasWeapon)
 					if (this.cooldown <= 0) {
 						damage();
 						this.cooldown = DAMAGE_TIMER;
@@ -82,10 +82,11 @@ public class Player extends Sprite {
 				if(s instanceof Coin){
 					score += ((Coin) s).getValue();
 					level.removeFromWorld(s);
-					if(s instanceof Weapon){
-						setHasWeapon();
-						level.removeFromWorld(s);
-					}
+					
+				}
+				if(s instanceof Weapon){
+					setHasWeapon();
+					level.removeFromWorld(s);
 				}
 			}
 	}

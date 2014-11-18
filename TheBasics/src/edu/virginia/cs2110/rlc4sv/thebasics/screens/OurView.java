@@ -2,6 +2,7 @@ package edu.virginia.cs2110.rlc4sv.thebasics.screens;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -23,7 +24,7 @@ public class OurView extends SurfaceView implements Runnable{
 	private Thread t = null;
 	private SurfaceHolder holder;
 	private boolean isItOK = false;
-	private Bitmap playerSprites, ghostSprites, coinSprites, directions;
+	private Bitmap playerSprites, ghostSprites, coinSprites, weaponSprites, directions;
 	private Level myLevel;
 	private Player player;
 	private int dw, dh;
@@ -37,6 +38,7 @@ public class OurView extends SurfaceView implements Runnable{
 		playerSprites = BitmapFactory.decodeResource(getResources(), R.drawable.spritesheet);
 		ghostSprites = BitmapFactory.decodeResource(getResources(), R.drawable.gspritesheet);
 		coinSprites = BitmapFactory.decodeResource(getResources(), R.drawable.coin_gold);
+		weaponSprites = BitmapFactory.decodeResource(getResources(), R.drawable.weaponsprite);
 		
 		directions = BitmapFactory.decodeResource(getResources(), R.drawable.directions);
 		dw = directions.getWidth();
@@ -48,6 +50,7 @@ public class OurView extends SurfaceView implements Runnable{
 		myLevel.addToWorld(player);
 		myLevel.spawnGhosts(this, ghostSprites);
 		myLevel.spawnCoins(this, coinSprites);
+		myLevel.spawnWeapons(this, weaponSprites);
 		
 
 		for(Entity s : myLevel.getWorld())
@@ -84,6 +87,7 @@ public class OurView extends SurfaceView implements Runnable{
 		Rect src = new Rect(0, 0, dw, dh);
 		Rect dst = new Rect(0, getHeight()- dh, dw, getHeight());
 		canvas.drawBitmap(directions, src, dst, null);
+
 	}
 
 	public void pause () {
@@ -107,5 +111,9 @@ public class OurView extends SurfaceView implements Runnable{
 	
 	public Player getPlayer() {
 		return player;
+	}
+	
+	public Level getMyLevel() {
+		return this.myLevel;
 	}
 }

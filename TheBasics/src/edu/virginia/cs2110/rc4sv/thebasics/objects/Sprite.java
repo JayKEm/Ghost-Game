@@ -132,9 +132,9 @@ public abstract class Sprite extends Entity {
 	
 	public void damage() {
 		if (this.health <= 1) {
-			this.isDead = true;
+			level.removeFromWorld(this);
 		}
-		else {
+		else  {
 			this.health --;
 		}
 	}

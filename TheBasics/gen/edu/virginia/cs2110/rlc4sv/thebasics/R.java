@@ -56,7 +56,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int swag=0x7f020013;
         public static final int up_arrow=0x7f020014;
         public static final int wall_tile=0x7f020015;
-        public static final int white_background2=0x7f020016;
+        public static final int weaponsprite=0x7f020016;
+        public static final int white_background2=0x7f020017;
     }
     public static final class id {
         public static final int action_settings=0x7f0a0018;

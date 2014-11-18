@@ -2,6 +2,7 @@ package edu.virginia.cs2110.rlc4sv.thebasics.screens;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -30,7 +31,6 @@ public class MainGame extends Activity implements OnTouchListener {
 		super.onCreate(savedInstanceState);
 		ov = new OurView(this);
 		ov.setOnTouchListener(this);
-
 		logoMusic = MediaPlayer.create(this, R.raw.splash_sound);
 		logoMusic.start();
 
@@ -54,12 +54,18 @@ public class MainGame extends Activity implements OnTouchListener {
 		ov.pause();
 		logoMusic.release();
 	}
+	
+	
 
 	public boolean onTouch(View v, MotionEvent me) {
 		Rect left = new Rect(0, v.getHeight() - 150, 100, v.getHeight( ) -51 );
 		Rect top = new Rect(101, v.getHeight() - 220, 200, v.getHeight() - 151 );
 		Rect right = new Rect(201, v.getHeight() - 150, 300, v.getHeight() - 51 );
 		Rect bottom = new Rect(101, v.getHeight() - 50, 200, v.getHeight() );
+		if (!this.ov.getMyLevel().getWorld().contains(ov.getPlayer())) {
+		Intent menuIntent = new Intent("edu.virginia.cs2110.rlc4sv.thebasics.MENU");
+		startActivity(menuIntent);
+	}
 
 		try {
 			Thread.sleep(50);
