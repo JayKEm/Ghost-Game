@@ -8,6 +8,25 @@
     android:gravity="center_vertical|center_horizontal"
     android:orientation="vertical" >
 
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black_overlay"
+        android:ems="10"
+        android:gravity="center_vertical|center_horizontal"
+        android:hint="@string/class_info"
+        android:shadowColor="@color/black_overlay"
+        android:text="@string/class_info"
+        android:textColor="@color/White"
+        android:textColorHint="@color/black_overlay"
+        android:textColorLink="@color/White"
+        android:textSize="16sp"
+        android:textStyle="bold" >
+
+        <requestFocus />
+    </EditText>
+
     <ImageView
         android:id="@+id/imageView1"
         style="@color/black_overlay"
