@@ -16,6 +16,7 @@ public class Level {
 	private ArrayList<Room> rooms;
 	private ArrayList<Entity> world, toRemove;
 	private ArrayList<int[]> emptyCells;
+	private Player p;
 
 	public int MAX_ROOMS, NUM_GHOSTS;
 	
@@ -123,6 +124,8 @@ public class Level {
 			spawnWeapon(ov, image);
 	}
 	
+
+
 	public Weapon spawnWeapon(OurView ov, Bitmap weaponsprite){
 		Weapon c = null;
 		int[] cell = (int[]) emptyCells.toArray()[(int) (Math.random()*emptyCells.size())];
@@ -157,5 +160,9 @@ public class Level {
 			return false;
 		}
 		return false;
+	}
+	
+	public Player getPlayer() {
+		return this.p;
 	}
 }

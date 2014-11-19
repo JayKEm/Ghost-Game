@@ -30,11 +30,11 @@ public class Weapon extends Sprite {
 		if (System.currentTimeMillis() - times > 100) {
 			times = System.currentTimeMillis();
 		
-		if (sprX < 7) {
+		if (sprX < 6) {
 			sprX++;
 		}
 		
-		else if (sprX == 7) {
+		else if (sprX == 6) {
 			sprX = 0;
 			if (sprY == 0) {
 				sprY++;
