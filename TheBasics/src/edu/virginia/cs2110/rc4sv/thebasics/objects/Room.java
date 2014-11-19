@@ -43,8 +43,8 @@ public class Room {
 	public Room(OurView ov, Player player, Level level, int x, int y){
 		//Create a room with a random size, from 10 to 20 tiles
 		//for now, we're only testing that a room can be created, so it's within the bounds of the view
-		this(ov, player, level, x, y, (int) (Math.random()*(600/Tile.SIZE - 7) + 7) * Tile.SIZE, 
-				(int) (Math.random()*(1000/Tile.SIZE - 7) + 7) * Tile.SIZE);
+		this(ov, player, level, x, y, (int) (Math.random()*(MAX_TILES - MIN_TILES) + MIN_TILES) * Tile.SIZE*2, 
+				(int) (Math.random()*(MAX_TILES - MIN_TILES) + MIN_TILES) * Tile.SIZE*2);
 	}
 	
 	public Room(OurView ov, Player player, Level level, int x, int y, int width, int height){
@@ -100,6 +100,7 @@ public class Room {
 				emptyCells.add(cell);
 				Log.d("hello","");
 			}
+		
 		Log.d("Cells X:"+(width/(Tile.SIZE*2)), "CellsY: "+height/(Tile.SIZE*2));
 		for(int[] c : emptyCells)
 			Log.d("created cell <"+c[0]+","+c[1]+">", "");
@@ -108,11 +109,6 @@ public class Room {
 		walls[DOWN] = new Wall(ov, x + Tile.SIZE*2, y + height - Tile.SIZE*2, width/(Tile.SIZE*2) - 1, 1);
 		walls[LEFT] = new Wall(ov, x, y + Tile.SIZE*2, 1, height/(Tile.SIZE*2) - 1);//==============
 		walls[RIGHT] = new Wall(ov, x + width - Tile.SIZE*2, y, 1, height/(Tile.SIZE*2) - 1); //============
-		
-//		walls[UP] = new Wall(ov, 0,0,0,0);
-//		walls[DOWN] = new Wall(ov, 0,0,0,0);
-//		walls[LEFT] = new Wall(ov, 0,0,0,0);
-//		walls[RIGHT] = new Wall(ov, 0,0,0,0);
 		
 		for(Wall w: walls){
 			if(w != null)

@@ -13,6 +13,7 @@ import edu.virginia.cs2110.rc4sv.thebasics.objects.Level;
 import edu.virginia.cs2110.rc4sv.thebasics.objects.Player;
 import edu.virginia.cs2110.rc4sv.thebasics.objects.Room;
 import edu.virginia.cs2110.rc4sv.thebasics.objects.Sprite;
+import edu.virginia.cs2110.rc4sv.thebasics.objects.Tile;
 import edu.virginia.cs2110.rlc4sv.thebasics.R;
 
 @SuppressLint({ "WrongCall", "DrawAllocation", "ClickableViewAccessibility" })
