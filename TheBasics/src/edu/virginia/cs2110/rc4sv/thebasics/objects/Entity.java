@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
+import edu.virginia.cs2110.rlc4sv.thebasics.util.Vector;
 
 @SuppressLint("DrawAllocation")
 public abstract class Entity {
@@ -14,7 +15,7 @@ public abstract class Entity {
 	//entities do not move, therefore do not handle collisions
 	
 	protected String id;
-	protected int x, y;
+	protected Vector v;
 	protected int height, width;
 	protected Bitmap image;
 	protected OurView ov;
@@ -29,22 +30,21 @@ public abstract class Entity {
 	public Entity(OurView ourView, Bitmap src, int x, int y) {
 		image = src;
 		ov = ourView;
-		this.x = x; 
-		this.y = y;
+		v = new Vector(x, y);
 		level = ov.getLevel();
 	}
 
 	public Entity() {}
 
-	public void onDraw(Canvas canvas) {
+	public void render(Canvas canvas) {
 //		Rect src = new Rect(0, 0, width, height);
-		Rect dst = new Rect(x + ov.offsetX, y + ov.offsetY, 
-				x + ov.offsetX + width*2, y + ov.offsetY + height*2);
+		Rect dst = new Rect(v.x + ov.offsetX, v.y + ov.offsetY, 
+				v.x + ov.offsetX + width*2, v.y + ov.offsetY + height*2);
 //		canvas.drawRect(bounds, new Paint(Color.RED));
 		canvas.drawBitmap(image, null, dst, null);
 		
-		bounds.set(x + ov.offsetX + width/4, y + ov.offsetY, 
-				x + ov.offsetX + width*2, y + ov.offsetY + height*2);
+		bounds.set(v.x + ov.offsetX + width/4, v.y + ov.offsetY, 
+				v.x + ov.offsetX + width*2, v.y + ov.offsetY + height*2);
 	}
 
 	public boolean isColliding(Entity s){
@@ -59,12 +59,8 @@ public abstract class Entity {
 		return bounds;
 	}
 	
-	public int[] getLocationVector(){
-		int[] location = new int[2];
-		location[0] = x;
-		location[1] = y;
-		
-		return location;
+	public Vector getLocation(){
+		return v;
 	}
 }
 

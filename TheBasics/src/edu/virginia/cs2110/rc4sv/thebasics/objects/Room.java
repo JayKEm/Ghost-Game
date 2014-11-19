@@ -1,21 +1,19 @@
 package edu.virginia.cs2110.rc4sv.thebasics.objects;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
-import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.Log;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
+import edu.virginia.cs2110.rlc4sv.thebasics.util.Vector;
 
-@SuppressLint("WrongCall")
 public class Room {
 
 	private OurView ov;
 	private Player player;
 	private ArrayList<Entity> items;
-	private ArrayList<int[]> emptyCells;
+	private ArrayList<Vector> emptyCells;
 	private Level level;
 	private Room[] adjacentRooms = new Room[4];
 	private Wall[] walls = new Wall[4];
@@ -29,8 +27,8 @@ public class Room {
 	public static final int RIGHT = 1;
 	public static final int DOWN = 2;
 	public static final int LEFT = 3;
-	public static final int MIN_TILES = 9;
-	public static final int MAX_TILES = 15;
+	public static final int MIN_TILES = 6;
+	public static final int MAX_TILES = 12;
 	
 	public Room(){
 		
@@ -60,13 +58,6 @@ public class Room {
 		create();
 	}
 	
-	public void onDraw(Canvas canvas) {
-		for(Entity item : items)
-			item.onDraw(canvas);
-		for(Wall w : walls)
-			w.onDraw(canvas);
-	}
-	
 	//makes a room if there isn't already a room in that location
 	//generated room must be inside the world boundaries
 	public void generateAdjacentRoom(int location){
@@ -91,20 +82,14 @@ public class Room {
 	
 	//create all walls and items, and ghosts
 	public void create() {
-		int[] cell = new int[2];
-		emptyCells = new ArrayList<int[]>();
-		for (int i = 0; i < width/(Tile.SIZE*2); i++)
-			for (int j = 0; j < height/(Tile.SIZE*2); j++){
-				cell[0] = i+x*Tile.SIZE*2; //x position of cell
-				cell[1] = j+y*Tile.SIZE*2; //y position of cell
-				emptyCells.add(cell);
+		emptyCells = new ArrayList<Vector>();
+		for (int i = 0; i < width; i+=Tile.SIZE*2)
+			for (int j = 0; j < height; j+=Tile.SIZE*2){
+				emptyCells.add(new Vector(i+x*Tile.SIZE*2, j+y*Tile.SIZE*2));
 				Log.d("hello","");
 			}
 		
-		Log.d("Cells X:"+(width/(Tile.SIZE*2)), "CellsY: "+height/(Tile.SIZE*2));
-		for(int[] c : emptyCells)
-			Log.d("created cell <"+c[0]+","+c[1]+">", "");
-		
+//		Log.d("Cells X:"+(width/(Tile.SIZE*2)), "Cells Y: "+height/(Tile.SIZE*2));
 		walls[UP] = new Wall(ov, x, y, width/(Tile.SIZE*2) - 1, 1);
 		walls[DOWN] = new Wall(ov, x + Tile.SIZE*2, y + height - Tile.SIZE*2, width/(Tile.SIZE*2) - 1, 1);
 		walls[LEFT] = new Wall(ov, x, y + Tile.SIZE*2, 1, height/(Tile.SIZE*2) - 1);//==============
@@ -113,11 +98,16 @@ public class Room {
 		for(Wall w: walls){
 			if(w != null)
 				for(Tile t: w.getTiles()){
-					boolean r = emptyCells.remove(t.getLocationVector());
-					Log.d("removed cell <"+t.x+","+t.y+">", ""+r);
+					boolean r = emptyCells.remove(t.getLocation());
+					Log.d("removed cell", "<"+t.getLocation().x+","+t.getLocation().y+"> "+r);
 					level.addToWorld(t);
 				}
 //			level.addToWorld(w);
+		}
+		
+		for(Vector v : emptyCells){
+			Log.d("created cell <"+v.x+","+v.y+">", "");
+			level.addToWorld(new Floor(ov, v));
 		}
 				
 		items = new ArrayList<Entity>();
@@ -137,7 +127,7 @@ public class Room {
 		return bounds;
 	}
 	
-	public ArrayList<int[]> getEmptyCells(){
+	public ArrayList<Vector> getEmptyCells(){
 		return emptyCells;
 	}
 	

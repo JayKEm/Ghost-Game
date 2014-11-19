@@ -16,6 +16,4 @@ public class Tile extends Entity{
 		bounds = new Rect(x + width/4, y, x + width*2, y + height*2);
 		id = "Tile";
 	}
-	
-	
 }

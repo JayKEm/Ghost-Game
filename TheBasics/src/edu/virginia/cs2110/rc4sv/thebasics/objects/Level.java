@@ -1,13 +1,14 @@
 package edu.virginia.cs2110.rc4sv.thebasics.objects;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Point;
 import android.util.Log;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
+import edu.virginia.cs2110.rlc4sv.thebasics.util.Vector;
 
 @SuppressLint("WrongCall")
 public class Level {
@@ -15,10 +16,11 @@ public class Level {
 	//	private int width, height;
 	private ArrayList<Room> rooms;
 	private ArrayList<Entity> world, toRemove;
-	private ArrayList<int[]> emptyCells;
-	private Player p;
+	private ArrayList<Vector> emptyCells;
+	private Player player;
 
 	public int MAX_ROOMS, NUM_GHOSTS;
+	public int ghosts;
 
 	public Level(){
 
@@ -28,17 +30,19 @@ public class Level {
 		rooms = new ArrayList<Room>();
 		world = new ArrayList<Entity>();
 		toRemove = new ArrayList<Entity>();
-		emptyCells = new ArrayList<int[]>();
+		emptyCells = new ArrayList<Vector>();
 		this.MAX_ROOMS = maxRooms;
-		this.NUM_GHOSTS = numGhosts;
+		this.NUM_GHOSTS = ghosts = numGhosts;
+		
 	}
 
-	public void onDraw(Canvas canvas){
-		for(Room r : rooms)
-			r.onDraw(canvas);
-		for(Entity s : world){
-			s.onDraw(canvas);
-		}
+	public void render(Canvas canvas){
+		for(Entity f : world)
+			if(f instanceof Floor)
+				f.render(canvas);
+		for(Entity s : world)
+			if (!(s instanceof Floor))
+				s.render(canvas);
 
 		removeFromWorld();
 	}
@@ -50,6 +54,10 @@ public class Level {
 	public boolean addRoom(Room r){
 		boolean added = rooms.add(r);
 		emptyCells.addAll(r.getEmptyCells());
+		
+		for (Vector cell : emptyCells)
+			Log.d("cell location","<"+cell.x+","+cell.y+">");
+		
 		return added;
 	}
 
@@ -58,6 +66,8 @@ public class Level {
 	}
 
 	public boolean removeFromWorld(Entity e){
+		if (e instanceof Ghost)
+			ghosts--;
 		return toRemove.add(e);
 	}
 
@@ -72,27 +82,36 @@ public class Level {
 	}
 
 	public Player spawnPlayer(OurView ourView, Bitmap playerSprites) {
-		//		Point size = new Point();
-		//		ourView.getDisplay().getSize(size);
-		Player player = new Player(ourView, playerSprites, 300,500);
-		addToWorld(player);
-		return player;
+		Point size = new Point();
+		ourView.getDisplay().getSize(size);
+		
+		try{
+			Vector cell = (Vector) emptyCells.toArray()[(int) (Math.random()*emptyCells.size())];
+			player = new Player(ourView, playerSprites, size.x/2,size.y/2, cell.x, cell.y);
+			emptyCells.remove(cell);
+			addToWorld(player);
+			return player;
+		} catch(Exception e){
+			player = new Player(ourView, playerSprites, size.x/2,size.y/2, 0,0);
+			addToWorld(player);
+			return player;
+		} 
 	}
 
 	//spawn a ghost in a random empty cell
 	public Ghost spawnGhost(OurView ov, Bitmap image) {
 		Ghost g = null;
 		try{
-			int[] cell = (int[]) emptyCells.toArray()[(int) (Math.random()*emptyCells.size())];
+			Vector cell = (Vector) emptyCells.toArray()[(int) (Math.random()*emptyCells.size())];
 
-			g = new Ghost(ov, image, cell[0], cell[1]);
+			g = new Ghost(ov, image, cell.x, cell.y);
 			g.setWorld(world);
 			world.add(g);
 			emptyCells.remove(cell);
 
 			return g;
 		} catch(Exception e){
-			Log.d("emptycells", ""+emptyCells.size());
+			Log.d("could not spawn Ghost", "cells: "+emptyCells.size());
 			return null;
 		}
 	}
@@ -103,24 +122,19 @@ public class Level {
 	//
 	// called only during init
 	public void spawnGhosts(OurView ov, Bitmap image){
-		try{
-			for (int i = 0; i < NUM_GHOSTS; i++)
-				spawnGhost(ov, image);
-		} catch(Exception e){
-			Log.d("emptycells", ""+emptyCells.size());
-		}
+		for (int i = 0; i < NUM_GHOSTS; i++)
+			spawnGhost(ov, image);
 	}
 
 	//spawn coins accros level
 	public void spawnCoins(OurView ov, Bitmap image){
 		int numCoins = (int)(Math.random()*(10 - 1) + 1);
-
 		for (int i = 0; i < numCoins; i++)
 			spawnCoin(ov, image);
 	}
 
 	public void spawnWeapons(OurView ov, Bitmap image){
-		int numWeapons = (int)(Math.random()*(10 - 1) + 1);
+		int numWeapons = /*(int)(Math.random()*(10 - 1) + 1)*/ 1;
 		for (int i = 0; i < numWeapons; i++)
 			spawnWeapon(ov, image);
 	}
@@ -128,15 +142,15 @@ public class Level {
 	public Weapon spawnWeapon(OurView ov, Bitmap weaponsprite){
 		Weapon c = null;
 		try{
-			int[] cell = (int[]) emptyCells.toArray()[(int) (Math.random()*emptyCells.size())];
+			Vector cell = (Vector) emptyCells.toArray()[(int) (Math.random()*emptyCells.size())];
 
-			c = new Weapon(ov, weaponsprite, cell[0], cell[1]);
+			c = new Weapon(ov, weaponsprite, cell.x, cell.y);
 			world.add(c);
 			emptyCells.remove(cell);
 
 			return c;
 		} catch(Exception e){
-			Log.d("emptycells", ""+emptyCells.size());
+			Log.d("could not spawn Weapon", "cells: "+emptyCells.size());
 			return null;
 		}
 	}
@@ -144,15 +158,15 @@ public class Level {
 	public Coin spawnCoin(OurView ov, Bitmap coinSprites){
 		Coin c = null;
 		try{
-			int[] cell = (int[]) emptyCells.toArray()[(int) (Math.random()*emptyCells.size())];
+			Vector cell = (Vector) emptyCells.toArray()[(int) (Math.random()*emptyCells.size())];
 
-			c = new Coin(ov, coinSprites, cell[0], cell[1]);
+			c = new Coin(ov, coinSprites, cell.x, cell.y);
 			world.add(c);
 			emptyCells.remove(cell);
 
 			return c;
 		} catch(Exception e){
-			Log.d("emptycells", ""+emptyCells.size());
+			Log.d("could not spawn Coin", "cells: "+emptyCells.size());
 			return null;
 		}
 	}
@@ -172,6 +186,6 @@ public class Level {
 	}
 
 	public Player getPlayer() {
-		return this.p;
+		return this.player;
 	}
 }

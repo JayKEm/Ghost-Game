@@ -2,18 +2,18 @@ package edu.virginia.cs2110.rc4sv.thebasics.objects;
 
 import java.util.ArrayList;
 
-import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
+import edu.virginia.cs2110.rlc4sv.thebasics.util.Vector;
 
-@SuppressLint("DrawAllocation")
 public abstract class Sprite extends Entity {
 
 	//2d vector format
 	//magnitude must be less than MAX_SPEED, which means we have to implement the
 	//location of the hit box with floats or doubles, not ints
-	protected int[] velocity = new int[2]; 
+	protected Vector velocity; 
 	protected int currentFrame = 0;
 	protected int changeFrame = 0;
 	protected int direction = 0;
@@ -26,8 +26,6 @@ public abstract class Sprite extends Entity {
 	
 	public Sprite(OurView ourView, Bitmap src, int x, int y) {
 		super(ourView, src, x, y);
-		this.x = x;
-		this.y = y;
 		
 		height = image.getHeight() / 4; //4 rows
 		width = image.getWidth() / 4;  //4 columns
@@ -35,8 +33,7 @@ public abstract class Sprite extends Entity {
 		bounds = new Rect(x + width/4, y, x + width*2, y + height*2);
 		
 		MAX_SPEED = DEFAULT_SPEED;
-		velocity[0] = DEFAULT_SPEED;
-		velocity[1] = 0;
+		velocity = new Vector(DEFAULT_SPEED, 0);
 		
 		world = new ArrayList<Entity>();
 	}
@@ -51,8 +48,8 @@ public abstract class Sprite extends Entity {
 			y = (int) (MAX_SPEED * Math.sin(theta));
 		}
 			
-		velocity[0] = x;
-		velocity[1] = y;
+		velocity.x = x;
+		velocity.y = y;
 	}
 
 	public boolean isMove() {
@@ -64,19 +61,19 @@ public abstract class Sprite extends Entity {
 	}
 
 	public int getxSpeed() {
-		return velocity[0];
+		return velocity.x;
 	}
 
 	public void setxSpeed(int xSpeed) {
-		this.velocity[0] = xSpeed;
+		this.velocity.x = xSpeed;
 	}
 
 	public int getySpeed() {
-		return velocity[1];
+		return velocity.y;
 	}
 
 	public void setySpeed(int ySpeed) {
-		this.velocity[1] = ySpeed;
+		this.velocity.y = ySpeed;
 	}
 
 	public int getCurrentFrame() {
@@ -119,10 +116,10 @@ public abstract class Sprite extends Entity {
 
 	//put the sprite back where it was before it collided
 	public void reAdjust(){
-		x = x - velocity[0];
-		y = y - velocity[1];
+		v.x = v.x - velocity.x;
+		v.y = v.y - velocity.y;
 		
-		bounds.offset(-velocity[0], -velocity[1]);
+		bounds.offset(-velocity.x, - velocity.y);
 		move = false;
 	}
 	
@@ -137,6 +134,14 @@ public abstract class Sprite extends Entity {
 			this.health --;
 		}
 	}
+	
+	public void setImage(int imageIndex){
+		image = BitmapFactory.decodeResource(ov.getResources(), imageIndex);
+	}
+	
+//	public void setImage(Bitmap image){
+//		this.image = image;
+//	}
 	
 	public abstract void handleCollision();
 	public abstract void setHasWeapon();

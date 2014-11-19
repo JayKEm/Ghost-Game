@@ -8,7 +8,7 @@ import edu.virginia.cs2110.rlc4sv.thebasics.R;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 
 public class Coin extends Sprite {
-	
+
 	int sprY = 0;
 	int sprX = 0;
 	long times = 0;
@@ -19,7 +19,7 @@ public class Coin extends Sprite {
 		width = coinSprites.getWidth()/8;
 		height = coinSprites.getHeight();
 		bounds = new Rect(x + width/4, y, x + width*2, y + height*2);
-		
+
 		//different coins have different values. if a coin
 		//has a certain image, give it a value
 		if(coinSprites.equals(BitmapFactory.decodeResource(ov.getResources(), R.drawable.coin_gold)))
@@ -27,39 +27,36 @@ public class Coin extends Sprite {
 
 		id = "Coin " + value;
 	}
-	
+
 	public int getValue(){
 		return value;
 	}
 
-	
-	@Override
 	public void update() {
-		bounds.set(x + ov.offsetX + width/4, y + ov.offsetY, 
-				x + ov.offsetX + width*2, y + ov.offsetY + height*2);
-		
+		bounds.set(v.x + ov.offsetX + width/4, v.y + ov.offsetY, 
+				v.x + ov.offsetX + width*2, v.y + ov.offsetY + height*2);
+
 		if (System.currentTimeMillis() - times > 100) {
 			times = System.currentTimeMillis();
-		
-		if (sprX == 7) {
-			sprX = 0;
+
+			if (sprX == 7) {
+				sprX = 0;
+			}
+
+			else {
+				sprX++;
+			}
 		}
-		
-		else {
-			sprX++;
-		}
-		}
-		
 	}
-	
-	public void onDraw(Canvas canvas) {
+
+	public void render(Canvas canvas) {
 		update();
-		
+
 		int srcY = sprY * height;
 		int srcX = sprX * width;
 		Rect src = new Rect(srcX, srcY, srcX + width, srcY + height);
-		Rect dst = new Rect(x + ov.offsetX, y + ov.offsetY, 
-				x + ov.offsetX + width*2, y + ov.offsetY + height*2);
+		Rect dst = new Rect(v.x + ov.offsetX, v.y + ov.offsetY, 
+				v.x + ov.offsetX + width*2, v.y + ov.offsetY + height*2);
 		//canvas.drawRect(bounds, new Paint(Color.RED));
 		canvas.drawBitmap(image, src, dst, null);
 	}
@@ -67,13 +64,13 @@ public class Coin extends Sprite {
 	@Override
 	public void handleCollision() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setHasWeapon() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

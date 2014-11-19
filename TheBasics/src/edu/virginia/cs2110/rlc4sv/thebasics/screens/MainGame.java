@@ -57,11 +57,13 @@ public class MainGame extends Activity implements OnTouchListener {
 	
 	
 
-	public boolean onTouch(View v, MotionEvent me) {
-		Rect left = new Rect(0, v.getHeight() - 150, 100, v.getHeight( ) -51 );
-		Rect top = new Rect(101, v.getHeight() - 220, 200, v.getHeight() - 151 );
-		Rect right = new Rect(201, v.getHeight() - 150, 300, v.getHeight() - 51 );
-		Rect bottom = new Rect(101, v.getHeight() - 50, 200, v.getHeight() );
+	public boolean onTouch(View s, MotionEvent me) {
+		OurView v = (OurView) s;
+		
+		Rect left = new Rect(0, v.getHeight()- v.dh*2, v.dw, v.getHeight()-v.dh);
+		Rect top = new Rect(v.dw, v.getHeight()- v.dh*3, v.dw*2, v.getHeight()-v.dh*2);
+		Rect right = new Rect(v.dw*2, v.getHeight()- v.dh*2, v.dw*3, v.getHeight()-v.dh);
+		Rect bottom =new Rect(v.dw, v.getHeight()- v.dh, v.dw*2, v.getHeight());
 		if (!this.ov.getMyLevel().getWorld().contains(ov.getPlayer())) {
 		Intent menuIntent = new Intent("edu.virginia.cs2110.rlc4sv.thebasics.MENU");
 		startActivity(menuIntent);
