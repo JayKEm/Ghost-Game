@@ -117,6 +117,23 @@ public class Level {
 		}
 	}
 	
+	public void spawnWeapons(OurView ov, Bitmap image){
+		int numWeapons = (int)(Math.random()*(10 - 1) + 1);
+		for (int i = 0; i < numWeapons; i++)
+			spawnWeapon(ov, image);
+	}
+	
+	public Weapon spawnWeapon(OurView ov, Bitmap weaponsprite){
+		Weapon c = null;
+		int[] cell = (int[]) emptyCells.toArray()[(int) (Math.random()*emptyCells.size())];
+		
+		c = new Weapon(ov, weaponsprite, cell[0], cell[1]);
+		world.add(c);
+		emptyCells.remove(cell);
+		
+		return c;
+	}
+	
 	public Coin spawnCoin(OurView ov, Bitmap coinSprites){
 		Coin c = null;
 		int[] cell = (int[]) emptyCells.toArray()[(int) (Math.random()*emptyCells.size())];

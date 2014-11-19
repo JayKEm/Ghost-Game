@@ -21,7 +21,7 @@ public class OurView extends SurfaceView implements Runnable{
 	private Thread t = null;
 	private SurfaceHolder holder;
 	private boolean isItOK = false;
-	private Bitmap playerSprites, ghostSprites, coinSprites, directions;
+	private Bitmap playerSprites, ghostSprites, coinSprites, weaponSprites, directions;
 	private Level myLevel;
 	private Player player;
 	private int dw, dh;
@@ -35,6 +35,7 @@ public class OurView extends SurfaceView implements Runnable{
 		playerSprites = BitmapFactory.decodeResource(getResources(), R.drawable.spritesheet);
 		ghostSprites = BitmapFactory.decodeResource(getResources(), R.drawable.gspritesheet);
 		coinSprites = BitmapFactory.decodeResource(getResources(), R.drawable.coin_gold);
+		weaponSprites = BitmapFactory.decodeResource(getResources(), R.drawable.weaponsprite);
 		
 		directions = BitmapFactory.decodeResource(getResources(), R.drawable.directions);
 		dw = directions.getWidth();
@@ -45,6 +46,7 @@ public class OurView extends SurfaceView implements Runnable{
 		player = myLevel.spawnPlayer(this, playerSprites);
 		myLevel.spawnGhosts(this, ghostSprites);
 		myLevel.spawnCoins(this, coinSprites);
+		myLevel.spawnWeapons(this, weaponSprites);
 		
 		for(Entity s : myLevel.getWorld())
 			if (s instanceof Sprite)
@@ -105,5 +107,9 @@ public class OurView extends SurfaceView implements Runnable{
 	
 	public Player getPlayer() {
 		return player;
+	}
+	
+	public Level getMyLevel() {
+		return this.myLevel;
 	}
 }

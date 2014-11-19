@@ -106,8 +106,8 @@ public class Room {
 		
 		walls[UP] = new Wall(ov, x, y, width/(Tile.SIZE*2) - 1, 1);
 		walls[DOWN] = new Wall(ov, x + Tile.SIZE*2, y + height - Tile.SIZE*2, width/(Tile.SIZE*2) - 1, 1);
-		walls[LEFT] = new Wall(ov, x, y + Tile.SIZE*2, 1, height/(Tile.SIZE*2) - 1);
-		walls[RIGHT] = new Wall(ov, x + width - Tile.SIZE*2, y, 1, height/(Tile.SIZE*2) - 1);
+		walls[LEFT] = new Wall(ov, x, y + Tile.SIZE*2, 1, height/(Tile.SIZE*2) - 1);//==============
+		walls[RIGHT] = new Wall(ov, x + width - Tile.SIZE*2, y, 1, height/(Tile.SIZE*2) - 1); //============
 		
 //		walls[UP] = new Wall(ov, 0,0,0,0);
 //		walls[DOWN] = new Wall(ov, 0,0,0,0);
