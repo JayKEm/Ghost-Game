@@ -15,7 +15,7 @@ public class Room {
 	private OurView ov;
 	private Player player;
 	private ArrayList<Entity> items;
-	private HashSet<int[]> emptyCells;
+	private ArrayList<int[]> emptyCells;
 	private Level level;
 	private Room[] adjacentRooms = new Room[4];
 	private Wall[] walls = new Wall[4];
@@ -29,6 +29,8 @@ public class Room {
 	public static final int RIGHT = 1;
 	public static final int DOWN = 2;
 	public static final int LEFT = 3;
+	public static final int MIN_TILES = 9;
+	public static final int MAX_TILES = 15;
 	
 	public Room(){
 		
@@ -41,8 +43,8 @@ public class Room {
 	public Room(OurView ov, Player player, Level level, int x, int y){
 		//Create a room with a random size, from 10 to 20 tiles
 		//for now, we're only testing that a room can be created, so it's within the bounds of the view
-		this(ov, player, level, x, y, (int) (Math.random()*(600/Tile.SIZE - 1) + 1) * Tile.SIZE, 
-				(int) (Math.random()*(1000/Tile.SIZE - 1) + 1) * Tile.SIZE);
+		this(ov, player, level, x, y, (int) (Math.random()*(600/Tile.SIZE - 7) + 7) * Tile.SIZE, 
+				(int) (Math.random()*(1000/Tile.SIZE - 7) + 7) * Tile.SIZE);
 	}
 	
 	public Room(OurView ov, Player player, Level level, int x, int y, int width, int height){
@@ -89,26 +91,34 @@ public class Room {
 	
 	//create all walls and items, and ghosts
 	public void create() {
-		emptyCells = new HashSet<int[]>();
-		for (int i = 0; i < width; i += Tile.SIZE)
-			for (int j = 0; j < height; j += Tile.SIZE){
-				int[] vector = new int[2];
-				vector[0] = i; //x position of cell
-				vector[1] = j; //y position of cell
-				emptyCells.add(vector);
+		int[] cell = new int[2];
+		emptyCells = new ArrayList<int[]>();
+		for (int i = 0; i < width/(Tile.SIZE*2); i++)
+			for (int j = 0; j < height/(Tile.SIZE*2); j++){
+				cell[0] = i+x*Tile.SIZE*2; //x position of cell
+				cell[1] = j+y*Tile.SIZE*2; //y position of cell
+				emptyCells.add(cell);
+				Log.d("hello","");
 			}
+		Log.d("Cells X:"+(width/(Tile.SIZE*2)), "CellsY: "+height/(Tile.SIZE*2));
+		for(int[] c : emptyCells)
+			Log.d("created cell <"+c[0]+","+c[1]+">", "");
 		
-		walls[UP] = new Wall(ov, x, y, width/Tile.SIZE - 1, 1);
-//		walls[DOWN] = new Wall(ov, x + Tile.SIZE, y + height - Tile.SIZE, width/Tile.SIZE - 1, 1);
-		walls[DOWN] = new Wall(ov, 0,0,0,0);
-		walls[LEFT] = new Wall(ov, x + width - Tile.SIZE, y + Tile.SIZE, 1, height/Tile.SIZE - 1);
-		walls[RIGHT] = new Wall(ov, x, y, 1, height/Tile.SIZE - 1);
+		walls[UP] = new Wall(ov, x, y, width/(Tile.SIZE*2) - 1, 1);
+		walls[DOWN] = new Wall(ov, x + Tile.SIZE*2, y + height - Tile.SIZE*2, width/(Tile.SIZE*2) - 1, 1);
+		walls[LEFT] = new Wall(ov, x, y + Tile.SIZE*2, 1, height/(Tile.SIZE*2) - 1);
+		walls[RIGHT] = new Wall(ov, x + width - Tile.SIZE*2, y, 1, height/(Tile.SIZE*2) - 1);
+		
+//		walls[UP] = new Wall(ov, 0,0,0,0);
+//		walls[DOWN] = new Wall(ov, 0,0,0,0);
+//		walls[LEFT] = new Wall(ov, 0,0,0,0);
 //		walls[RIGHT] = new Wall(ov, 0,0,0,0);
 		
 		for(Wall w: walls){
 			if(w != null)
 				for(Tile t: w.getTiles()){
-					emptyCells.remove(t.getLocationVector());
+					boolean r = emptyCells.remove(t.getLocationVector());
+					Log.d("removed cell <"+t.x+","+t.y+">", ""+r);
 					level.addToWorld(t);
 				}
 //			level.addToWorld(w);
@@ -131,7 +141,7 @@ public class Room {
 		return bounds;
 	}
 	
-	public HashSet<int[]> getEmptyCells(){
+	public ArrayList<int[]> getEmptyCells(){
 		return emptyCells;
 	}
 	

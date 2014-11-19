@@ -12,10 +12,10 @@ import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 @SuppressLint("WrongCall")
 public class Level {
 
-	private int width, height;
+//	private int width, height;
 	private ArrayList<Room> rooms;
 	private ArrayList<Entity> world, toRemove;
-	private HashSet<int[]> emptyCells;
+	private ArrayList<int[]> emptyCells;
 
 	public int MAX_ROOMS, NUM_GHOSTS;
 	
@@ -27,7 +27,7 @@ public class Level {
 		rooms = new ArrayList<Room>();
 		world = new ArrayList<Entity>();
 		toRemove = new ArrayList<Entity>();
-		emptyCells = new HashSet<int[]>();
+		emptyCells = new ArrayList<int[]>();
 		this.MAX_ROOMS = maxRooms;
 		this.NUM_GHOSTS = numGhosts;
 	}
@@ -71,7 +71,11 @@ public class Level {
 	}
 
 	public Player spawnPlayer(OurView ourView, Bitmap playerSprites) {
-		return new Player(ourView, playerSprites, 300, 500);
+//		Point size = new Point();
+//		ourView.getDisplay().getSize(size);
+		Player player = new Player(ourView, playerSprites, 300,500);
+		addToWorld(player);
+		return player;
 	}
 	
 	//spawn a ghost in a random empty cell
@@ -93,15 +97,24 @@ public class Level {
 	//
 	// called only during init
 	public void spawnGhosts(OurView ov, Bitmap image){
-		for (int i = 0; i < NUM_GHOSTS; i++)
-			spawnGhost(ov, image);
+		try{
+			for (int i = 0; i < NUM_GHOSTS; i++)
+				spawnGhost(ov, image);
+		} catch(Exception e){
+			Log.d("emptycells", ""+emptyCells.size());
+		}
 	}
 	
 	//spawn coins accros level
 	public void spawnCoins(OurView ov, Bitmap image){
 		int numCoins = (int)(Math.random()*(10 - 1) + 1);
-		for (int i = 0; i < numCoins; i++)
-			spawnCoin(ov, image);
+		
+		try {
+			for (int i = 0; i < numCoins; i++)
+				spawnCoin(ov, image);
+		} catch(Exception e){
+			Log.d("emptycells", ""+emptyCells.size());
+		}
 	}
 	
 	public Coin spawnCoin(OurView ov, Bitmap coinSprites){

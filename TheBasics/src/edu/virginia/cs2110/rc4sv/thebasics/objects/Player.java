@@ -1,7 +1,5 @@
 package edu.virginia.cs2110.rc4sv.thebasics.objects;
 
-import java.util.ArrayList;
-
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -63,12 +61,10 @@ public class Player extends Sprite {
 		int srcX = currentFrame * width;
 		Rect src = new Rect(srcX, srcY, srcX + width, srcY + height);
 		Rect dst = new Rect(x, y, x + width*2, y + height*2);
-		canvas.drawRect(bounds, new Paint(Color.RED));
+//		canvas.drawRect(bounds, new Paint(Color.RED));
 		canvas.drawBitmap(image, src, dst, null);
-		canvas.drawText("" + health, 0, 0, new Paint(Color.BLUE));
 	}
 
-	@SuppressWarnings("unchecked")
 	public void handleCollision() {this.cooldown =- 100;
 		for (Entity s : world)
 			if(isColliding(s) && !this.equals(s)){

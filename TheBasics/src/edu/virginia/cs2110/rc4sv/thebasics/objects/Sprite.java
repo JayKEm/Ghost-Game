@@ -4,11 +4,7 @@ import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 
 @SuppressLint("DrawAllocation")

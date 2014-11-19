@@ -1,14 +1,11 @@
 package edu.virginia.cs2110.rc4sv.thebasics.objects;
 
-import java.util.ArrayList;
-
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 
 @SuppressLint("DrawAllocation")
@@ -33,7 +30,7 @@ public class Ghost extends Sprite {
 		Rect src = new Rect(srcX, srcY, srcX + width, srcY + height);
 		Rect dst = new Rect(x + ov.offsetX, y + ov.offsetY, 
 				x + ov.offsetX + width*2, y + ov.offsetY + height*2);
-		canvas.drawRect(bounds, new Paint(Color.RED));
+//		canvas.drawRect(bounds, new Paint(Color.RED));
 		canvas.drawBitmap(image, src, dst, null);
 	}
 

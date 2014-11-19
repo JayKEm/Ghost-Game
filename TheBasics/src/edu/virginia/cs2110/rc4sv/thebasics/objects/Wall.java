@@ -27,7 +27,7 @@ public class Wall extends Entity{
 		
 		for(int i = 0; i < width; i++)
 			for(int j = 0; j < height; j++)
-				segments.add(new Tile(ov, i * Tile.SIZE*2, j * Tile.SIZE*2));
+				segments.add(new Tile(ov, x + i * (Tile.SIZE*2), y + j * (Tile.SIZE*2)));
 	}
 	
 	public void onDraw(Canvas canvas) {
