@@ -17,6 +17,7 @@ public class Player extends Sprite {
 	public int health;
 	private int cooldown;
 	private boolean hasWeapon;
+	private int ghostsKilled;
 	
 	public static int MAX_HEALTH = 5;
 	public static final int MIN_HEALTH = 0;
@@ -63,7 +64,7 @@ public class Player extends Sprite {
 		int srcX = currentFrame * width;
 		Rect src = new Rect(srcX, srcY, srcX + width, srcY + height);
 		Rect dst = new Rect(x, y, x + width*2, y + height*2);
-		canvas.drawRect(bounds, new Paint(Color.RED));
+		//canvas.drawRect(bounds, new Paint(Color.RED));
 		canvas.drawBitmap(image, src, dst, null);
 		canvas.drawText("" + health, 0, 0, new Paint(Color.BLUE));
 	}
@@ -74,7 +75,7 @@ public class Player extends Sprite {
 			if(isColliding(s) && !this.equals(s)){
 				if(s instanceof Ghost && !this.hasWeapon)
 					if (this.cooldown <= 0) {
-						damage();
+						//damage();
 						this.cooldown = DAMAGE_TIMER;
 					}
 				if(s instanceof Tile)
@@ -110,5 +111,14 @@ public class Player extends Sprite {
 	
 	public boolean hasWeapon() {
 		return hasWeapon;
+	}
+	
+	public void killGhost() {
+		this.ghostsKilled++;
+		Log.i("kill" , this.ghostsKilled + "");
+	}
+	
+	public int getGhostsKilled () {
+		return this.ghostsKilled;
 	}
 }

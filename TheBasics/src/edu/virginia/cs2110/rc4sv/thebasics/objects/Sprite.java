@@ -132,6 +132,9 @@ public abstract class Sprite extends Entity {
 	
 	public void damage() {
 		if (this.health <= 1) {
+			if (this instanceof Ghost) {
+				level.getPlayer().killGhost();
+			}
 			level.removeFromWorld(this);
 		}
 		else  {

@@ -16,6 +16,7 @@ public class Level {
 	private ArrayList<Room> rooms;
 	private ArrayList<Entity> world, toRemove;
 	private HashSet<int[]> emptyCells;
+	private Player p;
 
 	public int MAX_ROOMS, NUM_GHOSTS;
 	
@@ -71,7 +72,8 @@ public class Level {
 	}
 
 	public Player spawnPlayer(OurView ourView, Bitmap playerSprites) {
-		return new Player(ourView, playerSprites, 300, 500);
+		p = new Player(ourView, playerSprites, 300, 500);
+		return p;
 	}
 	
 	//spawn a ghost in a random empty cell
@@ -110,6 +112,8 @@ public class Level {
 			spawnWeapon(ov, image);
 	}
 	
+
+
 	public Weapon spawnWeapon(OurView ov, Bitmap weaponsprite){
 		Weapon c = null;
 		int[] cell = (int[]) emptyCells.toArray()[(int) (Math.random()*emptyCells.size())];
@@ -144,5 +148,9 @@ public class Level {
 			return false;
 		}
 		return false;
+	}
+	
+	public Player getPlayer() {
+		return this.p;
 	}
 }

@@ -33,7 +33,7 @@ public class Ghost extends Sprite {
 		Rect src = new Rect(srcX, srcY, srcX + width, srcY + height);
 		Rect dst = new Rect(x + ov.offsetX, y + ov.offsetY, 
 				x + ov.offsetX + width*2, y + ov.offsetY + height*2);
-		canvas.drawRect(bounds, new Paint(Color.RED));
+		//canvas.drawRect(bounds, new Paint(Color.RED));
 		canvas.drawBitmap(image, src, dst, null);
 	}
 
