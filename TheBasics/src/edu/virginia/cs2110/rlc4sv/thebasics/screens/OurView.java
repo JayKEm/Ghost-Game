@@ -21,7 +21,7 @@ public class OurView extends SurfaceView implements Runnable{
 	private Thread t = null;
 	private SurfaceHolder holder;
 	private boolean isItOK = false;
-	private Bitmap playerSprites, ghostSprites, coinSprites, weaponSprites;
+	private Bitmap playerSprites, ghostSprites, goldCoin, silverCoin, bronzeCoin, weaponSprites, heart, coin;
 	private Bitmap up, down, left, right;
 	private Level myLevel;
 	private Player player;
@@ -69,7 +69,12 @@ public class OurView extends SurfaceView implements Runnable{
 		canvas.drawBitmap(left, null, new Rect(0, getHeight()- dh*2, dw, getHeight()-dh), null);
 		canvas.drawBitmap(right, null, new Rect(dw*2, getHeight()- dh*2, dw*3, getHeight()-dh), null);
 		//player health
+		int hw = heart.getWidth(); int hh = heart.getHeight(); 	int p = 2;
+		for(int i = 0; i < player.health; i++)
+			canvas.drawBitmap(heart,null, new Rect(p*i, p, p*i+hw, p+hh), null);
 		//player score
+		int cw = coin.getWidth(); int ch = coin.getWidth();
+		canvas.drawBitmap(coin, null, new Rect(getWidth()-p-cw, p, getWidth()-p, p+ch), null);
 	}
 
 	public void pause () {
@@ -105,8 +110,12 @@ public class OurView extends SurfaceView implements Runnable{
 		
 		playerSprites = BitmapFactory.decodeResource(getResources(), R.drawable.spritesheet);
 		ghostSprites = BitmapFactory.decodeResource(getResources(), R.drawable.gspritesheet);
-		coinSprites = BitmapFactory.decodeResource(getResources(), R.drawable.coin_gold);
+		goldCoin = BitmapFactory.decodeResource(getResources(), R.drawable.coin_gold);
+		silverCoin = BitmapFactory.decodeResource(getResources(), R.drawable.coin_silver);
+		bronzeCoin = BitmapFactory.decodeResource(getResources(), R.drawable.coin_bronze);
 		weaponSprites = BitmapFactory.decodeResource(getResources(), R.drawable.weaponsprite);
+		heart = BitmapFactory.decodeResource(getResources(), R.drawable.heart);
+		coin = BitmapFactory.decodeResource(getResources(), R.drawable.coin_goldpart);
 		up = BitmapFactory.decodeResource(getResources(), R.drawable.up_arrow);
 		down = BitmapFactory.decodeResource(getResources(), R.drawable.down_arrow);
 		left = BitmapFactory.decodeResource(getResources(), R.drawable.left_arrow);
@@ -119,7 +128,9 @@ public class OurView extends SurfaceView implements Runnable{
 		myLevel.addRoom(new Room(this, player, myLevel, 0, 0)); //debug room
 		player = myLevel.spawnPlayer(this, playerSprites);
 		myLevel.spawnGhosts(this, ghostSprites);
-		myLevel.spawnCoins(this, coinSprites);
+		myLevel.spawnCoins(this, 4, goldCoin);
+		myLevel.spawnCoins(this, 5, silverCoin);
+		myLevel.spawnCoins(this, 7, bronzeCoin);
 		myLevel.spawnWeapons(this, weaponSprites);
 		
 		for(Entity s : myLevel.getWorld())

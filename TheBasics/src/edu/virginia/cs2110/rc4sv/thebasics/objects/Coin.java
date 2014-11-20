@@ -24,6 +24,10 @@ public class Coin extends Sprite {
 		//has a certain image, give it a value
 		if(coinSprites.equals(BitmapFactory.decodeResource(ov.getResources(), R.drawable.coin_gold)))
 			value = 10;
+		if(coinSprites.equals(BitmapFactory.decodeResource(ov.getResources(), R.drawable.coin_silver)))
+			value = 5;
+		if(coinSprites.equals(BitmapFactory.decodeResource(ov.getResources(), R.drawable.coin_bronze)))
+			value = 3;
 
 		id = "Coin " + value;
 	}

@@ -126,9 +126,12 @@ public class Level {
 			spawnGhost(ov, image);
 	}
 
-	//spawn coins accros level
+	//spawn random number of coins coins accros level
 	public void spawnCoins(OurView ov, Bitmap image){
-		int numCoins = (int)(Math.random()*(10 - 1) + 1);
+		spawnCoins(ov, (int)(Math.random()*(10 - 1) + 1), image);
+	}
+	
+	public void spawnCoins(OurView ov, int numCoins, Bitmap image){
 		for (int i = 0; i < numCoins; i++)
 			spawnCoin(ov, image);
 	}
