@@ -1,8 +1,8 @@
 package edu.virginia.cs2110.rc4sv.thebasics.objects;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.Log;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
@@ -14,10 +14,10 @@ public class Room {
 	private Player player;
 	private ArrayList<Entity> items;
 	private ArrayList<Vector> emptyCells;
+	private HashMap<Vector, Integer> doors;
 	private Level level;
 	private Room[] adjacentRooms = new Room[4];
 	private Wall[] walls = new Wall[4];
-//	private int[][] doorLocations;
 	public int x, y, width, height;
 	
 	private Rect bounds;
@@ -34,50 +34,32 @@ public class Room {
 		
 	}
 	
-	public Room(OurView ov, Player p, Level level){
-		this(ov, p, level, 0, 0);
+	public Room(OurView ov, Player p, Level level, int x, int y, boolean random){
+		//Create a room with a random size, bettween max and min tiles
+		this.ov = ov;
+		this.player = p;
+		this.level = level;
+		this.x = 0;
+		this.y = 0;
+		this.width = (int) (Math.random()*(MAX_TILES - MIN_TILES) + MIN_TILES) * Tile.SIZE*2;
+		this.height = (int) (Math.random()*(MAX_TILES - MIN_TILES) + MIN_TILES) * Tile.SIZE*2;
+		doors = new HashMap<Vector, Integer>();
+
+		bounds = new Rect(x, y, width, height);
+		if(random)
+			createRandom();
+		else
+			create();
 	}
 	
-	public Room(OurView ov, Player player, Level level, int x, int y){
-		//Create a room with a random size, from 10 to 20 tiles
-		//for now, we're only testing that a room can be created, so it's within the bounds of the view
-		this(ov, player, level, x, y, (int) (Math.random()*(MAX_TILES - MIN_TILES) + MIN_TILES) * Tile.SIZE*2, 
-				(int) (Math.random()*(MAX_TILES - MIN_TILES) + MIN_TILES) * Tile.SIZE*2);
-	}
-	
-	public Room(OurView ov, Player player, Level level, int x, int y, int width, int height){
+	public Room(OurView ov, Player player, Level level, int width, int height, int x, int y){
 		this.ov = ov;
 		this.player = player;
 		this.level = level;
-		this.x = x;
-		this.y = y;
-		this.width = width;
 		this.height = height;
-
+		this.width = width;
+		doors = new HashMap<Vector, Integer>();
 		bounds = new Rect(x, y, width, height);
-		create();
-	}
-	
-	//makes a room if there isn't already a room in that location
-	//generated room must be inside the world boundaries
-	public void generateAdjacentRoom(int location){
-		if(adjacentRooms[location]!= null) return;
-		if(level.getRooms().size() == level.MAX_ROOMS) return;
-		boolean noIntersections = false;
-		
-		while(!noIntersections){
-			adjacentRooms[location] = new Room(ov, player, level, x, y);
-			noIntersections = isIntersecting(adjacentRooms[location]);
-		}
-		
-		int adjacent = 0;
-		if(location == UP) adjacent = DOWN;
-		if(location == DOWN) adjacent = UP;
-		if(location == LEFT) adjacent = RIGHT;
-		if(location == RIGHT) adjacent = LEFT;
-		
-		adjacentRooms[location].setAdjacentRoom(this, adjacent);
-		adjacentRooms[location].create();
 	}
 	
 	//create all walls and items, and ghosts
@@ -89,21 +71,17 @@ public class Room {
 				Log.d("hello","");
 			}
 		
-//		Log.d("Cells X:"+(width/(Tile.SIZE*2)), "Cells Y: "+height/(Tile.SIZE*2));
-		walls[UP] = new Wall(ov, x, y, width/(Tile.SIZE*2) - 1, 1);
-		walls[DOWN] = new Wall(ov, x + Tile.SIZE*2, y + height - Tile.SIZE*2, width/(Tile.SIZE*2) - 1, 1);
-		walls[LEFT] = new Wall(ov, x, y + Tile.SIZE*2, 1, height/(Tile.SIZE*2) - 1);//==============
-		walls[RIGHT] = new Wall(ov, x + width - Tile.SIZE*2, y, 1, height/(Tile.SIZE*2) - 1); //============
+		walls[UP] = new Wall(ov, level, x, y, width/(Tile.SIZE*2) - 1, 1);
+		walls[DOWN] = new Wall(ov, level, x + Tile.SIZE*2, y + height - Tile.SIZE*2, width/(Tile.SIZE*2) - 1, 1);
+		walls[LEFT] = new Wall(ov, level, x, y + Tile.SIZE*2, 1, height/(Tile.SIZE*2) - 1);//==============
+		walls[RIGHT] = new Wall(ov, level, x + width - Tile.SIZE*2, y, 1, height/(Tile.SIZE*2) - 1); //============
 		
-		for(Wall w: walls){
-			if(w != null)
-				for(Tile t: w.getTiles()){
-					boolean r = emptyCells.remove(t.getLocation());
-					Log.d("removed cell", "<"+t.getLocation().x+","+t.getLocation().y+"> "+r);
-					level.addToWorld(t);
-				}
-//			level.addToWorld(w);
-		}
+		for(Wall w: walls)
+			for(Tile t: w.getTiles()){
+				boolean r = emptyCells.remove(t.getLocation());
+				Log.d("removed cell", "<"+t.getLocation().x+","+t.getLocation().y+"> "+r);
+				level.addToWorld(t);
+			}
 		
 		for(Vector v : emptyCells){
 			Log.d("created cell <"+v.x+","+v.y+">", "");
@@ -112,11 +90,132 @@ public class Room {
 				
 		items = new ArrayList<Entity>();
 		// instantiate objects
-		// remove item cells from emptycells 
+		// remove item cells from emptycells
+		
+		removeDoors();
 	}
 	
-	public void setAdjacentRoom(Room r, int adjacent) {
+	public void createRandom(){
+		create();
+		
+		int numDoors = (int) Math.round((Math.random()*2));
+		for(int d = 0; d < numDoors; d++){
+			int fails = 0;
+			boolean created = false;
+			while (fails < 3 && !created){
+				int doorSide = (int) Math.round((Math.random()*3));
+				if(!walls[doorSide].hasDoor){
+					Vector doorLocation = (Vector) walls[doorSide].getTileLocations().
+							toArray()[(int) Math.random()*walls[doorSide].getTiles().size()];
+					walls[doorSide].removeTile(doorLocation);
+					created = generateAdjacentRoom(doorSide, doorLocation);
+					if (!created)
+						fails++;
+				} else
+					fails++;
+			}
+		}
+	}
+	
+	//makes a room if there isn't already a room in that location
+	//generated room must be inside the world boundaries
+	public boolean generateAdjacentRoom(int location, Vector doorLocation){
+//		if(adjacentRooms[location]!= null) return false;
+		if(level.getRooms().size() == level.MAX_ROOMS) return false;  //MOVE ME
+		boolean hasIntersections = false;
+		boolean created = false;
+		
+		int failed = 0;
+		while(!hasIntersections && failed < 50){
+			adjacentRooms[location] = new Room(ov, player, level, (int) (Math.random()*(MAX_TILES - MIN_TILES) + MIN_TILES) * Tile.SIZE*2, 
+					(int) (Math.random()*(MAX_TILES - MIN_TILES) + MIN_TILES) * Tile.SIZE*2, x, y);
+			int rx, ry;
+			
+			switch(location){
+			case UP:
+				rx = 0;
+				ry = -1 * adjacentRooms[location].width;
+				break;
+			case DOWN:
+				rx = width - adjacentRooms[location].width;
+				ry = height;
+				break;
+			case LEFT:
+				rx = -1 * adjacentRooms[location].width;
+				ry = height - adjacentRooms[location].height;
+				break;
+			case RIGHT:
+				rx = width;
+				ry = 0;
+				break;
+			default:
+				rx = 0;
+				ry = 0;
+			}
+			
+			Rect newBounds = new Rect();
+			newBounds.set(adjacentRooms[location].getBounds());
+			newBounds.offset(rx, ry);
+			adjacentRooms[location].setBounds(newBounds);
+			
+			hasIntersections = isIntersecting(adjacentRooms[location]);
+			if(hasIntersections)
+				failed++;
+			else {
+				created = true;
+				
+				int adjacent = 0;
+				if(location == UP) adjacent = DOWN;
+				if(location == DOWN) adjacent = UP;
+				if(location == LEFT) adjacent = RIGHT;
+				if(location == RIGHT) adjacent = LEFT;
+				int dx, dy;
+				
+				switch(location){
+				case UP:
+					dx = 0;
+					dy = -1;
+					break;
+				case DOWN:
+					dx = 0;
+					dy = 1;
+					break;
+				case LEFT:
+					dx = -1;
+					dy = 0;
+					break;
+				case RIGHT:
+					dx = 1;
+					dy = 0;
+					break;
+				default:
+					dx = 0;
+					dy = 0;
+				}
+				
+				doorLocation.x += dx*Tile.SIZE*2;
+				doorLocation.y += dy*Tile.SIZE*2;
+				adjacentRooms[location].setAdjacentRoom(this, adjacent, doorLocation);
+				adjacentRooms[location].createRandom();
+				adjacentRooms[location].setLocation(new Vector(x + rx, y + ry));
+			}
+		}
+		
+		return created;
+	}
+	
+	public void setAdjacentRoom(Room r, int adjacent, Vector doorLocation) {
 		adjacentRooms[adjacent] = r;
+		addDoor(doorLocation, adjacent);
+	}
+	
+	public void addDoor(Vector doorLocation, int doorSide){
+		doors.put(doorLocation, doorSide);
+	}
+	
+	public void removeDoors(){
+		for (Vector v : doors.keySet())
+			walls[doors.get(v)].removeTile(v);
 	}
 	
 	public ArrayList<Entity> getItems(){
@@ -125,6 +224,15 @@ public class Room {
 	
 	public Rect getBounds(){
 		return bounds;
+	}
+	
+	public void setBounds(Rect newBounds){
+		bounds.set(newBounds);
+	}
+	
+	public void setLocation(Vector v){
+		x = v.x;
+		y = v.y;
 	}
 	
 	public ArrayList<Vector> getEmptyCells(){

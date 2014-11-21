@@ -24,7 +24,6 @@ public class MainGame extends Activity implements OnTouchListener {
 
 	private OurView ov;
 	private int x, y;
-	private Rect src, dst;
 	private MediaPlayer logoMusic;
 
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +53,6 @@ public class MainGame extends Activity implements OnTouchListener {
 		ov.pause();
 		logoMusic.release();
 	}
-	
-	
 
 	public boolean onTouch(View s, MotionEvent me) {
 		OurView v = (OurView) s;

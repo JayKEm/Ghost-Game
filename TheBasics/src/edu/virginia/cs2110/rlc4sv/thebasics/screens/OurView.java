@@ -71,7 +71,7 @@ public class OurView extends SurfaceView implements Runnable{
 		//player health
 		int hw = heart.getWidth(); int hh = heart.getHeight(); 	int p = 2;
 		for(int i = 0; i < player.health; i++)
-			canvas.drawBitmap(heart,null, new Rect(p*i, p, p*i+hw, p+hh), null);
+			canvas.drawBitmap(heart,null, new Rect(p*i*hw*2, p, p*i*hw*2+hw*2, p+2*hh), null);
 		//player score
 		int cw = coin.getWidth(); int ch = coin.getWidth();
 		canvas.drawBitmap(coin, null, new Rect(getWidth()-p-cw, p, getWidth()-p, p+ch), null);
@@ -125,7 +125,7 @@ public class OurView extends SurfaceView implements Runnable{
 		dh = up.getHeight();
 
 		//create level
-		myLevel.addRoom(new Room(this, player, myLevel, 0, 0)); //debug room
+		myLevel.addRoom(new Room(this, player, myLevel, 0, 0, false)); //debug room
 		player = myLevel.spawnPlayer(this, playerSprites);
 		myLevel.spawnGhosts(this, ghostSprites);
 		myLevel.spawnCoins(this, 4, goldCoin);

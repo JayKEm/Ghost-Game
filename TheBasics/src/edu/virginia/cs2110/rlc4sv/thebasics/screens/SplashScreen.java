@@ -1,12 +1,11 @@
 package edu.virginia.cs2110.rlc4sv.thebasics.screens;
 
-import edu.virginia.cs2110.rlc4sv.thebasics.R;
 import android.app.Activity;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import edu.virginia.cs2110.rlc4sv.thebasics.R;
 
 
 public class SplashScreen extends Activity {
