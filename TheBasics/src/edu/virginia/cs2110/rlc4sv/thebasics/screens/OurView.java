@@ -21,7 +21,7 @@ public class OurView extends SurfaceView implements Runnable{
 	private Thread t = null;
 	private SurfaceHolder holder;
 	private boolean isItOK = false;
-	private Bitmap playerSprites, ghostSprites, goldCoin, silverCoin, bronzeCoin, weaponSprites, heart, coin;
+	private Bitmap playerSprites, ghostSprites, goldCoin, silverCoin, bronzeCoin, weaponSprites, weaponLogo, heart, coin;
 	private Bitmap up, down, left, right;
 	private Level myLevel;
 	private Player player;
@@ -75,6 +75,11 @@ public class OurView extends SurfaceView implements Runnable{
 		//player score
 		int cw = coin.getWidth(); int ch = coin.getWidth();
 		canvas.drawBitmap(coin, null, new Rect(getWidth()-p-cw, p, getWidth()-p, p+ch), null);
+		
+		//weapon logo
+		if (myLevel.getPlayer().hasWeapon()) {
+			canvas.drawBitmap(weaponLogo,null, new Rect(p*6*hw*2, p, p*6*hw*2+hw*2, p+2*hh), null);
+		}
 	}
 
 	public void pause () {
@@ -120,6 +125,7 @@ public class OurView extends SurfaceView implements Runnable{
 		down = BitmapFactory.decodeResource(getResources(), R.drawable.down_arrow);
 		left = BitmapFactory.decodeResource(getResources(), R.drawable.left_arrow);
 		right = BitmapFactory.decodeResource(getResources(), R.drawable.right_arrow);
+		weaponLogo = BitmapFactory.decodeResource(getResources(), R.drawable.rsz_weaponsprite);
 		
 		dw = up.getWidth();
 		dh = up.getHeight();

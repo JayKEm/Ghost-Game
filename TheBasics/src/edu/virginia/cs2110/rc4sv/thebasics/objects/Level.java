@@ -37,6 +37,9 @@ public class Level {
 	}
 
 	public void render(Canvas canvas){
+		if(this.player.hasWeapon() && (System.currentTimeMillis() - this.player.getWeaponTimer() > 5000)) {
+			this.player.loseWeapon();
+		}
 		for(Entity f : world)
 			if(f instanceof Floor)
 				f.render(canvas);

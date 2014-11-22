@@ -14,6 +14,7 @@ public class Player extends Sprite {
 	private int cooldown;
 	private boolean hasWeapon;
 	private int ghostsKilled;
+	private long weaponTimer;
 	
 	public static int MAX_HEALTH = 5;
 	public static final int MIN_HEALTH = 0;
@@ -105,6 +106,11 @@ public class Player extends Sprite {
 	
 	public void setHasWeapon(){
 		hasWeapon = true;
+		this.weaponTimer = System.currentTimeMillis();
+	}
+	
+	public void loseWeapon() {
+		this.hasWeapon = false;
 	}
 	
 	public boolean hasWeapon() {
@@ -118,5 +124,9 @@ public class Player extends Sprite {
 	
 	public int getGhostsKilled () {
 		return this.ghostsKilled;
+	}
+	
+	public long getWeaponTimer() {
+		return this.weaponTimer;
 	}
 }
