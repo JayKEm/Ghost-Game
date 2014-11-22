@@ -70,7 +70,7 @@ public class OurView extends SurfaceView implements Runnable{
 		canvas.drawBitmap(right, null, new Rect(dw*2, getHeight()- dh*2, dw*3, getHeight()-dh), null);
 		//player health
 		int hw = heart.getWidth(); int hh = heart.getHeight(); 	int p = 2;
-		for(int i = 0; i < player.health; i++)
+		for(int i = 0; i < myLevel.getPlayer().getHealth(); i++)
 			canvas.drawBitmap(heart,null, new Rect(p*i*hw*2, p, p*i*hw*2+hw*2, p+2*hh), null);
 		//player score
 		int cw = coin.getWidth(); int ch = coin.getWidth();

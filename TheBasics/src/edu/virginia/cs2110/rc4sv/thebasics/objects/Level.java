@@ -40,6 +40,10 @@ public class Level {
 		if(this.player.hasWeapon() && (System.currentTimeMillis() - this.player.getWeaponTimer() > 5000)) {
 			this.player.loseWeapon();
 		}
+		
+		if(System.currentTimeMillis() - this.player.getDamageTimer() > 5000) {
+			this.player.setCanGetHurt(true);
+		}
 		for(Entity f : world)
 			if(f instanceof Floor)
 				f.render(canvas);

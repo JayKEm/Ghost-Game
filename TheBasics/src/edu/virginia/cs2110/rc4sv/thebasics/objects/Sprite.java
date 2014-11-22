@@ -132,6 +132,10 @@ public abstract class Sprite extends Entity {
 		}
 		else  {
 			this.health --;
+			if (this instanceof Player) {
+		       Player n = (Player) this;
+		       n.setCanGetHurt(false);
+			}
 		}
 	}
 	

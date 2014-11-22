@@ -11,14 +11,14 @@ public class Player extends Sprite {
 
 	public int score;
 	public int health;
-	private int cooldown;
 	private boolean hasWeapon;
 	private int ghostsKilled;
 	private long weaponTimer;
+	private boolean canGetHurt;
+	private long damageTimer;
 	
-	public static int MAX_HEALTH = 5;
+	public static int MAX_HEALTH = 6;
 	public static final int MIN_HEALTH = 0;
-	public static final int DAMAGE_TIMER = 3000;
 	
 	public Player(OurView ov, Bitmap src, int x, int y, int cellX, int cellY){
 		super(ov, src , x, y);
@@ -27,8 +27,8 @@ public class Player extends Sprite {
 		ov.offsetY = y - cellY;
 		
 		this.health = MAX_HEALTH;
+		this.damageTimer = System.currentTimeMillis();
 		id = "Player";
-		this.cooldown = DAMAGE_TIMER;
 		hasWeapon = false;
 	}
 
@@ -69,13 +69,12 @@ public class Player extends Sprite {
 		canvas.drawBitmap(image, src, dst, null);
 	}
 
-	public void handleCollision() {this.cooldown =- 100;
+	public void handleCollision() {
 		for (Entity s : world)
 			if(isColliding(s) && !this.equals(s)){
 				if(s instanceof Ghost && !this.hasWeapon)
-					if (this.cooldown <= 0) {
-						//damage();
-						this.cooldown = DAMAGE_TIMER;
+					if (this.canGetHurt == true) {
+						damage();
 					}
 				if(s instanceof Tile)
 					reAdjust();
@@ -128,5 +127,17 @@ public class Player extends Sprite {
 	
 	public long getWeaponTimer() {
 		return this.weaponTimer;
+	}
+	
+	public long getDamageTimer() {
+		return this.damageTimer;
+	}
+	
+	public void setDamageTimer() {
+		this.damageTimer = System.currentTimeMillis();
+	}
+	
+	public void setCanGetHurt(boolean a) {
+		this.canGetHurt = a;
 	}
 }
