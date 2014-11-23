@@ -59,13 +59,25 @@ public class Level {
 	}
 
 	public boolean addRoom(Room r){
+		if(rooms.size()==MAX_ROOMS)
+			return false;
 		boolean added = rooms.add(r);
-		emptyCells.addAll(r.getEmptyCells());
 		
-		for (Vector cell : emptyCells)
-			Log.d("cell location","<"+cell.x+","+cell.y+">");
+//		for (Vector cell : emptyCells)
+//			Log.d("cell location","<"+cell.x+","+cell.y+">");
 		
 		return added;
+	}
+	
+	public void generate(OurView ov){
+		Room center = new Room(ov, player, this, 0, 0, false); //debug room
+		addRoom(center);
+		for(Room r : rooms){
+			r.build();
+			emptyCells.addAll(r.getEmptyCells());
+		}
+		
+//		logWorldContents();
 	}
 
 	public boolean addToWorld(Entity e){
@@ -99,7 +111,7 @@ public class Level {
 			addToWorld(player);
 			return player;
 		} catch(Exception e){
-			player = new Player(ourView, playerSprites, size.x/2,size.y/2, 0,0);
+			player = new Player(ourView, playerSprites, size.x/2,size.y/2, 64,64);
 			addToWorld(player);
 			return player;
 		} 
@@ -197,5 +209,14 @@ public class Level {
 
 	public Player getPlayer() {
 		return this.player;
+	}
+	
+	public void logWorldContents(){
+		String w = "";
+		for(Entity e : world)
+//			w+=e.id+",";
+//			if(e instanceof Tile)
+				w+=e.id+",";
+		Log.d("world contents",w);
 	}
 }

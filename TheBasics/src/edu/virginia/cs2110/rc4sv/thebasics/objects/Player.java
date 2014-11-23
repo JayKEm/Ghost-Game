@@ -22,6 +22,7 @@ public class Player extends Sprite {
 	
 	public Player(OurView ov, Bitmap src, int x, int y, int cellX, int cellY){
 		super(ov, src , x, y);
+		bounds = new Rect(x + width/4, y, x + width*2, y + 31*2);
 		
 		ov.offsetX = x - cellX;
 		ov.offsetY = y - cellY;
