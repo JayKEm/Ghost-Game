@@ -79,7 +79,7 @@ public class Room {
 		removeDoors();
 		for(Wall w: walls){
 			w.create();
-//			Log.d(id,""+w.getTiles().size());
+			Log.d(id,""+w.getTiles().size());
 			for(Tile t: w.getTiles()){
 				emptyCells.remove(t.getLocation());
 				level.addToWorld(t);

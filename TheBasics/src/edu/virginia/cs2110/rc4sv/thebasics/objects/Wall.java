@@ -23,7 +23,7 @@ public class Wall extends Entity{
 		this.height = height;
 		this.ov = ov;
 		v = new Vector(x, y);
-		bounds = new Rect(x, y, x + this.width*Tile.SIZE, y + this.height*Tile.SIZE);
+		bounds = new Rect(0,0,0,0);
 		segment = new ArrayList<Tile>();
 		skeletonTiles = new ArrayList<Vector>();
 		id="wall";
@@ -35,7 +35,7 @@ public class Wall extends Entity{
 	public boolean removeTile(Vector r){
 		for (Vector v : skeletonTiles)
 			if(r.equals(v)){
-				Log.d("removed wall", v.toString());
+				Log.d("removed tile", v.toString());
 				skeletonTiles.remove(v);
 				hasDoor = true;
 				return true;
