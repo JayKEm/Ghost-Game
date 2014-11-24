@@ -22,6 +22,7 @@ public class Player extends Sprite {
 	
 	public Player(OurView ov, Bitmap src, int x, int y, int cellX, int cellY){
 		super(ov, src , x, y);
+		bounds = new Rect(x + width/4, y, x + width*2, y + 31*2);
 		
 		ov.offsetX = x - cellX;
 		ov.offsetY = y - cellY;
@@ -43,6 +44,14 @@ public class Player extends Sprite {
 		if(changeFrame == 20){
 			currentFrame = ++currentFrame % 4;
 			changeFrame=0;
+		}
+		
+		if(hasWeapon() && (System.currentTimeMillis() - weaponTimer > 5000)) {
+			loseWeapon();
+		}
+		
+		if(System.currentTimeMillis() - damageTimer > 5000) {
+			canGetHurt = true;
 		}
 		
 		if(move){
@@ -72,8 +81,8 @@ public class Player extends Sprite {
 	public void handleCollision() {
 		for (Entity s : world)
 			if(isColliding(s) && !this.equals(s)){
-				if(s instanceof Ghost && !this.hasWeapon)
-					if (this.canGetHurt == true) {
+				if(s instanceof Ghost && !hasWeapon)
+					if (canGetHurt == true) {
 						damage();
 					}
 				if(s instanceof Tile)

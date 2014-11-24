@@ -20,6 +20,7 @@ public class Room {
 	private Wall[] walls = new Wall[4];
 	public int x, y, width, height;
 	
+	public String id;
 	private Rect bounds;
 	
 	//locations for adjacent rooms in room array
@@ -44,101 +45,112 @@ public class Room {
 		this.width = (int) (Math.random()*(MAX_TILES - MIN_TILES) + MIN_TILES) * Tile.SIZE*2;
 		this.height = (int) (Math.random()*(MAX_TILES - MIN_TILES) + MIN_TILES) * Tile.SIZE*2;
 		doors = new HashMap<Vector, Integer>();
-
+		id = x+":"+y+":"+width+":"+height;
+		
 		bounds = new Rect(x, y, width, height);
 		if(random)
 			createRandom();
 		else
-			create();
+			build();
 	}
 	
-	public Room(OurView ov, Player player, Level level, int width, int height, int x, int y){
+	public Room(OurView ov, Player player, Level level, int x, int y){
 		this.ov = ov;
 		this.player = player;
 		this.level = level;
-		this.height = height;
-		this.width = width;
+		this.height = (int) (Math.random()*(MAX_TILES - MIN_TILES) + MIN_TILES) * Tile.SIZE*2;
+		this.width = (int) (Math.random()*(MAX_TILES - MIN_TILES) + MIN_TILES) * Tile.SIZE*2;
 		doors = new HashMap<Vector, Integer>();
 		bounds = new Rect(x, y, width, height);
 	}
 	
 	//create all walls and items, and ghosts
-	public void create() {
+	public void build() {
 		emptyCells = new ArrayList<Vector>();
 		for (int i = 0; i < width; i+=Tile.SIZE*2)
 			for (int j = 0; j < height; j+=Tile.SIZE*2){
 				emptyCells.add(new Vector(i+x*Tile.SIZE*2, j+y*Tile.SIZE*2));
-				Log.d("hello","");
+//				Log.d("hello",id);
 			}
 		
-		walls[UP] = new Wall(ov, level, x, y, width/(Tile.SIZE*2) - 1, 1);
-		walls[DOWN] = new Wall(ov, level, x + Tile.SIZE*2, y + height - Tile.SIZE*2, width/(Tile.SIZE*2) - 1, 1);
-		walls[LEFT] = new Wall(ov, level, x, y + Tile.SIZE*2, 1, height/(Tile.SIZE*2) - 1);//==============
-		walls[RIGHT] = new Wall(ov, level, x + width - Tile.SIZE*2, y, 1, height/(Tile.SIZE*2) - 1); //============
+		if(walls[0]==null)
+			createWalls();
 		
-		for(Wall w: walls)
+		removeDoors();
+		for(Wall w: walls){
+			w.create();
+//			Log.d(id,""+w.getTiles().size());
 			for(Tile t: w.getTiles()){
-				boolean r = emptyCells.remove(t.getLocation());
-				Log.d("removed cell", "<"+t.getLocation().x+","+t.getLocation().y+"> "+r);
+				emptyCells.remove(t.getLocation());
 				level.addToWorld(t);
 			}
+		}
 		
 		for(Vector v : emptyCells){
-			Log.d("created cell <"+v.x+","+v.y+">", "");
+//			Log.d("floor", v+"");
 			level.addToWorld(new Floor(ov, v));
 		}
 				
 		items = new ArrayList<Entity>();
 		// instantiate objects
 		// remove item cells from emptycells
-		
-		removeDoors();
+	}
+	
+	private void createWalls() {
+		walls[UP] = new Wall(ov, level, x, y, width/(Tile.SIZE*2) - 1, 1);
+		walls[DOWN] = new Wall(ov, level, x + Tile.SIZE*2, y + height - Tile.SIZE*2, width/(Tile.SIZE*2) - 1, 1);
+		walls[LEFT] = new Wall(ov, level, x, y + Tile.SIZE*2, 1, height/(Tile.SIZE*2) - 1);
+		walls[RIGHT] = new Wall(ov, level, x + width - Tile.SIZE*2, y, 1, height/(Tile.SIZE*2) - 1);
 	}
 	
 	public void createRandom(){
-		create();
-		
 		int numDoors = (int) Math.round((Math.random()*2));
+		createWalls();
+
+		if(level.getRooms().size() == level.MAX_ROOMS) return;
 		for(int d = 0; d < numDoors; d++){
 			int fails = 0;
 			boolean created = false;
 			while (fails < 3 && !created){
-				int doorSide = (int) Math.round((Math.random()*3));
+				int doorSide = fails;
 				if(!walls[doorSide].hasDoor){
-					Vector doorLocation = (Vector) walls[doorSide].getTileLocations().
-							toArray()[(int) Math.random()*walls[doorSide].getTiles().size()];
-					walls[doorSide].removeTile(doorLocation);
+					int max = walls[doorSide].getTileLocations().size() - 1;
+					int i = (int) ((Math.random()*(max - 1) + 1));
+					Vector doorLocation = (Vector) walls[doorSide].getTileLocations().toArray()[i];
+					Log.d("index: "+i+"  max: "+max,"location: "+doorLocation);
+					walls[doorSide].removeTile(doorLocation); 
 					created = generateAdjacentRoom(doorSide, doorLocation);
 					if (!created)
 						fails++;
+					else
+						addDoor(doorLocation, doorSide);
 				} else
 					fails++;
 			}
 		}
 	}
-	
+
 	//makes a room if there isn't already a room in that location
 	//generated room must be inside the world boundaries
 	public boolean generateAdjacentRoom(int location, Vector doorLocation){
-//		if(adjacentRooms[location]!= null) return false;
-		if(level.getRooms().size() == level.MAX_ROOMS) return false;  //MOVE ME
+		if(adjacentRooms[location]!= null) return false; 
+		if(level.getRooms().size() == level.MAX_ROOMS) return false;
 		boolean hasIntersections = false;
 		boolean created = false;
 		
 		int failed = 0;
 		while(!hasIntersections && failed < 50){
-			adjacentRooms[location] = new Room(ov, player, level, (int) (Math.random()*(MAX_TILES - MIN_TILES) + MIN_TILES) * Tile.SIZE*2, 
-					(int) (Math.random()*(MAX_TILES - MIN_TILES) + MIN_TILES) * Tile.SIZE*2, x, y);
-			int rx, ry;
+			adjacentRooms[location] = new Room(ov, player, level, x, y);
+			int rx=0, ry=0;
 			
 			switch(location){
 			case UP:
 				rx = 0;
-				ry = -1 * adjacentRooms[location].width;
+				ry = -1 * adjacentRooms[location].height;
 				break;
 			case DOWN:
 				rx = width - adjacentRooms[location].width;
-				ry = height;
+				ry = height+Tile.SIZE*2;
 				break;
 			case LEFT:
 				rx = -1 * adjacentRooms[location].width;
@@ -148,9 +160,6 @@ public class Room {
 				rx = width;
 				ry = 0;
 				break;
-			default:
-				rx = 0;
-				ry = 0;
 			}
 			
 			Rect newBounds = new Rect();
@@ -169,7 +178,7 @@ public class Room {
 				if(location == DOWN) adjacent = UP;
 				if(location == LEFT) adjacent = RIGHT;
 				if(location == RIGHT) adjacent = LEFT;
-				int dx, dy;
+				int dx=0, dy=0; //door offset
 				
 				switch(location){
 				case UP:
@@ -188,16 +197,16 @@ public class Room {
 					dx = 1;
 					dy = 0;
 					break;
-				default:
-					dx = 0;
-					dy = 0;
 				}
 				
 				doorLocation.x += dx*Tile.SIZE*2;
 				doorLocation.y += dy*Tile.SIZE*2;
+				Log.d("doorLocation", ""+doorLocation);
 				adjacentRooms[location].setAdjacentRoom(this, adjacent, doorLocation);
-				adjacentRooms[location].createRandom();
 				adjacentRooms[location].setLocation(new Vector(x + rx, y + ry));
+				level.addRoom(adjacentRooms[location]);
+				Log.d("created",adjacentRooms[location].toString());
+//				adjacentRooms[location].createRandom();
 			}
 		}
 		
@@ -214,8 +223,9 @@ public class Room {
 	}
 	
 	public void removeDoors(){
-		for (Vector v : doors.keySet())
+		for (Vector v : doors.keySet()){
 			walls[doors.get(v)].removeTile(v);
+		}
 	}
 	
 	public ArrayList<Entity> getItems(){
@@ -233,6 +243,7 @@ public class Room {
 	public void setLocation(Vector v){
 		x = v.x;
 		y = v.y;
+		id = x+":"+y+":"+width+":"+height;
 	}
 	
 	public ArrayList<Vector> getEmptyCells(){
@@ -244,5 +255,9 @@ public class Room {
 			if(Rect.intersects(room.getBounds(), r.getBounds()))
 				return true;
 		return false;
+	}
+	
+	public String toString(){
+		return id;
 	}
 }

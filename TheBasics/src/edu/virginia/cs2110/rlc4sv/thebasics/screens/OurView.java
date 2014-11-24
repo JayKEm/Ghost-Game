@@ -72,7 +72,9 @@ public class OurView extends SurfaceView implements Runnable{
 
 		//player health
 		int hw = heart.getWidth(); int hh = heart.getHeight(); 	int p = 2;
-		for(int i = 0; i < myLevel.getPlayer().getHealth(); i++)
+		
+//		Log.d("health",""+player.getHealth());
+		for(int i = 0; i < player.getHealth(); i++)
 			canvas.drawBitmap(heart,null, new Rect(p*i*hw*2, p, p*i*hw*2+hw*2, p+2*hh), null);
 		//player score
 		int cw = coin.getWidth(); int ch = coin.getWidth();
@@ -113,7 +115,7 @@ public class OurView extends SurfaceView implements Runnable{
 	
 	public void create(){
 		initialized = true;
-		myLevel = new Level(4, 12); //debug level
+		myLevel = new Level(this, 3, 8); //debug level
 		
 		playerSprites = BitmapFactory.decodeResource(getResources(), R.drawable.spritesheet);
 		ghostSprites = BitmapFactory.decodeResource(getResources(), R.drawable.gspritesheet);
@@ -136,16 +138,28 @@ public class OurView extends SurfaceView implements Runnable{
 		dh = up.getHeight();
 
 		//create level
-		myLevel.addRoom(new Room(this, player, myLevel, 0, 0, false)); //debug room
-		player = myLevel.spawnPlayer(this, playerSprites);
-		myLevel.spawnGhosts(this, ghostSprites);
-		myLevel.spawnCoins(this, 4, goldCoin);
-		myLevel.spawnCoins(this, 5, silverCoin);
-		myLevel.spawnCoins(this, 7, bronzeCoin);
-		myLevel.spawnWeapons(this, weaponSprites);
+		myLevel.generate(this);
+		player = myLevel.spawnPlayer(playerSprites);
+		myLevel.spawnCoins(4, goldCoin);
+		myLevel.spawnCoins(5, silverCoin);
+		myLevel.spawnCoins(7, bronzeCoin);
+		myLevel.spawnWeapons(weaponSprites);
+		myLevel.spawnGhosts(ghostSprites);
 		
 		for(Entity s : myLevel.getWorld())
 			if (s instanceof Sprite)
 				((Sprite) s).setWorld(myLevel.getWorld());
+	}
+
+	public Bitmap getGoldCoin() {
+		return goldCoin;
+	}
+
+	public Bitmap getSilverCoin() {
+		return silverCoin;
+	}
+
+	public Bitmap getBronzeCoin() {
+		return bronzeCoin;
 	}
 }

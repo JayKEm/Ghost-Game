@@ -22,11 +22,11 @@ public class Coin extends Sprite {
 
 		//different coins have different values. if a coin
 		//has a certain image, give it a value
-		if(coinSprites.equals(BitmapFactory.decodeResource(ov.getResources(), R.drawable.coin_gold)))
+		if(coinSprites.equals(ov.getGoldCoin()))
 			value = 10;
-		if(coinSprites.equals(BitmapFactory.decodeResource(ov.getResources(), R.drawable.coin_silver)))
+		if(coinSprites.equals(ov.getSilverCoin()))
 			value = 5;
-		if(coinSprites.equals(BitmapFactory.decodeResource(ov.getResources(), R.drawable.coin_bronze)))
+		if(coinSprites.equals(ov.getBronzeCoin()))
 			value = 3;
 
 		id = "Coin " + value;
@@ -43,7 +43,7 @@ public class Coin extends Sprite {
 		if (System.currentTimeMillis() - times > 100) {
 			times = System.currentTimeMillis();
 
-			if (sprX == 7) {
+			if (sprX >= 7) {
 				sprX = 0;
 			}
 
