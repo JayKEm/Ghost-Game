@@ -15,6 +15,7 @@ public class Fireball extends Sprite {
 		super(ourView, src, x, y);
 		height = image.getHeight() / 5; //4 rows
 		width = image.getWidth() / 5;  //4 columns	}
+		//bounds = new Rect(x + width/4, y, x + width*2, y + height*2);
 	}
 
 	@Override
@@ -43,6 +44,7 @@ public class Fireball extends Sprite {
 			
 			x += velocity.x;
 			y += velocity.y;
+			bounds.set(x+ov.offsetX, y+ov.offsetY,x +ov.offsetX+ width*2, y+ov.offsetY + height*2);
 		
 		
 		try{
