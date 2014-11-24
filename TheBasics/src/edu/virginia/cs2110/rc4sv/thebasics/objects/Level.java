@@ -128,6 +128,7 @@ public class Level {
 		try{
 			Vector cell = (Vector) emptyCells.toArray()[(int) (Math.random()*emptyCells.size())];
 			player = new Player(ov, playerSprites, size.x/2,size.y/2, cell.x, cell.y);
+			player.setWorld(world);
 			emptyCells.remove(cell);
 			addToWorld(player);
 			return player;

@@ -41,10 +41,12 @@ public class Fireball extends Sprite {
 			}
 			
 		}
-			v.x += velocity.x;
-			v.y += velocity.y;
-			bounds.set(v.x + ov.offsetX + width/4, v.y + ov.offsetY, 
-					v.x + ov.offsetX + width*2, v.y + ov.offsetY + height*2);
+
+		v.x += velocity.x;
+		v.y += velocity.y;
+		bounds.set(v.x + ov.offsetX + width/4, v.y + ov.offsetY, 
+				v.x + ov.offsetX + width*2, v.y + ov.offsetY + height*2);
+
 		
 		try{
 			//handleCollision();
@@ -57,7 +59,6 @@ public class Fireball extends Sprite {
 	public void render(Canvas canvas) {
 		update();
 		
-		//Log.d("hi","here");
 		int srcY = row * height;
 		int srcX = currentFrame * width;
 		Rect src = new Rect(srcX, srcY, srcX + width, srcY + height);
