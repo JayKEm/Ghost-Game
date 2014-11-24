@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.util.Log;
-import android.widget.Toast;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 import edu.virginia.cs2110.rlc4sv.thebasics.util.Vector;
 
@@ -41,23 +42,22 @@ public class Level {
 	}
 
 	public void render(Canvas canvas){
-
-		if(this.player.hasWeapon() && (System.currentTimeMillis() - this.player.getWeaponTimer() > 5000)) {
-			this.player.loseWeapon();
-		}
-		
-		if(System.currentTimeMillis() - this.player.getDamageTimer() > 5000) {
-			this.player.setCanGetHurt(true);
-		}
 		addToWorld();
 		
-
 		for(Entity f : world)
 			if(f instanceof Floor)
 				f.render(canvas);
 		for(Entity s : world)
 			if (!(s instanceof Floor))
 				s.render(canvas);
+		
+		Paint paint = new Paint();
+		paint.setStyle(Paint.Style.STROKE);
+	    paint.setColor(Color.MAGENTA);
+	    for(Room r : rooms){
+	    	r.update();
+	    	canvas.drawRect(r.getBounds(), paint);
+	    }
 
 		removeFromWorld();
 	}
@@ -78,8 +78,9 @@ public class Level {
 	}
 
 	public void generate(OurView ov){
-		Room center = new Room(ov, player, this, 0, 0, true); //debug room
+		Room center = new Room(ov, player, this); //debug room
 		addRoom(center);
+		
 		for(Room r : rooms){
 			r.build();
 			emptyCells.addAll(r.getEmptyCells());
@@ -89,6 +90,7 @@ public class Level {
 	}
 
 	public boolean addToWorld(Entity e){
+		e.setWorld(world);
 		return toAdd.add(e);
 	}
 	
@@ -102,8 +104,8 @@ public class Level {
 		if (e instanceof Ghost){
 			ghosts--;
 			if (ghosts<=0){
-				Toast toast = Toast.makeText(ov.getContext(), "Game over! You Win!", Toast.LENGTH_LONG);
-				toast.show();
+//				Toast toast = Toast.makeText(ov.getContext(), "Game over! You Win!", Toast.LENGTH_LONG);
+//				toast.show();
 			}
 		}
 		return toRemove.add(e);
@@ -156,21 +158,12 @@ public class Level {
 		}
 	}
 	
-	public Fireball spawnFireball(OurView ov, Bitmap image) {
-		Fireball g = null;
-		int x = player.velocity.x;
-		int y = player.velocity.y;
-		try{
-			g = new Fireball(ov, image, player.v.x, player.v.y);
-			g.setVelocity(x,y);
-			g.setWorld(world);
-			addToWorld(g);
+	public Fireball spawnFireball(Bitmap image) {
+		Fireball g = new Fireball(ov, image, player.v.x-ov.offsetX, player.v.y-ov.offsetY);
+		g.setVelocity(Vector.clone(player.velocity));
+		addToWorld(g);
 
-			return g;
-		} catch(Exception e){
-			Log.d("could not spawn Fireball", "cells: "+emptyCells.size());
-			return null;
-		}
+		return g;
 	}
 
 	// spawn ghosts across level 
@@ -260,9 +253,8 @@ public class Level {
 	public void logWorldContents(){
 		String w = "";
 		for(Entity e : world)
-			//			w+=e.id+",";
-			//			if(e instanceof Tile)
 			w+=e.id+",";
+			//			if(e instanceof Tile)
 		Log.d("world contents",w);
 	}
 }

@@ -1,11 +1,8 @@
 package edu.virginia.cs2110.rc4sv.thebasics.objects;
 
-import java.util.ArrayList;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
-import android.util.Log;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 import edu.virginia.cs2110.rlc4sv.thebasics.util.Vector;
 
@@ -35,8 +32,6 @@ public abstract class Sprite extends Entity {
 		
 		MAX_SPEED = DEFAULT_SPEED;
 		velocity = new Vector(DEFAULT_SPEED, 0);
-		
-		world = new ArrayList<Entity>();
 	}
 	
 	public abstract void update();
@@ -87,10 +82,6 @@ public abstract class Sprite extends Entity {
 
 	public void setCurrentFrame(int currentFrame) {
 		this.currentFrame = currentFrame;
-	}
-	
-	public void setWorld(ArrayList<Entity> world){
-		this.world = world;
 	}
 
 	public int getDirection() {

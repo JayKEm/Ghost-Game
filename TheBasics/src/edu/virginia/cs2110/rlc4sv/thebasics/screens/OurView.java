@@ -12,7 +12,6 @@ import android.view.SurfaceView;
 import edu.virginia.cs2110.rc4sv.thebasics.objects.Entity;
 import edu.virginia.cs2110.rc4sv.thebasics.objects.Level;
 import edu.virginia.cs2110.rc4sv.thebasics.objects.Player;
-import edu.virginia.cs2110.rc4sv.thebasics.objects.Room;
 import edu.virginia.cs2110.rc4sv.thebasics.objects.Sprite;
 import edu.virginia.cs2110.rlc4sv.thebasics.R;
 
@@ -21,7 +20,8 @@ public class OurView extends SurfaceView implements Runnable{
 	private Thread t = null;
 	private SurfaceHolder holder;
 	private boolean isItOK = false;
-	private Bitmap playerSprites, ghostSprites, goldCoin, silverCoin, bronzeCoin, weaponSprites, weaponLogo, heart, coin, button2;
+	private Bitmap playerSprites, ghostSprites, goldCoin, silverCoin, bronzeCoin, 
+		weaponSprites, weaponLogo, heart, coin, button2;
 	private Bitmap up, down, left, right;
 	private Level myLevel;
 	private Player player;
@@ -115,7 +115,7 @@ public class OurView extends SurfaceView implements Runnable{
 	
 	public void create(){
 		initialized = true;
-		myLevel = new Level(this, 3, 8); //debug level
+		myLevel = new Level(this, 15, 8); //debug level
 		
 		playerSprites = BitmapFactory.decodeResource(getResources(), R.drawable.spritesheet);
 		ghostSprites = BitmapFactory.decodeResource(getResources(), R.drawable.gspritesheet);
@@ -131,7 +131,6 @@ public class OurView extends SurfaceView implements Runnable{
 		right = BitmapFactory.decodeResource(getResources(), R.drawable.right_arrow);
 		weaponLogo = BitmapFactory.decodeResource(getResources(), R.drawable.rsz_weaponsprite);
 		button2 = BitmapFactory.decodeResource(getResources(), R.drawable.fire);
-		//fireballSprites = BitmapFactory.decodeResource(getResources(), R.drawable.explode);
 
 		
 		dw = up.getWidth();

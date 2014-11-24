@@ -1,8 +1,9 @@
 package edu.virginia.cs2110.rc4sv.thebasics.objects;
 
-import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
@@ -22,7 +23,7 @@ public class Player extends Sprite {
 	
 	public Player(OurView ov, Bitmap src, int x, int y, int cellX, int cellY){
 		super(ov, src , x, y);
-		bounds = new Rect(x + width/4, y, x + width*2, y + 31*2);
+		bounds = new Rect(x + width/4, y+8, x + width*2, y + 28*2+8);
 		
 		ov.offsetX = x - cellX;
 		ov.offsetY = y - cellY;
@@ -46,7 +47,7 @@ public class Player extends Sprite {
 			changeFrame=0;
 		}
 		
-		if(hasWeapon() && (System.currentTimeMillis() - weaponTimer > 5000)) {
+		if(hasWeapon() && (System.currentTimeMillis() - weaponTimer > 15000)) {
 			loseWeapon();
 		}
 		
@@ -66,7 +67,6 @@ public class Player extends Sprite {
 		}
 	}
 
-	@SuppressLint("DrawAllocation")
 	public void render(Canvas canvas) {
 		update();
 		
@@ -74,16 +74,21 @@ public class Player extends Sprite {
 		int srcX = currentFrame * width;
 		Rect src = new Rect(srcX, srcY, srcX + width, srcY + height);
 		Rect dst = new Rect(v.x, v.y, v.x + width*2, v.y + height*2);
-//		canvas.drawRect(bounds, new Paint(Color.RED));
+		
+		Paint paint = new Paint();
+		paint.setStyle(Paint.Style.STROKE);
+	    paint.setColor(Color.GREEN);
+	    canvas.drawRect(bounds, paint);
+	    
 		canvas.drawBitmap(image, src, dst, null);
 	}
 
 	public void handleCollision() {
-		for (Entity s : world)
+		for (Entity s : world){
 			if(isColliding(s) && !this.equals(s)){
 				if(s instanceof Ghost && !hasWeapon)
 					if (canGetHurt == true) {
-						damage();
+//						damage();
 					}
 				if(s instanceof Tile)
 					reAdjust();
@@ -97,10 +102,8 @@ public class Player extends Sprite {
 					level.removeFromWorld(s);
 					
 				}
-				if(s instanceof Fireball){
-					
-				}
 			}
+		}
 	}
 	
 	public int getHealth() {

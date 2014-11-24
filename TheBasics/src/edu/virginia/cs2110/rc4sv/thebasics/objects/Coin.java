@@ -1,10 +1,8 @@
 package edu.virginia.cs2110.rc4sv.thebasics.objects;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import edu.virginia.cs2110.rlc4sv.thebasics.R;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 
 public class Coin extends Sprite {

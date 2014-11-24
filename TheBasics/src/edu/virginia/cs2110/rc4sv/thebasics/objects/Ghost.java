@@ -2,6 +2,8 @@ package edu.virginia.cs2110.rc4sv.thebasics.objects;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 
@@ -26,7 +28,12 @@ public class Ghost extends Sprite {
 		Rect src = new Rect(srcX, srcY, srcX + width, srcY + height);
 		Rect dst = new Rect(v.x + ov.offsetX, v.y + ov.offsetY, 
 				v.x + ov.offsetX + width*2, v.y + ov.offsetY + height*2);
-		//		canvas.drawRect(bounds, new Paint(Color.RED));
+		
+		Paint paint = new Paint();
+		paint.setStyle(Paint.Style.STROKE);
+	    paint.setColor(Color.GREEN);
+	    canvas.drawRect(bounds, paint);
+	    
 		canvas.drawBitmap(image, src, dst, null);
 	}
 

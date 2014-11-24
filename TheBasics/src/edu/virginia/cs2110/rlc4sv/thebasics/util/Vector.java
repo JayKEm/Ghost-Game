@@ -18,6 +18,10 @@ public class Vector {
 		return false;
 	}
 	
+	public static Vector clone(Vector c){
+		return new Vector(c.x, c.y);
+	}
+	
 	public String toString(){
 		return "<"+x+","+y+">";
 	}

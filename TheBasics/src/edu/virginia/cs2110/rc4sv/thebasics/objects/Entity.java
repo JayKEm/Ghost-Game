@@ -40,11 +40,10 @@ public abstract class Entity {
 //		Rect src = new Rect(0, 0, width, height);
 		Rect dst = new Rect(v.x + ov.offsetX, v.y + ov.offsetY, 
 				v.x + ov.offsetX + width*2, v.y + ov.offsetY + height*2);
-//		canvas.drawRect(bounds, new Paint(Color.RED));
-		canvas.drawBitmap(image, null, dst, null);
 		
 		bounds.set(v.x + ov.offsetX + width/4, v.y + ov.offsetY, 
 				v.x + ov.offsetX + width*2, v.y + ov.offsetY + height*2);
+		canvas.drawBitmap(image, null, dst, null);
 	}
 
 	public boolean isColliding(Entity s){
@@ -61,6 +60,10 @@ public abstract class Entity {
 	
 	public Vector getLocation(){
 		return v;
+	}
+	
+	public void setWorld(ArrayList<Entity> world){
+		this.world = world;
 	}
 }
 

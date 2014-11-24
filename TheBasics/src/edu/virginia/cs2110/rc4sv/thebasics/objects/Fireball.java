@@ -2,6 +2,8 @@ package edu.virginia.cs2110.rc4sv.thebasics.objects;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
@@ -14,7 +16,9 @@ public class Fireball extends Sprite {
 	public Fireball(OurView ourView, Bitmap src, int x, int y) {
 		super(ourView, src, x, y);
 		height = image.getHeight() / 5; //4 rows
-		width = image.getWidth() / 5;  //4 columns	}
+		width = image.getWidth() / 5;  //4 columns
+
+		bounds = new Rect(x + width/4, y, x + width*2, y + height*2);
 	}
 
 	@Override
@@ -37,13 +41,10 @@ public class Fireball extends Sprite {
 			}
 			
 		}
-		
-			
-		
-			
-			x += velocity.x;
-			y += velocity.y;
-		
+			v.x += velocity.x;
+			v.y += velocity.y;
+			bounds.set(v.x + ov.offsetX + width/4, v.y + ov.offsetY, 
+					v.x + ov.offsetX + width*2, v.y + ov.offsetY + height*2);
 		
 		try{
 			//handleCollision();
@@ -60,9 +61,13 @@ public class Fireball extends Sprite {
 		int srcY = row * height;
 		int srcX = currentFrame * width;
 		Rect src = new Rect(srcX, srcY, srcX + width, srcY + height);
-		Rect dst = new Rect(x+ov.offsetX, y+ov.offsetY,x +ov.offsetX+ width*2, y+ov.offsetY + height*2);
-		//Rect dst = new Rect(x, y,x + width*2, y + height*2);
-//		canvas.drawRect(bounds, new Paint(Color.RED));
+		Rect dst = new Rect(v.x+ov.offsetX, v.y+ov.offsetY,v.x +ov.offsetX+ width*2, v.y+ov.offsetY + height*2);
+
+		Paint paint = new Paint();
+		paint.setStyle(Paint.Style.STROKE);
+	    paint.setColor(Color.GREEN);
+	    canvas.drawRect(bounds, paint);
+	    
 		canvas.drawBitmap(image, src, dst, null);
 	}
 	
