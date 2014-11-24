@@ -46,6 +46,14 @@ public class Player extends Sprite {
 			changeFrame=0;
 		}
 		
+		if(hasWeapon() && (System.currentTimeMillis() - weaponTimer > 5000)) {
+			loseWeapon();
+		}
+		
+		if(System.currentTimeMillis() - damageTimer > 5000) {
+			canGetHurt = true;
+		}
+		
 		if(move){
 			ov.offsetX -= velocity.x;
 			ov.offsetY -= velocity.y;
@@ -73,8 +81,8 @@ public class Player extends Sprite {
 	public void handleCollision() {
 		for (Entity s : world)
 			if(isColliding(s) && !this.equals(s)){
-				if(s instanceof Ghost && !this.hasWeapon)
-					if (this.canGetHurt == true) {
+				if(s instanceof Ghost && !hasWeapon)
+					if (canGetHurt == true) {
 						damage();
 					}
 				if(s instanceof Tile)

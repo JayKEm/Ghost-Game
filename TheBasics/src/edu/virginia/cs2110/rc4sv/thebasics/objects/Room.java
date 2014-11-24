@@ -76,6 +76,7 @@ public class Room {
 		if(walls[0]==null)
 			createWalls();
 		
+		removeDoors();
 		for(Wall w: walls){
 			w.create();
 //			Log.d(id,""+w.getTiles().size());
@@ -93,8 +94,6 @@ public class Room {
 		items = new ArrayList<Entity>();
 		// instantiate objects
 		// remove item cells from emptycells
-		
-		removeDoors();
 	}
 	
 	private void createWalls() {
@@ -134,7 +133,7 @@ public class Room {
 	//makes a room if there isn't already a room in that location
 	//generated room must be inside the world boundaries
 	public boolean generateAdjacentRoom(int location, Vector doorLocation){
-//		if(adjacentRooms[location]!= null) return false; 
+		if(adjacentRooms[location]!= null) return false; 
 		if(level.getRooms().size() == level.MAX_ROOMS) return false;
 		boolean hasIntersections = false;
 		boolean created = false;
@@ -151,7 +150,7 @@ public class Room {
 				break;
 			case DOWN:
 				rx = width - adjacentRooms[location].width;
-				ry = height;
+				ry = height+Tile.SIZE*2;
 				break;
 			case LEFT:
 				rx = -1 * adjacentRooms[location].width;
@@ -179,7 +178,7 @@ public class Room {
 				if(location == DOWN) adjacent = UP;
 				if(location == LEFT) adjacent = RIGHT;
 				if(location == RIGHT) adjacent = LEFT;
-				int dx=0, dy=0;
+				int dx=0, dy=0; //door offset
 				
 				switch(location){
 				case UP:

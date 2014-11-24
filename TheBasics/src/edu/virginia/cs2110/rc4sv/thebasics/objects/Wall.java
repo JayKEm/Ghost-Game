@@ -36,6 +36,7 @@ public class Wall extends Entity{
 		for (Vector v : skeletonTiles)
 			if(r.equals(v)){
 				Log.d("removed wall", v.toString());
+				skeletonTiles.remove(v);
 				hasDoor = true;
 				return true;
 			}

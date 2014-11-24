@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+import android.util.Log;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 import edu.virginia.cs2110.rlc4sv.thebasics.util.Vector;
 
@@ -124,18 +125,16 @@ public abstract class Sprite extends Entity {
 	}
 	
 	public void damage() {
-		if (this.health <= 1) {
+		if (health <= 0) {
 			if (this instanceof Ghost) {
 				level.getPlayer().killGhost();
 			}
 			level.removeFromWorld(this);
 		}
 		else  {
-			this.health --;
-			if (this instanceof Player) {
-		       Player n = (Player) this;
-		       n.setCanGetHurt(false);
-			}
+			health--;
+			if (this instanceof Player) 
+		       ((Player)this).setCanGetHurt(false);
 		}
 	}
 	
