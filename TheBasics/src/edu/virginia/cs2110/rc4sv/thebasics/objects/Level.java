@@ -15,7 +15,7 @@ public class Level {
 
 	//	private int width, height;
 	private ArrayList<Room> rooms;
-	private ArrayList<Entity> world, toRemove;
+	private ArrayList<Entity> world, toRemove, toAdd;
 	private ArrayList<Vector> emptyCells;
 	private Player player;
 
@@ -30,6 +30,7 @@ public class Level {
 		rooms = new ArrayList<Room>();
 		world = new ArrayList<Entity>();
 		toRemove = new ArrayList<Entity>();
+		toAdd = new ArrayList<Entity>();
 		emptyCells = new ArrayList<Vector>();
 		this.MAX_ROOMS = maxRooms;
 		this.NUM_GHOSTS = ghosts = numGhosts;
@@ -44,6 +45,8 @@ public class Level {
 		if(System.currentTimeMillis() - this.player.getDamageTimer() > 5000) {
 			this.player.setCanGetHurt(true);
 		}
+		addToWorld();
+		
 		for(Entity f : world)
 			if(f instanceof Floor)
 				f.render(canvas);
@@ -69,7 +72,13 @@ public class Level {
 	}
 
 	public boolean addToWorld(Entity e){
-		return world.add(e);
+		return toAdd.add(e);
+	}
+	
+	public boolean addToWorld(){
+		boolean added = world.addAll(toAdd);
+		toAdd = new ArrayList<Entity>();
+		return added;
 	}
 
 	public boolean removeFromWorld(Entity e){
@@ -104,6 +113,8 @@ public class Level {
 			return player;
 		} 
 	}
+	
+	
 
 	//spawn a ghost in a random empty cell
 	public Ghost spawnGhost(OurView ov, Bitmap image) {
@@ -119,6 +130,23 @@ public class Level {
 			return g;
 		} catch(Exception e){
 			Log.d("could not spawn Ghost", "cells: "+emptyCells.size());
+			return null;
+		}
+	}
+	
+	public Fireball spawnFireball(OurView ov, Bitmap image) {
+		Fireball g = null;
+		int x = player.velocity.x;
+		int y = player.velocity.y;
+		try{
+			g = new Fireball(ov, image, player.v.x, player.v.y);
+			g.setVelocity(x,y);
+			g.setWorld(world);
+			addToWorld(g);
+
+			return g;
+		} catch(Exception e){
+			Log.d("could not spawn Fireball", "cells: "+emptyCells.size());
 			return null;
 		}
 	}

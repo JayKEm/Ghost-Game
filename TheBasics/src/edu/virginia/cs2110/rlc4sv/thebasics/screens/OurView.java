@@ -21,7 +21,7 @@ public class OurView extends SurfaceView implements Runnable{
 	private Thread t = null;
 	private SurfaceHolder holder;
 	private boolean isItOK = false;
-	private Bitmap playerSprites, ghostSprites, goldCoin, silverCoin, bronzeCoin, weaponSprites, weaponLogo, heart, coin;
+	private Bitmap playerSprites, ghostSprites, goldCoin, silverCoin, bronzeCoin, weaponSprites, weaponLogo, heart, coin, button2;
 	private Bitmap up, down, left, right;
 	private Level myLevel;
 	private Player player;
@@ -68,6 +68,8 @@ public class OurView extends SurfaceView implements Runnable{
 		canvas.drawBitmap(down, null, new Rect(dw, getHeight()- dh, dw*2, getHeight()), null);
 		canvas.drawBitmap(left, null, new Rect(0, getHeight()- dh*2, dw, getHeight()-dh), null);
 		canvas.drawBitmap(right, null, new Rect(dw*2, getHeight()- dh*2, dw*3, getHeight()-dh), null);
+		canvas.drawBitmap(button2, null, new Rect(dw*4, getHeight()- dh*2, dw*5, getHeight()-dh), null);
+
 		//player health
 		int hw = heart.getWidth(); int hh = heart.getHeight(); 	int p = 2;
 		for(int i = 0; i < myLevel.getPlayer().getHealth(); i++)
@@ -126,6 +128,9 @@ public class OurView extends SurfaceView implements Runnable{
 		left = BitmapFactory.decodeResource(getResources(), R.drawable.left_arrow);
 		right = BitmapFactory.decodeResource(getResources(), R.drawable.right_arrow);
 		weaponLogo = BitmapFactory.decodeResource(getResources(), R.drawable.rsz_weaponsprite);
+		button2 = BitmapFactory.decodeResource(getResources(), R.drawable.fire);
+		//fireballSprites = BitmapFactory.decodeResource(getResources(), R.drawable.explode);
+
 		
 		dw = up.getWidth();
 		dh = up.getHeight();

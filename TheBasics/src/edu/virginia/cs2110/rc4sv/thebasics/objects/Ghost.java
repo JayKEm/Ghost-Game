@@ -117,6 +117,10 @@ public class Ghost extends Sprite {
 				if (((Player) s).hasWeapon() == true) {
 					this.damage();
 				}
+			if(isColliding(s) && s instanceof Fireball)
+				{
+					this.damage();
+				}
 		}
 	}
 

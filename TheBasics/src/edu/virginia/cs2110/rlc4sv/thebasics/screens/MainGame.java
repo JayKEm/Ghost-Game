@@ -3,12 +3,17 @@ package edu.virginia.cs2110.rlc4sv.thebasics.screens;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import edu.virginia.cs2110.rc4sv.thebasics.objects.Coin;
+import edu.virginia.cs2110.rc4sv.thebasics.objects.Fireball;
+import edu.virginia.cs2110.rc4sv.thebasics.objects.Level;
 import edu.virginia.cs2110.rlc4sv.thebasics.R;
 import edu.virginia.cs2110.rlc4sv.thebasics.util.SystemUiHider;
 
@@ -61,6 +66,7 @@ public class MainGame extends Activity implements OnTouchListener {
 		Rect top = new Rect(v.dw, v.getHeight()- v.dh*3, v.dw*2, v.getHeight()-v.dh*2);
 		Rect right = new Rect(v.dw*2, v.getHeight()- v.dh*2, v.dw*3, v.getHeight()-v.dh);
 		Rect bottom =new Rect(v.dw, v.getHeight()- v.dh, v.dw*2, v.getHeight());
+		Rect shoot =new Rect(v.dw*4, v.getHeight()- v.dh*2, v.dw*5, v.getHeight()-v.dh);
 		if (!this.ov.getMyLevel().getWorld().contains(ov.getPlayer())) {
 		Intent menuIntent = new Intent("edu.virginia.cs2110.rlc4sv.thebasics.MENU");
 		startActivity(menuIntent);
@@ -95,6 +101,15 @@ public class MainGame extends Activity implements OnTouchListener {
 			else if(bottom.contains(x, y)) {
 				ov.getPlayer().setDirection("down");
 				ov.getPlayer().setMove(true);
+			}
+			
+			else if(shoot.contains(x, y)) {
+				//ov.getPlayer().setDirection("down");
+				//ov.getPlayer().setMove(true);
+				Bitmap fireballSprites = BitmapFactory.decodeResource(getResources(), R.drawable.explode);
+
+				ov.getLevel().spawnFireball(ov, fireballSprites);
+				
 			}
 			break;
 		case MotionEvent.ACTION_MOVE:

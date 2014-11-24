@@ -86,6 +86,10 @@ public class Player extends Sprite {
 				if(s instanceof Weapon){
 					setHasWeapon();
 					level.removeFromWorld(s);
+					
+				}
+				if(s instanceof Fireball){
+					
 				}
 			}
 	}

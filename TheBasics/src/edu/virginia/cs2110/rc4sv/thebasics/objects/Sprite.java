@@ -51,6 +51,10 @@ public abstract class Sprite extends Entity {
 		velocity.x = x;
 		velocity.y = y;
 	}
+	
+	public void setVelocity(Vector v){
+		this.velocity=v;
+	}
 
 	public boolean isMove() {
 		return move;
