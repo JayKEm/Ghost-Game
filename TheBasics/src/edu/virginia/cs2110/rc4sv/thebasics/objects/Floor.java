@@ -20,4 +20,7 @@ public class Floor extends Entity{
 		id = "Floor";
 	}
 
+	public void interact(Player player){}
+
+
 }

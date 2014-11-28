@@ -20,8 +20,8 @@ public class Weapon extends Sprite {
 
 	@Override
 	public void update() {
-		bounds.set(v.x + ov.offsetX + width/4, v.y + ov.offsetY, 
-				v.x + ov.offsetX + width*2, v.y + ov.offsetY + height*2);
+		bounds.set(location.x + ov.offsetX + width/4, location.y + ov.offsetY, 
+				location.x + ov.offsetX + width*2, location.y + ov.offsetY + height*2);
 
 		if (System.currentTimeMillis() - times > 100) {
 			times = System.currentTimeMillis();
@@ -52,12 +52,13 @@ public class Weapon extends Sprite {
 		int srcY = sprY * height;
 		int srcX = sprX * width;
 		Rect src = new Rect(srcX, srcY, srcX + width, srcY + height);
-		Rect dst = new Rect(v.x + ov.offsetX, v.y + ov.offsetY, 
-				v.x + ov.offsetX + width*2, v.y + ov.offsetY + height*2);
+		Rect dst = new Rect(location.x + ov.offsetX, location.y + ov.offsetY, 
+				location.x + ov.offsetX + width*2, location.y + ov.offsetY + height*2);
 		//canvas.drawRect(bounds, new Paint(Color.RED));
 		canvas.drawBitmap(image, src, dst, null);
 	}
 
 	public void setHasWeapon() {}
 	public void handleCollision() {}
+	public void interact(Player player){}
 }

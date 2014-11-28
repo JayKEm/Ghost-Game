@@ -14,20 +14,25 @@ import edu.virginia.cs2110.rc4sv.thebasics.objects.Level;
 import edu.virginia.cs2110.rc4sv.thebasics.objects.Player;
 import edu.virginia.cs2110.rc4sv.thebasics.objects.Sprite;
 import edu.virginia.cs2110.rlc4sv.thebasics.R;
+import edu.virginia.cs2110.rlc4sv.thebasics.util.Vector;
 
 public class OurView extends SurfaceView implements Runnable{
 	
 	private Thread t = null;
 	private SurfaceHolder holder;
 	private boolean isItOK = false;
-	private Bitmap playerSprites, ghostSprites, goldCoin, silverCoin, bronzeCoin, 
-		weaponSprites, weaponLogo, heart, coin, button2;
+	private Bitmap playerSprites, ghostSprites, warning;
+	private Bitmap weaponLogo;
+	private Bitmap heart;
+	private Bitmap coin;
+	private Bitmap button2;
 	private Bitmap up, down, left, right;
 	private Level myLevel;
 	private Player player;
 	public int dw, dh;
 	public int offsetX, offsetY; //visual offset of level
 	public boolean initialized = false;
+	public Bitmap closedChest, openChest, goldCoin, silverCoin, bronzeCoin, weaponSprites;
 	
 	public OurView(Context context) {
 		super(context);
@@ -84,6 +89,12 @@ public class OurView extends SurfaceView implements Runnable{
 		if (myLevel.getPlayer().hasWeapon()) {
 			canvas.drawBitmap(weaponLogo,null, new Rect(p*6*hw*2, p, p*6*hw*2+hw*2, p+2*hh), null);
 		}
+		
+		//ghost alert
+		Vector v = player.getLocation();
+		if(myLevel.warn)
+			canvas.drawBitmap(warning, null, new Rect(v.x + player.getWidth()/2, v.y-warning.getHeight()+2,
+					v.x+ player.getWidth() + warning.getWidth(), v.y + 2), null);
 	}
 
 	public void pause () {
@@ -131,7 +142,9 @@ public class OurView extends SurfaceView implements Runnable{
 		right = BitmapFactory.decodeResource(getResources(), R.drawable.right_arrow);
 		weaponLogo = BitmapFactory.decodeResource(getResources(), R.drawable.rsz_weaponsprite);
 		button2 = BitmapFactory.decodeResource(getResources(), R.drawable.fire);
-
+		openChest = BitmapFactory.decodeResource(getResources(), R.drawable.chest_open);
+		closedChest = BitmapFactory.decodeResource(getResources(), R.drawable.chest_closed);
+		warning = BitmapFactory.decodeResource(getResources(),  R.drawable.warning);
 		
 		dw = up.getWidth();
 		dh = up.getHeight();
@@ -139,26 +152,13 @@ public class OurView extends SurfaceView implements Runnable{
 		//create level
 		myLevel.generate(this);
 		player = myLevel.spawnPlayer(playerSprites);
-		myLevel.spawnCoins(4, goldCoin);
-		myLevel.spawnCoins(5, silverCoin);
-		myLevel.spawnCoins(7, bronzeCoin);
-		myLevel.spawnWeapons(weaponSprites);
 		myLevel.spawnGhosts(ghostSprites);
+		myLevel.spawnCoins(20, goldCoin);
+		myLevel.spawnCoins(40, bronzeCoin);
+		myLevel.spawnCoins(30, silverCoin);
 		
 		for(Entity s : myLevel.getWorld())
 			if (s instanceof Sprite)
 				((Sprite) s).setWorld(myLevel.getWorld());
-	}
-
-	public Bitmap getGoldCoin() {
-		return goldCoin;
-	}
-
-	public Bitmap getSilverCoin() {
-		return silverCoin;
-	}
-
-	public Bitmap getBronzeCoin() {
-		return bronzeCoin;
 	}
 }

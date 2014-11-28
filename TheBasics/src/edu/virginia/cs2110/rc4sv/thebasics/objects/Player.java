@@ -1,22 +1,34 @@
 package edu.virginia.cs2110.rc4sv.thebasics.objects;
 
+import java.util.ArrayList;
+import java.util.Locale;
+import java.util.Stack;
+
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
+import android.media.MediaPlayer;
 import android.util.Log;
+import edu.virginia.cs2110.rlc4sv.thebasics.R;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 
 public class Player extends Sprite {
 
 	public int score;
 	public int health;
+	public boolean locked = false;
+	public Stack<Entity> interactables;
 	private boolean hasWeapon;
 	private int ghostsKilled;
 	private long weaponTimer;
 	private boolean canGetHurt;
 	private long damageTimer;
+	private Rect interactBounds;
+	private static ArrayList<String> interactableList = new ArrayList<String>();
+	
+	static {
+		interactableList.add("chest");
+	}
 	
 	public static int MAX_HEALTH = 6;
 	public static final int MIN_HEALTH = 0;
@@ -32,6 +44,10 @@ public class Player extends Sprite {
 		this.damageTimer = System.currentTimeMillis();
 		id = "Player";
 		hasWeapon = false;
+		
+		interactBounds = new Rect();
+		interactables = new Stack<Entity>();
+		setVelocity(0,5);
 	}
 
 	public void update() {
@@ -47,7 +63,8 @@ public class Player extends Sprite {
 			changeFrame=0;
 		}
 		
-		if(hasWeapon() && (System.currentTimeMillis() - weaponTimer > 15000)) {
+		if(hasWeapon() && (System.currentTimeMillis() - weaponTimer > 25000)) {
+			MediaPlayer.create(ov.getContext(), R.raw.power_down).start();
 			loseWeapon();
 		}
 		
@@ -60,11 +77,11 @@ public class Player extends Sprite {
 			ov.offsetY -= velocity.y;
 		}
 		
-		try{
+//		try8{
 			handleCollision();
-		} catch(NullPointerException e){
-			Log.d(id, "World must be set before collision can handled.");
-		}
+//		} catch(NullPointerException e){
+//			Log.d(id, "World must be set before collision can handled.");
+//		}
 	}
 
 	public void render(Canvas canvas) {
@@ -73,13 +90,11 @@ public class Player extends Sprite {
 		int srcY = direction * height;
 		int srcX = currentFrame * width;
 		Rect src = new Rect(srcX, srcY, srcX + width, srcY + height);
-		Rect dst = new Rect(v.x, v.y, v.x + width*2, v.y + height*2);
+		Rect dst = new Rect(location.x, location.y, location.x + width*2, location.y + height*2);
 		
-		Paint paint = new Paint();
-		paint.setStyle(Paint.Style.STROKE);
-	    paint.setColor(Color.GREEN);
-	    canvas.drawRect(bounds, paint);
-	    
+		updateIBounds();
+//		Paint p = drawBounds(canvas);
+//	    canvas.drawRect(interactBounds, p);
 		canvas.drawBitmap(image, src, dst, null);
 	}
 
@@ -89,20 +104,44 @@ public class Player extends Sprite {
 				if(s instanceof Ghost && !hasWeapon)
 					if (canGetHurt == true) {
 //						damage();
+//						MediaPlayer.create(ov.getContext(), R.raw.player_hurt).start();
 					}
-				if(s instanceof Tile)
+				if(s instanceof Tile || s instanceof Chest)
 					reAdjust();
-				if(s instanceof Coin){
+				if(s instanceof Coin && !locked){
 					score += ((Coin) s).getValue();
+					MediaPlayer.create(ov.getContext(), R.raw.coin).start();
 					level.removeFromWorld(s);
-					
-				}
-				if(s instanceof Weapon){
+				} if(s instanceof Weapon){
 					setHasWeapon();
 					level.removeFromWorld(s);
-					
-				}
-			}
+					MediaPlayer.create(ov.getContext(), R.raw.power_up).start();
+				} 
+			} if(Rect.intersects(s.getBounds(), interactBounds))
+				if(interactableList.contains(s.id.toLowerCase(Locale.getDefault())))
+					interactables.add(s);
+		}
+	}
+
+	public void interact() {
+		if(!interactables.isEmpty())
+			interactables.firstElement().interact(this);
+	}
+	
+	public void updateIBounds(){
+		int offset = 5;
+		if(velocity.x>0 && velocity.y==0){
+			interactBounds.set(location.x, location.y, location.x + (int)(width*3/4f)*2, location.y + height*2);
+			interactBounds.offset(width*2 + offset, 0);
+		} if(velocity.x<0 && velocity.y==0){
+			interactBounds.set(location.x, location.y, location.x + (int)(width*3/4f)*2, location.y + height*2);
+			interactBounds.offset(interactBounds.width()*-1, 0);
+		} if(velocity.x==0 && velocity.y>0){
+			interactBounds.set(location.x, location.y, location.x + width*2, location.y + (int)(height*3/4f)*2);
+			interactBounds.offset(2, height*2);
+		} if(velocity.x==0 && velocity.y<0){
+			interactBounds.set(location.x, location.y, location.x + width*2, location.y + (int)(height*3/4f)*2);
+			interactBounds.offset(2, interactBounds.height()*-1);
 		}
 	}
 	
@@ -135,6 +174,7 @@ public class Player extends Sprite {
 	public void killGhost() {
 		this.ghostsKilled++;
 		Log.i("kill" , this.ghostsKilled + "");
+		MediaPlayer.create(ov.getContext(), R.raw.ghost).start();
 	}
 	
 	public int getGhostsKilled () {
@@ -155,5 +195,11 @@ public class Player extends Sprite {
 	
 	public void setCanGetHurt(boolean a) {
 		this.canGetHurt = a;
+	}
+
+	public void interact(Player player) {}
+
+	public void remove(Entity e) {
+		interactables.remove(e);
 	}
 }

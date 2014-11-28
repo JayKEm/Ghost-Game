@@ -2,22 +2,21 @@ package edu.virginia.cs2110.rc4sv.thebasics.objects;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 
 public class Fireball extends Sprite {
 	private int row;
-	int x=v.x-ov.offsetX;
-	int y=v.y-ov.offsetY;
+	int x=location.x-ov.offsetX;
+	int y=location.y-ov.offsetY;
 
 	public Fireball(OurView ourView, Bitmap src, int x, int y) {
 		super(ourView, src, x, y);
 		height = image.getHeight() / 5; //4 rows
 		width = image.getWidth() / 5;  //4 columns
-
+		id = "Fireball";
+		
 		bounds = new Rect(x + width/4, y, x + width*2, y + height*2);
 	}
 
@@ -42,10 +41,10 @@ public class Fireball extends Sprite {
 			
 		}
 
-		v.x += velocity.x;
-		v.y += velocity.y;
-		bounds.set(v.x + ov.offsetX + width/4, v.y + ov.offsetY, 
-				v.x + ov.offsetX + width*2, v.y + ov.offsetY + height*2);
+		location.x += velocity.x;
+		location.y += velocity.y;
+		bounds.set(location.x + ov.offsetX + width/4, location.y + ov.offsetY, 
+				location.x + ov.offsetX + width*2, location.y + ov.offsetY + height*2);
 
 		
 		try{
@@ -62,27 +61,14 @@ public class Fireball extends Sprite {
 		int srcY = row * height;
 		int srcX = currentFrame * width;
 		Rect src = new Rect(srcX, srcY, srcX + width, srcY + height);
-		Rect dst = new Rect(v.x+ov.offsetX, v.y+ov.offsetY,v.x +ov.offsetX+ width*2, v.y+ov.offsetY + height*2);
+		Rect dst = new Rect(location.x+ov.offsetX, location.y+ov.offsetY,location.x +ov.offsetX+ width*2, location.y+ov.offsetY + height*2);
 
-		Paint paint = new Paint();
-		paint.setStyle(Paint.Style.STROKE);
-	    paint.setColor(Color.GREEN);
-	    canvas.drawRect(bounds, paint);
-	    
+//		drawBounds(canvas);
 		canvas.drawBitmap(image, src, dst, null);
 	}
 	
-	
-	@Override
-	public void handleCollision() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setHasWeapon() {
-		// TODO Auto-generated method stub
-
-	}
+	public void handleCollision() {}
+	public void setHasWeapon() {}
+	public void interact(Player player){}
 
 }

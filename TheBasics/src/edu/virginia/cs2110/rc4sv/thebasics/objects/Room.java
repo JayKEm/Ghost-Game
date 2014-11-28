@@ -3,6 +3,7 @@ package edu.virginia.cs2110.rc4sv.thebasics.objects;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.util.Log;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
@@ -42,13 +43,13 @@ public class Room {
 		this.level = level;
 		this.x = 0;
 		this.y = 0;
-		this.width = (int) (Math.random()*(MAX_TILES - MIN_TILES) + MIN_TILES) * Tile.SIZE*2;
-		this.height = (int) (Math.random()*(MAX_TILES - MIN_TILES) + MIN_TILES) * Tile.SIZE*2;
+		this.width = (MAX_TILES-MIN_TILES)*Tile.SIZE*2;
+		this.height = (MAX_TILES-MIN_TILES)*Tile.SIZE*2;
 		doors = new HashMap<Vector, Integer>();
 		id = x/64+":"+y/64+":"+width/64+":"+height/64;
 
 		bounds = new Rect(x+ov.offsetX, y+ov.offsetY, x+ov.offsetX + width, y+ov.offsetY + height);
-		createRandom();
+		createCenter();
 	}
 	
 	public Room(OurView ov, Player player, Level level, int x, int y){
@@ -77,25 +78,25 @@ public class Room {
 		if(walls[0]==null)
 			createWalls();
 		
-		removeDoors();
+		buildDoors();
 		for(Wall w: walls){
 			w.create();
-			Log.d(id,""+w.getTiles().size());
+//			Log.d(id,""+w.getTiles().size());
 			for(Tile t: w.getTiles()){
 				emptyCells.remove(t.getLocation());
 				level.addToWorld(t);
 			}
 		}
 		
-		for(Vector v : emptyCells){
-//			Log.d("floor", v+"");
+		for(Vector v : emptyCells)
 			level.addToWorld(new Floor(ov, v));
-//			log += "<"+v.x/64+", "+v.y/64+">\n";
-		}
 				
 		items = new ArrayList<Entity>();
-		// instantiate objects
-		// remove item cells from emptycells
+		spawnChest();
+//		spawnCoins(ov.goldCoin, 4);
+//		spawnCoins(ov.goldCoin, 2);
+//		spawnCoins(ov.goldCoin, 2, -3);
+		spawnWeapon();
 	}
 	
 	private void createWalls() {
@@ -103,6 +104,25 @@ public class Room {
 		walls[DOWN] = new Wall(ov, level, x + Tile.SIZE*2, y + height - Tile.SIZE*2, width/(Tile.SIZE*2) - 1, 1);
 		walls[LEFT] = new Wall(ov, level, x, y + Tile.SIZE*2, 1, height/(Tile.SIZE*2) - 1);
 		walls[RIGHT] = new Wall(ov, level, x + width - Tile.SIZE*2, y, 1, height/(Tile.SIZE*2) - 1);
+	}
+	
+	public void createCenter(){
+		createWalls();
+		
+		for(int doorSide = 0; doorSide < 4; doorSide++){
+			Vector doorLocation = (Vector) walls[doorSide].getTileLocations().toArray()
+					[walls[doorSide].getTileLocations().size()/2];
+			walls[doorSide].removeTile(doorLocation);
+			addDoor(doorLocation, doorSide);
+			generateAdjacentRoom(doorSide, doorLocation);
+		}
+		
+		for(int r = 0; r < 4; r++)
+			if (adjacentRooms[r]==null){
+				Vector doorLocation = (Vector) walls[r].getTileLocations().toArray()
+						[walls[r].getTileLocations().size()/2];
+				removeDoor(doorLocation, r);
+			}
 	}
 	
 	public void createRandom(){
@@ -211,7 +231,7 @@ public class Room {
 				adjacentRooms[location].setAdjacentRoom(this, adjacent, doorLocation);
 				adjacentRooms[location].setLocation(new Vector(x + rx, y + ry));
 				level.addRoom(adjacentRooms[location]);
-				Log.d("created:"+adjacentRooms[location].toString(), ""+level.getRooms().size());
+//				Log.d("created:"+adjacentRooms[location].toString(), ""+level.getRooms().size());
 				if (level.getRooms().size() <= level.MAX_ROOMS-1)
 					adjacentRooms[location].createRandom();
 			}
@@ -220,19 +240,98 @@ public class Room {
 		return created;
 	}
 	
+	//spawn chest near a wall
+	//<30% chance a chest will actually spawn
+	public void spawnChest(){
+		double chest = Math.random()*100;
+		if(chest<30){
+			int wall = (int) (Math.random()*3);
+			int dx =0, dy =0;
+			int max = walls[wall].getTiles().size() - 1;
+			int i = (int) ((Math.random()*(max - 1) + 1));
+			
+			Vector location = Vector.clone((Vector) ((Entity) walls[wall].getTiles().toArray()[i]).getLocation());
+			
+			switch(wall){
+			case UP:
+				dx = 0; dy = 1; 
+				break;
+			case DOWN:
+				dx = 0; dy = -1; 
+				break;
+			case LEFT:
+				dx = 1; dy = 0; 
+				break;
+			case RIGHT:
+				dx = -1; dy = 0; 
+				break;
+			}
+			
+			location.x += dx*Tile.SIZE*2;
+			location.y += dy*Tile.SIZE*2;
+			
+//			Log.d("conatins? "+location,""+emptyCells.contains(location));
+			if(emptyCells.contains(location)){
+				emptyCells.remove(location);
+				items.add(new Chest(ov, level, player, location.x, location.y));
+			}	
+		}	
+	}
+	
+	public void spawnCoins(Bitmap image, int max){
+		spawnCoins(image, max, 0);
+	}
+	
+	public void spawnCoins(Bitmap image, int max, int min){
+		int numCoins = (int) Math.random()*(max-min)+min;
+		for(int i = 0; i < numCoins; i++){
+			Coin c = null;
+			try{
+				Vector cell = (Vector) emptyCells.toArray()[(int) (Math.random()*emptyCells.size())];
+
+				c = new Coin(ov, image, cell.x, cell.y);
+				emptyCells.remove(cell);
+				items.add(c);
+			} catch(Exception e){
+				Log.d("could not spawn Coin", "cells: "+emptyCells.size());
+			}
+		}
+	}
+	
+	public void spawnWeapon(){
+		double weapon = Math.random()*100;
+		if(weapon <20){
+			Weapon w = null;
+			try{
+				Vector cell = (Vector) emptyCells.toArray()[(int) (Math.random()*emptyCells.size())];
+
+				w = new Weapon(ov, ov.weaponSprites, cell.x, cell.y);
+				emptyCells.remove(cell);
+				items.add(w);
+			} catch (Exception e){
+				Log.d("could not spawn Coin", "cells: "+emptyCells.size());
+			}
+		}
+	}
+	
 	public void setAdjacentRoom(Room r, int adjacent, Vector doorLocation) {
 		adjacentRooms[adjacent] = r;
 		addDoor(doorLocation, adjacent);
 	}
 	
-	public void addDoor(Vector doorLocation, int doorSide){
-		doors.put(doorLocation, doorSide);
+	public void addDoor(Vector location, int wall){
+		doors.put(location, wall);
 	}
 	
-	public void removeDoors(){
+	public void buildDoors(){
 		for (Vector v : doors.keySet()){
 			walls[doors.get(v)].removeTile(v);
 		}
+	}
+	
+	public void removeDoor(Vector location, int wall){
+		walls[wall].addTile(location);
+		doors.remove(location);
 	}
 	
 	public ArrayList<Entity> getItems(){
@@ -266,5 +365,11 @@ public class Room {
 	
 	public String toString(){
 		return id;
+	}
+	
+	public void createItems(){
+		for (Entity e : items){
+			level.addToWorld(e);
+		}
 	}
 }

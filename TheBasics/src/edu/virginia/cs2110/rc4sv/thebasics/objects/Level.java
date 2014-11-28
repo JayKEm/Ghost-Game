@@ -24,6 +24,7 @@ public class Level {
 
 	public int MAX_ROOMS, MAX_GHOSTS;
 	public int ghosts;
+	public boolean warn;
 
 	public Level(){
 
@@ -38,12 +39,12 @@ public class Level {
 		this.ov = ov;
 		this.MAX_ROOMS = maxRooms;
 		this.MAX_GHOSTS = numGhosts;
-
 	}
 
 	public void render(Canvas canvas){
 		addToWorld();
 		
+		warn = false;
 		for(Entity f : world)
 			if(f instanceof Floor)
 				f.render(canvas);
@@ -56,7 +57,7 @@ public class Level {
 	    paint.setColor(Color.MAGENTA);
 	    for(Room r : rooms){
 	    	r.update();
-	    	canvas.drawRect(r.getBounds(), paint);
+//	    	canvas.drawRect(r.getBounds(), paint);
 	    }
 
 		removeFromWorld();
@@ -85,8 +86,11 @@ public class Level {
 			r.build();
 			emptyCells.addAll(r.getEmptyCells());
 		}
+		
+		for(Room r: rooms)
+			r.createItems();		
 
-		//		logWorldContents();
+		logWorldContents();
 	}
 
 	public boolean addToWorld(Entity e){
@@ -149,6 +153,7 @@ public class Level {
 
 			g = new Ghost(ov, image, cell.x, cell.y);
 			g.setWorld(world);
+			g.setPlayer(player);
 			world.add(g);
 			emptyCells.remove(cell);
 
@@ -160,7 +165,7 @@ public class Level {
 	}
 	
 	public Fireball spawnFireball(Bitmap image) {
-		Fireball g = new Fireball(ov, image, player.v.x-ov.offsetX, player.v.y-ov.offsetY);
+		Fireball g = new Fireball(ov, image, player.location.x-ov.offsetX, player.location.y-ov.offsetY);
 		g.setVelocity(Vector.clone(player.velocity));
 		addToWorld(g);
 
@@ -222,12 +227,13 @@ public class Level {
 			return c;
 		} catch(Exception e){
 			Log.d("could not spawn Coin", "cells: "+emptyCells.size());
-			return null;
+			return c;
 		}
 	}
 
 	//load a predefinied level
 	public boolean loadFromFile(String filename){
+		//TODO complete file parsing
 		int numRooms = 0;
 
 		try {

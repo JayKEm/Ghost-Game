@@ -10,6 +10,10 @@ public class Vector {
 		this.y = y;
 	}
 	
+	public double magnitude(){
+		return Math.sqrt(x*x + y*y);
+	}
+	
 	public boolean equals(Object o){
 		if(o instanceof Vector){
 			Vector v = (Vector) o;

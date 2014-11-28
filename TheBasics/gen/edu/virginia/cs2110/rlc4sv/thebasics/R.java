@@ -65,8 +65,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int tombstone=0x7f02001c;
         public static final int up_arrow=0x7f02001d;
         public static final int wall_tile=0x7f02001e;
-        public static final int weaponsprite=0x7f02001f;
-        public static final int white_background2=0x7f020020;
+        public static final int warning=0x7f02001f;
+        public static final int weaponsprite=0x7f020020;
+        public static final int white_background2=0x7f020021;
     }
     public static final class id {
         public static final int action_settings=0x7f0a0018;
@@ -116,7 +117,15 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     }
     public static final class raw {
         public static final int button_click=0x7f040000;
-        public static final int splash_sound=0x7f040001;
+        public static final int chest=0x7f040001;
+        public static final int coin=0x7f040002;
+        public static final int dungeon_tremors=0x7f040003;
+        public static final int fire=0x7f040004;
+        public static final int ghost=0x7f040005;
+        public static final int player_hurt=0x7f040006;
+        public static final int power_down=0x7f040007;
+        public static final int power_up=0x7f040008;
+        public static final int splash_sound=0x7f040009;
     }
     public static final class string {
         public static final int action_settings=0x7f070002;

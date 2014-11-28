@@ -112,8 +112,8 @@ public abstract class Sprite extends Entity {
 
 	//put the sprite back where it was before it collided
 	public void reAdjust(){
-		v.x = v.x - velocity.x;
-		v.y = v.y - velocity.y;
+		location.x = location.x - velocity.x;
+		location.y = location.y - velocity.y;
 		
 		bounds.offset(-velocity.x, - velocity.y);
 		move = false;

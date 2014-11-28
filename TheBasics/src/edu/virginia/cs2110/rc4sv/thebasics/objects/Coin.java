@@ -20,11 +20,11 @@ public class Coin extends Sprite {
 
 		//different coins have different values. if a coin
 		//has a certain image, give it a value
-		if(coinSprites.equals(ov.getGoldCoin()))
+		if(coinSprites.equals(ov.goldCoin))
 			value = 10;
-		if(coinSprites.equals(ov.getSilverCoin()))
+		if(coinSprites.equals(ov.silverCoin))
 			value = 5;
-		if(coinSprites.equals(ov.getBronzeCoin()))
+		if(coinSprites.equals(ov.bronzeCoin))
 			value = 3;
 
 		id = "Coin " + value;
@@ -35,8 +35,8 @@ public class Coin extends Sprite {
 	}
 
 	public void update() {
-		bounds.set(v.x + ov.offsetX + width/4, v.y + ov.offsetY, 
-				v.x + ov.offsetX + width*2, v.y + ov.offsetY + height*2);
+		bounds.set(location.x + ov.offsetX + width/4, location.y + ov.offsetY, 
+				location.x + ov.offsetX + width*2, location.y + ov.offsetY + height*2);
 
 		if (System.currentTimeMillis() - times > 100) {
 			times = System.currentTimeMillis();
@@ -57,22 +57,18 @@ public class Coin extends Sprite {
 		int srcY = sprY * height;
 		int srcX = sprX * width;
 		Rect src = new Rect(srcX, srcY, srcX + width, srcY + height);
-		Rect dst = new Rect(v.x + ov.offsetX, v.y + ov.offsetY, 
-				v.x + ov.offsetX + width*2, v.y + ov.offsetY + height*2);
-		//canvas.drawRect(bounds, new Paint(Color.RED));
+		Rect dst = new Rect(location.x + ov.offsetX, location.y + ov.offsetY, 
+				location.x + ov.offsetX + width*2, location.y + ov.offsetY + height*2);
+//		drawBounds(canvas);
 		canvas.drawBitmap(image, src, dst, null);
 	}
 
-	@Override
-	public void handleCollision() {
-		// TODO Auto-generated method stub
+	public void handleCollision() {}
+	public void setHasWeapon() {}
+	public void interact(Player player){}
 
-	}
-
-	@Override
-	public void setHasWeapon() {
-		// TODO Auto-generated method stub
-
+	public static Coin clone(Coin c) {
+		return new Coin(c.ov, c.image, c.location.x, c.location.y);
 	}
 
 }

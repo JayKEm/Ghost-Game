@@ -32,8 +32,9 @@ public class MainGame extends Activity implements OnTouchListener {
 		super.onCreate(savedInstanceState);
 		ov = new OurView(this);
 		ov.setOnTouchListener(this);
-		logoMusic = MediaPlayer.create(this, R.raw.splash_sound);
+		logoMusic = MediaPlayer.create(this, R.raw.dungeon_tremors);
 		logoMusic.start();
+		logoMusic.setLooping(true);
 
 		x = y = 0;
 		setContentView(ov);
@@ -80,29 +81,26 @@ public class MainGame extends Activity implements OnTouchListener {
 			x = (int) me.getX();
 			y = (int) me.getY();
 
-			if(left.contains(x, y)) {
-				ov.getPlayer().setDirection("left");
-				ov.getPlayer().setMove(true);
-			}
-
-			else if(top.contains(x, y)) {
-				ov.getPlayer().setDirection("up");
-				ov.getPlayer().setMove(true);
-			}
-
-			else if(right.contains(x, y)) {
-				ov.getPlayer().setDirection("right");
-				ov.getPlayer().setMove(true);
-			}
-
-			else if(bottom.contains(x, y)) {
-				ov.getPlayer().setDirection("down");
-				ov.getPlayer().setMove(true);
-			}
-
-			else if(shoot.contains(x, y)) {
-				Bitmap fireballSprites = BitmapFactory.decodeResource(getResources(), R.drawable.explode);
-				ov.getLevel().spawnFireball(fireballSprites);
+			if(!ov.getPlayer().locked){
+				if(left.contains(x, y)) {
+					ov.getPlayer().setDirection("left");
+					ov.getPlayer().setMove(true);
+				} else if(top.contains(x, y)) {
+					ov.getPlayer().setDirection("up");
+					ov.getPlayer().setMove(true);
+				} else if(right.contains(x, y)) {
+					ov.getPlayer().setDirection("right");
+					ov.getPlayer().setMove(true);
+				} else if(bottom.contains(x, y)) {
+					ov.getPlayer().setDirection("down");
+					ov.getPlayer().setMove(true);
+				} else if (ov.getPlayer().getBounds().contains(x, y)){
+					ov.getPlayer().interact();
+				} else if(shoot.contains(x, y)) {
+					Bitmap fireballSprites = BitmapFactory.decodeResource(getResources(), R.drawable.explode);
+					ov.getLevel().spawnFireball(fireballSprites);
+					MediaPlayer.create(ov.getContext(), R.raw.fire).start();
+				}
 			}
 			break;
 		case MotionEvent.ACTION_MOVE:

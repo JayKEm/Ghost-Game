@@ -20,15 +20,18 @@ public class Tile extends Entity{
 	}
 
 	public void render(Canvas canvas) {
-		Rect dst = new Rect(v.x + ov.offsetX, v.y + ov.offsetY, 
-				v.x + ov.offsetX + width*2, v.y + ov.offsetY + height*2);
+		Rect dst = new Rect(location.x + ov.offsetX, location.y + ov.offsetY, 
+				location.x + ov.offsetX + width*2, location.y + ov.offsetY + height*2);
 		
-		bounds.set(v.x + ov.offsetX + width/4, v.y + ov.offsetY + height/4, 
-				v.x + ov.offsetX + width*2, v.y + ov.offsetY + height*2);
+		bounds.set(location.x + ov.offsetX + width/4, location.y + ov.offsetY + height/4, 
+				location.x + ov.offsetX + width*2, location.y + ov.offsetY + height*2);
 		canvas.drawBitmap(image, null, dst, null);
 	}
 	
 	public void renderBounds(Canvas canvas, Paint paint){
 	    canvas.drawRect(bounds, paint);
 	}
+
+	public void interact(Player player){}
+
 }
