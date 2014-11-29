@@ -2,7 +2,6 @@ package edu.virginia.cs2110.rc4sv.thebasics.objects;
 
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Stack;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -17,7 +16,7 @@ public class Player extends Sprite {
 	public int score;
 	public int health;
 	public boolean locked = false;
-	public Stack<Entity> interactables;
+	public Entity interactable;
 	private boolean hasWeapon;
 	private int ghostsKilled;
 	private long weaponTimer;
@@ -46,7 +45,6 @@ public class Player extends Sprite {
 		hasWeapon = false;
 		
 		interactBounds = new Rect();
-		interactables = new Stack<Entity>();
 		setVelocity(0,5);
 	}
 
@@ -77,11 +75,12 @@ public class Player extends Sprite {
 			ov.offsetY -= velocity.y;
 		}
 		
-//		try8{
+		try{
+			remove();
 			handleCollision();
-//		} catch(NullPointerException e){
-//			Log.d(id, "World must be set before collision can handled.");
-//		}
+		} catch(NullPointerException e){
+			Log.i(id, "World must be set before collision can handled.");
+		}
 	}
 
 	public void render(Canvas canvas) {
@@ -119,13 +118,15 @@ public class Player extends Sprite {
 				} 
 			} if(Rect.intersects(s.getBounds(), interactBounds))
 				if(interactableList.contains(s.id.toLowerCase(Locale.getDefault())))
-					interactables.add(s);
+					interactable = s;
 		}
 	}
 
 	public void interact() {
-		if(!interactables.isEmpty())
-			interactables.firstElement().interact(this);
+		if(interactable!=null){
+			interactable.interact(this);
+			Log.i("interactable:", ""+interactable.location);
+		}
 	}
 	
 	public void updateIBounds(){
@@ -173,7 +174,7 @@ public class Player extends Sprite {
 	
 	public void killGhost() {
 		this.ghostsKilled++;
-		Log.i("kill" , this.ghostsKilled + "");
+		score+=100;
 		MediaPlayer.create(ov.getContext(), R.raw.ghost).start();
 	}
 	
@@ -199,7 +200,7 @@ public class Player extends Sprite {
 
 	public void interact(Player player) {}
 
-	public void remove(Entity e) {
-		interactables.remove(e);
+	public void remove() {
+		interactable = null;
 	}
 }

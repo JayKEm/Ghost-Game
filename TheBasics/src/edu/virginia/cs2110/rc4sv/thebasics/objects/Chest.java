@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.media.MediaPlayer;
-import android.util.Log;
 import edu.virginia.cs2110.rlc4sv.thebasics.R;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 
@@ -48,7 +47,7 @@ public class Chest extends Entity {
 	
 	public void render(Canvas canvas){
 		update();
-//		Log.d("chest bounds", ""+bounds.flattenToString());
+
 		Rect dst = new Rect(location.x + ov.offsetX, location.y + ov.offsetY, 
 				location.x + ov.offsetX + width*2, location.y + ov.offsetY + height*2);
 		bounds.set(location.x + ov.offsetX + width/4, location.y + ov.offsetY, 
@@ -60,15 +59,14 @@ public class Chest extends Entity {
 	public void update(){
 		if(timing){
 			time++;
-			Log.d("current coin", ""+current);
-			current.location.y = location.y +2 - (int)(time/1.5f);
-			if(time>=20){
+			current.location.y = location.y - (int)(time/1.5f);
+			if(time>=10){
 				Coin c = Coin.clone(current);
 				if (!removeCoin()){
 					timing = false;
 					player.locked = false;
 					level.removeFromWorld(c);
-					player.remove(this);
+					player.remove();
 				}
 			}
 		}
@@ -85,8 +83,7 @@ public class Chest extends Entity {
 		player.locked = true;
 		timing = true;
 		
-		boolean r = removeCoin();
-		Log.d("removed coin", ""+r);
+		removeCoin();
 	}
 	
 	private boolean removeCoin(){

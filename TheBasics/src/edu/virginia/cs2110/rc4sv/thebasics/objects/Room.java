@@ -49,7 +49,8 @@ public class Room {
 		id = x/64+":"+y/64+":"+width/64+":"+height/64;
 
 		bounds = new Rect(x+ov.offsetX, y+ov.offsetY, x+ov.offsetX + width, y+ov.offsetY + height);
-		createCenter();
+//		createCenter();
+		createRandom();
 	}
 	
 	public Room(OurView ov, Player player, Level level, int x, int y){
@@ -66,22 +67,29 @@ public class Room {
 		bounds = new Rect(x+ov.offsetX, y+ov.offsetY, x+ov.offsetX + width, y+ov.offsetY + height);
 	}
 	
-	//create all walls and items, and ghosts
 	public void build() {
+		//create cell grid
 		emptyCells = new ArrayList<Vector>();
 		for (int i = 0; i < width; i+=Tile.SIZE*2)
-			for (int j = 0; j < height; j+=Tile.SIZE*2){
+			for (int j = 0; j < height; j+=Tile.SIZE*2)
 				emptyCells.add(new Vector(i+x, j+y));
-//				Log.d("hello",id);
-			}
 		
 		if(walls[0]==null)
 			createWalls();
 		
+		//remove unwanted doors
+		for(int w = 0; w < 4; w++)
+			if(adjacentRooms[w]==null)
+				for(Vector v : doors.keySet()){
+					Log.d("removing door on wall: "+getWall(w), id+": "+v+" "+getWall(doors.get(v)));
+					if(doors.get(v) == w)
+						doors.remove(v);
+					}
+		
+		//remove doors from walls
 		buildDoors();
 		for(Wall w: walls){
 			w.create();
-//			Log.d(id,""+w.getTiles().size());
 			for(Tile t: w.getTiles()){
 				emptyCells.remove(t.getLocation());
 				level.addToWorld(t);
@@ -90,12 +98,13 @@ public class Room {
 		
 		for(Vector v : emptyCells)
 			level.addToWorld(new Floor(ov, v));
-				
+			
+		//spawn items
 		items = new ArrayList<Entity>();
 		spawnChest();
-//		spawnCoins(ov.goldCoin, 4);
-//		spawnCoins(ov.goldCoin, 2);
-//		spawnCoins(ov.goldCoin, 2, -3);
+		spawnCoins(ov.bronzeCoin, 5);
+		spawnCoins(ov.silverCoin, 4, -3);
+		spawnCoins(ov.goldCoin, 4);
 		spawnWeapon();
 	}
 	
@@ -136,7 +145,7 @@ public class Room {
 			int fails = 0, doorSide = -1;
 			boolean created = false;
 			
-			while (fails < 3 && !created && level.getRooms().size() <= level.MAX_ROOMS-1){
+			while (fails < 4 && !created && level.getRooms().size() <= level.MAX_ROOMS-1){
 				if(doorSide==-1) doorSide = (int)(Math.random()*3);
 				else
 					if(doorSide < 3) doorSide++;
@@ -146,7 +155,6 @@ public class Room {
 					int max = walls[doorSide].getTileLocations().size() - 1;
 					int i = (int) ((Math.random()*(max - 1) + 1));
 					Vector doorLocation = (Vector) walls[doorSide].getTileLocations().toArray()[i];
-					walls[doorSide].removeTile(doorLocation); 
 					created = generateAdjacentRoom(doorSide, doorLocation);
 					if (!created)
 						fails++;
@@ -231,7 +239,6 @@ public class Room {
 				adjacentRooms[location].setAdjacentRoom(this, adjacent, doorLocation);
 				adjacentRooms[location].setLocation(new Vector(x + rx, y + ry));
 				level.addRoom(adjacentRooms[location]);
-//				Log.d("created:"+adjacentRooms[location].toString(), ""+level.getRooms().size());
 				if (level.getRooms().size() <= level.MAX_ROOMS-1)
 					adjacentRooms[location].createRandom();
 			}
@@ -270,7 +277,6 @@ public class Room {
 			location.x += dx*Tile.SIZE*2;
 			location.y += dy*Tile.SIZE*2;
 			
-//			Log.d("conatins? "+location,""+emptyCells.contains(location));
 			if(emptyCells.contains(location)){
 				emptyCells.remove(location);
 				items.add(new Chest(ov, level, player, location.x, location.y));
@@ -283,7 +289,7 @@ public class Room {
 	}
 	
 	public void spawnCoins(Bitmap image, int max, int min){
-		int numCoins = (int) Math.random()*(max-min)+min;
+		int numCoins = (int) (Math.random()*(max-min)) + min;
 		for(int i = 0; i < numCoins; i++){
 			Coin c = null;
 			try{
@@ -293,7 +299,7 @@ public class Room {
 				emptyCells.remove(cell);
 				items.add(c);
 			} catch(Exception e){
-				Log.d("could not spawn Coin", "cells: "+emptyCells.size());
+				Log.i("could not spawn Coin", "cells: "+emptyCells.size());
 			}
 		}
 	}
@@ -309,7 +315,7 @@ public class Room {
 				emptyCells.remove(cell);
 				items.add(w);
 			} catch (Exception e){
-				Log.d("could not spawn Coin", "cells: "+emptyCells.size());
+				Log.i("could not spawn Coin", "cells: "+emptyCells.size());
 			}
 		}
 	}
@@ -350,6 +356,19 @@ public class Room {
 		x = v.x;
 		y = v.y;
 		id = x/64+":"+y/64+":"+width/64+":"+height/64;
+	}
+	
+	public String getWall(int w){
+		String wall= null;
+
+		switch(w){
+		case UP: wall = "UP";break;
+		case DOWN: wall = "DOWN";break;
+		case LEFT: wall = "LEFT";break;
+		case RIGHT: wall = "RIGHT";break;
+		}
+		
+		return wall;
 	}
 	
 	public ArrayList<Vector> getEmptyCells(){

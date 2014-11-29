@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -20,7 +22,7 @@ public class OurView extends SurfaceView implements Runnable{
 	
 	private Thread t = null;
 	private SurfaceHolder holder;
-	private boolean isItOK = false;
+	private boolean paused = false;
 	private Bitmap playerSprites, ghostSprites, warning;
 	private Bitmap weaponLogo;
 	private Bitmap heart;
@@ -29,7 +31,8 @@ public class OurView extends SurfaceView implements Runnable{
 	private Bitmap up, down, left, right;
 	private Level myLevel;
 	private Player player;
-	public int dw, dh;
+	
+	public int dw, dh, zoom =0;
 	public int offsetX, offsetY; //visual offset of level
 	public boolean initialized = false;
 	public Bitmap closedChest, openChest, goldCoin, silverCoin, bronzeCoin, weaponSprites;
@@ -42,17 +45,17 @@ public class OurView extends SurfaceView implements Runnable{
 	public void run() {
 		if(!initialized)
 			create();
-		while(isItOK == true) {
+		while(!paused) {
 			if(!holder.getSurface().isValid()) {
 				continue;
 			}
 
 			Canvas c = holder.lockCanvas();
-			render(c);
+			this.render(c);
 			holder.unlockCanvasAndPost(c);
 			
 			if (myLevel.ghosts <= 0)
-				Log.d("no ghosts on level","");
+				Log.i("no ghosts on level","");
 		}
 	}
 	
@@ -78,12 +81,19 @@ public class OurView extends SurfaceView implements Runnable{
 		//player health
 		int hw = heart.getWidth(); int hh = heart.getHeight(); 	int p = 2;
 		
-//		Log.d("health",""+player.getHealth());
+//		Log.i("health",""+player.getHealth());
 		for(int i = 0; i < player.getHealth(); i++)
 			canvas.drawBitmap(heart,null, new Rect(p*i*hw*2, p, p*i*hw*2+hw*2, p+2*hh), null);
+		
 		//player score
 		int cw = coin.getWidth(); int ch = coin.getWidth();
 		canvas.drawBitmap(coin, null, new Rect(getWidth()-p-cw, p, getWidth()-p, p+ch), null);
+		
+		Paint paint = new Paint();
+		paint.setColor(Color.WHITE);
+		paint.setStyle(Style.FILL);
+		paint.setTextSize(20f);
+		canvas.drawText(""+player.score, getWidth() - cw - 4 - String.valueOf(player.score).length()*12, 23, paint);
 		
 		//weapon logo
 		if (myLevel.getPlayer().hasWeapon()) {
@@ -92,13 +102,18 @@ public class OurView extends SurfaceView implements Runnable{
 		
 		//ghost alert
 		Vector v = player.getLocation();
-		if(myLevel.warn)
-			canvas.drawBitmap(warning, null, new Rect(v.x + player.getWidth()/2, v.y-warning.getHeight()+2,
-					v.x+ player.getWidth() + warning.getWidth(), v.y + 2), null);
+		int ww = warning.getWidth(); int wh = warning.getHeight();
+		if(myLevel.getWarn())
+			canvas.drawBitmap(warning, null, new Rect(v.x + player.getWidth()/2 + ww/4 + ww/2, v.y-wh+2,
+					v.x + player.getWidth()+ ww/2, v.y + 2), null);
+		
+		//debug
+		String debugText = "<"+(int)((player.getLocation().x-offsetX)/64f)+","+(int)((player.getLocation().y-offsetY)/64f)+">";
+		canvas.drawText(debugText, getWidth() - 4 - debugText.length()*12, 50, paint);
 	}
 
 	public void pause () {
-		isItOK = false;
+		paused = true;
 		while(true){
 			try{
 				t.join();
@@ -111,7 +126,7 @@ public class OurView extends SurfaceView implements Runnable{
 	}
 	
 	public void resume(){
-		isItOK = true;
+		paused = false;
 		t = new Thread(this);
 		t.start();
 	}
@@ -153,9 +168,6 @@ public class OurView extends SurfaceView implements Runnable{
 		myLevel.generate(this);
 		player = myLevel.spawnPlayer(playerSprites);
 		myLevel.spawnGhosts(ghostSprites);
-		myLevel.spawnCoins(20, goldCoin);
-		myLevel.spawnCoins(40, bronzeCoin);
-		myLevel.spawnCoins(30, silverCoin);
 		
 		for(Entity s : myLevel.getWorld())
 			if (s instanceof Sprite)

@@ -27,6 +27,6 @@ public class Vector {
 	}
 	
 	public String toString(){
-		return "<"+x+","+y+">";
+		return "<"+(x/64)+","+(y/64)+">";
 	}
 }

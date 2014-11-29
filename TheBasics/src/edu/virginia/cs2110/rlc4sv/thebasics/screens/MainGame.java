@@ -46,7 +46,7 @@ public class MainGame extends Activity implements OnTouchListener {
 		try{
 			logoMusic.start();
 		} catch (IllegalStateException e){
-			logoMusic = MediaPlayer.create(this, R.raw.splash_sound);
+			logoMusic = MediaPlayer.create(this, R.raw.dungeon_tremors);
 			logoMusic.start();
 		}
 	}
@@ -81,6 +81,8 @@ public class MainGame extends Activity implements OnTouchListener {
 			x = (int) me.getX();
 			y = (int) me.getY();
 
+			if(ov.getPlayer()== null)
+				return false;
 			if(!ov.getPlayer().locked){
 				if(left.contains(x, y)) {
 					ov.getPlayer().setDirection("left");

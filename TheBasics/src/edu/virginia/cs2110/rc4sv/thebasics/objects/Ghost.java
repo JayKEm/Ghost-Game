@@ -3,7 +3,6 @@ package edu.virginia.cs2110.rc4sv.thebasics.objects;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.util.Log;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 import edu.virginia.cs2110.rlc4sv.thebasics.util.Vector;
 
@@ -58,12 +57,10 @@ public class Ghost extends Sprite {
 					location.x + ov.offsetX + width*2, location.y + ov.offsetY + height*2);
 		}
 		
-		double distance = (new Vector(location.x - player.location.x,
-				location.y - player.location.y)).magnitude();
-		Log.d(id+" distance",""+distance);
-		if(distance > 16){
-//			level.warn = true;
-		}
+		double distance = (new Vector(location.x + ov.offsetX - player.location.x,
+				location.y + ov.offsetY - player.location.y)).magnitude();
+		if(distance < 500)
+			level.setWarn(true);
 
 		handleCollision();
 	}

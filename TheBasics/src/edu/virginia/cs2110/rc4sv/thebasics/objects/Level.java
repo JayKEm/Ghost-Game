@@ -21,10 +21,10 @@ public class Level {
 	private ArrayList<Vector> emptyCells;
 	private Player player;
 	private OurView ov;
+	private boolean warn;
 
 	public int MAX_ROOMS, MAX_GHOSTS;
 	public int ghosts;
-	public boolean warn;
 
 	public Level(){
 
@@ -73,7 +73,7 @@ public class Level {
 		boolean added = rooms.add(r);
 
 		//		for (Vector cell : emptyCells)
-		//			Log.d("cell location","<"+cell.x+","+cell.y+">");
+		//			Log.i("cell location","<"+cell.x+","+cell.y+">");
 
 		return added;
 	}
@@ -81,6 +81,12 @@ public class Level {
 	public void generate(OurView ov){
 		Room center = new Room(ov, player, this); //debug room
 		addRoom(center);
+		
+		int fails = 0;
+		while(rooms.size()<MAX_ROOMS&& fails <100){
+			rooms.get(0).createRandom();
+			fails++;
+		}
 		
 		for(Room r : rooms){
 			r.build();
@@ -159,7 +165,7 @@ public class Level {
 
 			return g;
 		} catch(Exception e){
-			Log.d("could not spawn Ghost", "cells: "+emptyCells.size());
+			Log.i("could not spawn Ghost", "cells: "+emptyCells.size());
 			return null;
 		}
 	}
@@ -188,7 +194,8 @@ public class Level {
 		spawnCoins((int)(Math.random()*(10 - 1) + 1), image);
 	}
 
-	public void spawnCoins(int numCoins, Bitmap image){
+	public void spawnCoins(int max, Bitmap image){
+		int numCoins = (int) (Math.random()*max);
 		for (int i = 0; i < numCoins; i++)
 			spawnCoin(image);
 	}
@@ -210,7 +217,7 @@ public class Level {
 
 			return c;
 		} catch(Exception e){
-			Log.d("could not spawn Weapon", "cells: "+emptyCells.size());
+			Log.i("could not spawn Weapon", "cells: "+emptyCells.size());
 			return null;
 		}
 	}
@@ -226,7 +233,7 @@ public class Level {
 
 			return c;
 		} catch(Exception e){
-			Log.d("could not spawn Coin", "cells: "+emptyCells.size());
+			Log.i("could not spawn Coin", "cells: "+emptyCells.size());
 			return c;
 		}
 	}
@@ -262,6 +269,14 @@ public class Level {
 		for(Entity e : world)
 			w+=e.id+",";
 			//			if(e instanceof Tile)
-		Log.d("world contents",w);
+		Log.i("world contents",w);
+	}
+	
+	public boolean getWarn(){
+		return warn;
+	}
+	
+	public void setWarn(boolean warn){
+		this.warn = warn;
 	}
 }
