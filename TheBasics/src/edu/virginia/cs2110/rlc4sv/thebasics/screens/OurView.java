@@ -15,7 +15,6 @@ import edu.virginia.cs2110.rc4sv.thebasics.objects.Entity;
 import edu.virginia.cs2110.rc4sv.thebasics.objects.Level;
 import edu.virginia.cs2110.rc4sv.thebasics.objects.Player;
 import edu.virginia.cs2110.rc4sv.thebasics.objects.Sprite;
-import edu.virginia.cs2110.rc4sv.thebasics.objects.Tile;
 import edu.virginia.cs2110.rlc4sv.thebasics.R;
 import edu.virginia.cs2110.rlc4sv.thebasics.util.Vector;
 
@@ -145,10 +144,17 @@ public class OurView extends SurfaceView implements Runnable{
 		return this.myLevel;
 	}
 	
+	public Bitmap getGhostSprites(){
+		return ghostSprites;
+	}
+	
+	public Bitmap getPlayerSprites(){
+		return playerSprites;
+	}
+	
 	public void create(){
 		initialized = true;
 		myLevel = new Level(this, 20, 8); //debug level
-		
 		
 		//Change playerSprites variable setting into a giant if-else-else... to correlate playerSprites to profile selection.
 		playerSprites = BitmapFactory.decodeResource(getResources(), R.drawable.spritesheet);

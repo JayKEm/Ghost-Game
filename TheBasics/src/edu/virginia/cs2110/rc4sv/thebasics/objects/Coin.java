@@ -11,6 +11,10 @@ public class Coin extends Sprite {
 	int sprX = 0;
 	long times = 0;
 	private int value;
+	
+	public static final int BRONZE_VALUE = 3;
+	public static final int SILVER_VALUE = 5;
+	public static final int GOLD_VALUE = 10;
 
 	public Coin(OurView ov, Bitmap coinSprites, int x, int y) {
 		super(ov, coinSprites, x, y);
@@ -21,11 +25,11 @@ public class Coin extends Sprite {
 		//different coins have different values. if a coin
 		//has a certain image, give it a value
 		if(coinSprites.equals(ov.goldCoin))
-			value = 10;
+			value = GOLD_VALUE;
 		if(coinSprites.equals(ov.silverCoin))
-			value = 5;
+			value = SILVER_VALUE;
 		if(coinSprites.equals(ov.bronzeCoin))
-			value = 3;
+			value = BRONZE_VALUE;
 
 		id = "Coin " + value;
 	}
@@ -71,15 +75,8 @@ public class Coin extends Sprite {
 		return new Coin(c.ov, c.image, c.location.x, c.location.y);
 	}
 
-	@Override
-	public void loseHealth() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
+	public void loseHealth() {}
 	public int getHealth() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

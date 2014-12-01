@@ -33,7 +33,7 @@ public class Vector {
 		return x+" "+y;
 	}
 	
-	public static Vector unFlatten(String s){
+	public static Vector unflatten(String s){
 		Vector v = null;
 		String[] data = s.split(" ");
 		

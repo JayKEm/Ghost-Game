@@ -3,7 +3,6 @@ package edu.virginia.cs2110.rc4sv.thebasics.objects;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
-import android.util.Log;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 import edu.virginia.cs2110.rlc4sv.thebasics.util.Vector;
 
@@ -109,6 +108,17 @@ public abstract class Sprite extends Entity {
 			setVelocity(0, -DEFAULT_SPEED);
 			direction = 2;	
 		}	
+	}
+	
+	public static String determineDirection(Vector v){
+		if (v.x == 0){
+			if(v.y>0) return "down";
+			else return "up";
+		} if (v.y == 0){
+			if(v.x>0) return "right";
+			else return "left";
+		}
+		return "";
 	}
 
 	//put the sprite back where it was before it collided
