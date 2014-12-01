@@ -373,6 +373,10 @@ public class Room {
 		return cells;
 	}
 	
+	public HashMap<Vector, Integer> getDoors(){
+		return doors;
+	}
+	
 	public void createCells(){
 		cells = new ArrayList<Vector>();
 		for (int i = 0; i < width; i+=Tile.SIZE*ov.zoom)

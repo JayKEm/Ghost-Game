@@ -29,6 +29,22 @@ public class Vector {
 		return new Vector(c.x, c.y);
 	}
 	
+	public String flatten(){
+		return x+" "+y;
+	}
+	
+	public static Vector unFlatten(String s){
+		Vector v = null;
+		String[] data = s.split(" ");
+		
+		try{
+			v = new Vector(Integer.parseInt(data[0]), Integer.parseInt(data[1]));
+		} catch (Exception e){
+			
+		}
+		return v;
+	}
+	
 	public String toString(){
 		return "<"+(x/(Tile.SIZE*OurView.DEFAULT_ZOOM))+","+(y/(Tile.SIZE*OurView.DEFAULT_ZOOM))+">";
 	}

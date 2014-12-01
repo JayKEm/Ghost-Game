@@ -1,8 +1,10 @@
 package edu.virginia.cs2110.rc4sv.thebasics.objects;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -281,6 +283,41 @@ public class Level {
 		} catch (Exception e){
 			return false;
 		}
+		return false;
+	}
+	
+	public boolean saveLevel(){
+		String line = "", filename = "level";
+		ArrayList<String> data = new ArrayList<String>();
+		FileOutputStream outputStream;
+
+		try {
+		  outputStream = ov.getContext().openFileOutput(filename, Context.MODE_PRIVATE);
+		  
+		  for(Room r : rooms){
+			  line = "Room;"+r.getBounds().flattenToString();
+			  
+			  for(Vector v : r.getDoors().keySet()){
+				  String door = ";"+v.flatten();
+				  door += ";"+r.getDoors().get(v);
+				  line += door;
+			  }
+			  data.add(line);
+		  }
+		  
+		  for(Entity e : world){
+			  line = ";" + e.getClass();
+			  line += e.getLocation().flatten();
+		  }
+		  
+		  for(String s : data)
+			  outputStream.write(s.getBytes());
+		  
+		  outputStream.close();
+		} catch (Exception e) {
+		  e.printStackTrace();
+		}
+		
 		return false;
 	}
 
