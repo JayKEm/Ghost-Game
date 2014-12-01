@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.util.Log;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 import edu.virginia.cs2110.rlc4sv.thebasics.util.Vector;
 
@@ -22,8 +21,8 @@ public class Wall extends Entity{
 		this.width = width;
 		this.height = height;
 		this.ov = ov;
-		v = new Vector(x, y);
-		bounds = new Rect(x, y, x + this.width*Tile.SIZE, y + this.height*Tile.SIZE);
+		location = new Vector(x, y);
+		bounds = new Rect(0,0,0,0);
 		segment = new ArrayList<Tile>();
 		skeletonTiles = new ArrayList<Vector>();
 		id="wall";
@@ -35,7 +34,8 @@ public class Wall extends Entity{
 	public boolean removeTile(Vector r){
 		for (Vector v : skeletonTiles)
 			if(r.equals(v)){
-				Log.d("removed wall", v.toString());
+//				Log.d("removed tile", v.toString());
+				skeletonTiles.remove(v);
 				hasDoor = true;
 				return true;
 			}
@@ -53,11 +53,18 @@ public class Wall extends Entity{
 	public void createSkeleton(){
 		for(int i = 0; i < width; i++)
 			for(int j = 0; j < height; j++)
-				skeletonTiles.add(new Vector(v.x + i * (Tile.SIZE*2), v.y + j * (Tile.SIZE*2)));
+				skeletonTiles.add(new Vector(location.x + i * (Tile.SIZE*ov.zoom), location.y + j * (Tile.SIZE*ov.zoom)));
 	}
 	
 	public void create(){
 		for(Vector v : skeletonTiles)
 				segment.add(new Tile(ov, v.x, v.y));
 	}
+
+	public void addTile(Vector location) {
+		skeletonTiles.add(location);
+		segment.add(new Tile(ov, location.x, location.y));
+	}
+
+	public void interact(Player player) {}
 }

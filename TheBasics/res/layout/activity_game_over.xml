@@ -1,0 +1,30 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/gameoverscreen"
+    tools:context="edu.virginia.cs2110.rlc4sv.thebasics.GameOver" >
+
+    <Button
+        android:id="@+id/but2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="105dp"
+        android:text="@string/try_again" />
+
+    <Button
+        android:id="@+id/but1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/but2"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="23dp"
+        android:text="@string/quit" />
+
+</RelativeLayout>

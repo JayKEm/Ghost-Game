@@ -11,6 +11,8 @@
     <string name="title_activity_help_screen">HelpScreen</string>
     <string name="title_activity_highscore_screen">HighscoreScreen</string>
     <string name="title_activity_main_game">MainGame</string>
+    <string name="try_again">Play Again</string>
+    <string name="quit">Main Menu</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_settings_menu">SettingsMenu</string>
@@ -36,5 +38,6 @@
     <string name="title_activity_profile_selector">ProfileSelector</string>
     <string name="title_activity_the_profile_selector">TheProfileSelector</string>
     <string name="profile_selector_title">Choose a profile!</string>
+    <string name="title_activity_game_over">GameOver</string>
 
 </resources>

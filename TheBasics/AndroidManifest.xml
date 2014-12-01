@@ -3,7 +3,7 @@
     package="edu.virginia.cs2110.rlc4sv.thebasics"
     android:versionCode="1"
     android:versionName="1.0" >
-
+    
     <uses-sdk
         android:minSdkVersion="17"
         android:targetSdkVersion="19" />
@@ -106,6 +106,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.virginia.cs2110.rlc4sv.thebasics.screens.MainMenu" />
             
+            android:name=".GameOver"
+            android:label="@string/title_activity_game_over"
+            android:parentActivityName=".screens.MainMenu" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.virginia.cs2110.rlc4sv.thebasics.screens.MainMenu" />
         </activity>
     </application>
 

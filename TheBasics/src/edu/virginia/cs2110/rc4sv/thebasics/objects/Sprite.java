@@ -1,10 +1,9 @@
 package edu.virginia.cs2110.rc4sv.thebasics.objects;
 
-import java.util.ArrayList;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+import android.util.Log;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 import edu.virginia.cs2110.rlc4sv.thebasics.util.Vector;
 
@@ -17,8 +16,8 @@ public abstract class Sprite extends Entity {
 	protected int currentFrame = 0;
 	protected int changeFrame = 0;
 	protected int direction = 0;
-	protected boolean move = false;
 	protected int health;
+	protected boolean move = false;
 	protected boolean isDead = false;
 	
 	protected static final int DEFAULT_SPEED = 5;
@@ -30,12 +29,10 @@ public abstract class Sprite extends Entity {
 		height = image.getHeight() / 4; //4 rows
 		width = image.getWidth() / 4;  //4 columns
 		
-		bounds = new Rect(x + width/4, y, x + width*2, y + height*2);
+		bounds = new Rect(x + width/4, y, x + width*ov.zoom, y + height*ov.zoom);
 		
 		MAX_SPEED = DEFAULT_SPEED;
 		velocity = new Vector(DEFAULT_SPEED, 0);
-		
-		world = new ArrayList<Entity>();
 	}
 	
 	public abstract void update();
@@ -50,6 +47,10 @@ public abstract class Sprite extends Entity {
 			
 		velocity.x = x;
 		velocity.y = y;
+	}
+	
+	public void setVelocity(Vector v){
+		this.velocity=v;
 	}
 
 	public boolean isMove() {
@@ -83,10 +84,6 @@ public abstract class Sprite extends Entity {
 	public void setCurrentFrame(int currentFrame) {
 		this.currentFrame = currentFrame;
 	}
-	
-	public void setWorld(ArrayList<Entity> world){
-		this.world = world;
-	}
 
 	public int getDirection() {
 		return direction;
@@ -116,27 +113,25 @@ public abstract class Sprite extends Entity {
 
 	//put the sprite back where it was before it collided
 	public void reAdjust(){
-		v.x = v.x - velocity.x;
-		v.y = v.y - velocity.y;
+		location.x = location.x - velocity.x;
+		location.y = location.y - velocity.y;
 		
 		bounds.offset(-velocity.x, - velocity.y);
 		move = false;
 	}
 	
-	public void damage() {
-		if (this.health <= 1) {
-			if (this instanceof Ghost) {
-				level.getPlayer().killGhost();
-			}
-			level.removeFromWorld(this);
-		}
-		else  {
-			this.health --;
+	public void damage() {		
+			this.loseHealth();
 			if (this instanceof Player) {
-		       Player n = (Player) this;
-		       n.setCanGetHurt(false);
+		       ((Player)this).setCanGetHurt(false);
 			}
-		}
+			if (this.getHealth() <= 0) {
+				if (this instanceof Ghost) {
+					level.getPlayer().killGhost();
+				}
+				level.removeFromWorld(this);
+			}
+		
 	}
 	
 	public void setImage(int imageIndex){
@@ -149,4 +144,6 @@ public abstract class Sprite extends Entity {
 	
 	public abstract void handleCollision();
 	public abstract void setHasWeapon();
+	public abstract void loseHealth();
+	public abstract int getHealth();
 }

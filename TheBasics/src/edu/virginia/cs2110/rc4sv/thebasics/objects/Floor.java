@@ -16,8 +16,9 @@ public class Floor extends Entity{
 		super(ov, BitmapFactory.decodeResource(ov.getResources(), R.drawable.grass_tile), x, y);
 
 		width = height = Tile.SIZE;
-		bounds = new Rect(x + width/4, y, x + width*2, y + height*2);
+		bounds = new Rect(0,0,0,0);
 		id = "Floor";
 	}
 
+	public void interact(Player player){}
 }

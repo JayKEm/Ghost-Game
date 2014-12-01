@@ -1,10 +1,14 @@
 package edu.virginia.cs2110.rc4sv.thebasics.objects;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.util.Log;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
@@ -15,41 +19,72 @@ public class Level {
 
 	//	private int width, height;
 	private ArrayList<Room> rooms;
-	private ArrayList<Entity> world, toRemove;
+	private ArrayList<Entity> world, toRemove, toAdd;
 	private ArrayList<Vector> emptyCells;
 	private Player player;
+	private OurView ov;
+	private boolean warn;
+	
+//	public int shownRooms = 0;
+//	private long spawnTime;
+//	private boolean spawning=false;
 
-	public int MAX_ROOMS, NUM_GHOSTS;
+	public int MAX_ROOMS, MAX_GHOSTS;
 	public int ghosts;
 
 	public Level(){
 
 	}
 
-	public Level(int maxRooms, int numGhosts) {
+	public Level(OurView ov, int maxRooms, int numGhosts) {
 		rooms = new ArrayList<Room>();
 		world = new ArrayList<Entity>();
 		toRemove = new ArrayList<Entity>();
+		toAdd = new ArrayList<Entity>();
 		emptyCells = new ArrayList<Vector>();
+		this.ov = ov;
 		this.MAX_ROOMS = maxRooms;
-		this.NUM_GHOSTS = ghosts = numGhosts;
-		
+		this.MAX_GHOSTS = numGhosts;
 	}
 
-	public void render(Canvas canvas){
-		if(this.player.hasWeapon() && (System.currentTimeMillis() - this.player.getWeaponTimer() > 5000)) {
-			this.player.loseWeapon();
-		}
+	public void updateRender(Canvas canvas){
+		addToWorld();
 		
-		if(System.currentTimeMillis() - this.player.getDamageTimer() > 5000) {
-			this.player.setCanGetHurt(true);
-		}
+		//debug code, teleports player to each created room
+//		if(spawning){
+//			if(System.currentTimeMillis()-spawnTime >1000){
+//		    	if(shownRooms<rooms.size()-1){
+//		    		shownRooms++;
+//					ov.offsetX = player.getLocation().x - rooms.get(shownRooms).x;
+//					ov.offsetY = player.getLocation().y - rooms.get(shownRooms).y;
+//					spawnTime = System.currentTimeMillis();
+//		    	} else
+//		    		spawning = false;
+//			}
+//		}
+		
+		warn = false;
 		for(Entity f : world)
-			if(f instanceof Floor)
+			if(f instanceof Floor){
 				f.render(canvas);
+			}
 		for(Entity s : world)
 			if (!(s instanceof Floor))
 				s.render(canvas);
+		
+		Paint paint = new Paint();
+		paint.setStyle(Paint.Style.STROKE);
+	    paint.setColor(Color.MAGENTA);
+	    
+//	    for(int i = 0; i<=shownRooms; i++){
+//	    	Room r = rooms.get(i);
+//	    	r.update();
+//	    	canvas.drawRect(r.getBounds(), paint);
+//	    }
+	    
+	    for(Room r: rooms){
+	    	r.update();
+	    }
 
 		removeFromWorld();
 	}
@@ -61,32 +96,52 @@ public class Level {
 	public boolean addRoom(Room r){
 		if(rooms.size()==MAX_ROOMS)
 			return false;
-		boolean added = rooms.add(r);
-		
-//		for (Vector cell : emptyCells)
-//			Log.d("cell location","<"+cell.x+","+cell.y+">");
-		
-		return added;
+		return rooms.add(r);
 	}
-	
+
 	public void generate(OurView ov){
-		Room center = new Room(ov, player, this, 0, 0, false); //debug room
+		Room center = new Room(ov, player, this); //debug room
 		addRoom(center);
+		
+		int fails = 0;
+		while(rooms.size()<MAX_ROOMS&& fails <300){
+			rooms.get(0).createRandom();
+			fails++;
+		}
+		
 		for(Room r : rooms){
 			r.build();
 			emptyCells.addAll(r.getEmptyCells());
 		}
 		
+		for(Room r: rooms){
+			r.createItems();
+		}
+
 //		logWorldContents();
+//		spawning = true;
+//		spawnTime = System.currentTimeMillis();
 	}
 
 	public boolean addToWorld(Entity e){
-		return world.add(e);
+		e.setWorld(world);
+		return toAdd.add(e);
+	}
+	
+	public boolean addToWorld(){
+		boolean added = world.addAll(toAdd);
+		toAdd = new ArrayList<Entity>();
+		return added;
 	}
 
 	public boolean removeFromWorld(Entity e){
-		if (e instanceof Ghost)
+		if (e instanceof Ghost){
 			ghosts--;
+			if (ghosts<=0){
+//				Toast toast = Toast.makeText(ov.getContext(), "Game over! You Win!", Toast.LENGTH_LONG);
+//				toast.show();
+			}
+		}
 		return toRemove.add(e);
 	}
 
@@ -100,39 +155,60 @@ public class Level {
 		return world;
 	}
 
-	public Player spawnPlayer(OurView ourView, Bitmap playerSprites) {
+	public Player spawnPlayer(Bitmap playerSprites) {
 		Point size = new Point();
-		ourView.getDisplay().getSize(size);
-		
+		ov.getDisplay().getSize(size);
+
 		try{
 			Vector cell = (Vector) emptyCells.toArray()[(int) (Math.random()*emptyCells.size())];
-			player = new Player(ourView, playerSprites, size.x/2,size.y/2, cell.x, cell.y);
+			player = new Player(ov, playerSprites, size.x/2,size.y/2, cell.x, cell.y);
+//			player = new Player(ov, playerSprites, size.x/2,size.y/2, rooms.get(0).x, rooms.get(0).y);
+			player.setWorld(world);
 			emptyCells.remove(cell);
 			addToWorld(player);
 			return player;
 		} catch(Exception e){
-			player = new Player(ourView, playerSprites, size.x/2,size.y/2, 64,64);
+			player = new Player(ov, playerSprites, size.x/2,size.y/2, 64,64);
 			addToWorld(player);
 			return player;
 		} 
 	}
+	
+	
 
 	//spawn a ghost in a random empty cell
-	public Ghost spawnGhost(OurView ov, Bitmap image) {
+	public Ghost spawnGhost(Bitmap image) {
 		Ghost g = null;
 		try{
 			Vector cell = (Vector) emptyCells.toArray()[(int) (Math.random()*emptyCells.size())];
 
 			g = new Ghost(ov, image, cell.x, cell.y);
 			g.setWorld(world);
+			g.setPlayer(player);
 			world.add(g);
 			emptyCells.remove(cell);
 
 			return g;
 		} catch(Exception e){
-			Log.d("could not spawn Ghost", "cells: "+emptyCells.size());
+			Log.w("could not spawn Ghost", "cells: "+emptyCells.size());
 			return null;
 		}
+	}
+	
+	public Fireball spawnFireball(Bitmap image) {
+		Fireball g = new Fireball(ov, image, player.location.x-ov.offsetX, player.location.y-ov.offsetY);
+		g.setVelocity(Vector.clone(player.velocity));
+		addToWorld(g);
+
+		return g;
+	}
+	
+	public Icebolt spawnIcebolt(Bitmap image) {
+		Icebolt g = new Icebolt(ov, image, player.location.x-ov.offsetX, player.location.y-ov.offsetY);
+		g.setVelocity(Vector.clone(player.velocity));
+		addToWorld(g);
+
+		return g;
 	}
 
 	// spawn ghosts across level 
@@ -140,28 +216,30 @@ public class Level {
 	// the number of empty cells in level
 	//
 	// called only during init
-	public void spawnGhosts(OurView ov, Bitmap image){
-		for (int i = 0; i < NUM_GHOSTS; i++)
-			spawnGhost(ov, image);
+	public void spawnGhosts(Bitmap image){
+		for (int i = 0; i < MAX_GHOSTS; i++)
+			spawnGhost(image);
+		countGhosts();
 	}
 
 	//spawn random number of coins coins accros level
-	public void spawnCoins(OurView ov, Bitmap image){
-		spawnCoins(ov, (int)(Math.random()*(10 - 1) + 1), image);
-	}
-	
-	public void spawnCoins(OurView ov, int numCoins, Bitmap image){
-		for (int i = 0; i < numCoins; i++)
-			spawnCoin(ov, image);
+	public void spawnCoins(Bitmap image){
+		spawnCoins((int)(Math.random()*(10 - 1) + 1), image);
 	}
 
-	public void spawnWeapons(OurView ov, Bitmap image){
+	public void spawnCoins(int max, Bitmap image){
+		int numCoins = (int) (Math.random()*max);
+		for (int i = 0; i < numCoins; i++)
+			spawnCoin(image);
+	}
+
+	public void spawnWeapons(Bitmap image){
 		int numWeapons = /*(int)(Math.random()*(10 - 1) + 1)*/ 1;
 		for (int i = 0; i < numWeapons; i++)
-			spawnWeapon(ov, image);
+			spawnWeapon(image);
 	}
 
-	public Weapon spawnWeapon(OurView ov, Bitmap weaponsprite){
+	public Weapon spawnWeapon(Bitmap weaponsprite){
 		Weapon c = null;
 		try{
 			Vector cell = (Vector) emptyCells.toArray()[(int) (Math.random()*emptyCells.size())];
@@ -172,12 +250,12 @@ public class Level {
 
 			return c;
 		} catch(Exception e){
-			Log.d("could not spawn Weapon", "cells: "+emptyCells.size());
+			Log.w("could not spawn Weapon", "cells: "+emptyCells.size());
 			return null;
 		}
 	}
 
-	public Coin spawnCoin(OurView ov, Bitmap coinSprites){
+	public Coin spawnCoin(Bitmap coinSprites){
 		Coin c = null;
 		try{
 			Vector cell = (Vector) emptyCells.toArray()[(int) (Math.random()*emptyCells.size())];
@@ -188,13 +266,14 @@ public class Level {
 
 			return c;
 		} catch(Exception e){
-			Log.d("could not spawn Coin", "cells: "+emptyCells.size());
-			return null;
+			Log.w("could not spawn Coin", "cells: "+emptyCells.size());
+			return c;
 		}
 	}
 
 	//load a predefinied level
 	public boolean loadFromFile(String filename){
+		//TODO complete file parsing
 		int numRooms = 0;
 
 		try {
@@ -206,17 +285,66 @@ public class Level {
 		}
 		return false;
 	}
+	
+	public boolean saveLevel(){
+		String line = "", filename = "level";
+		ArrayList<String> data = new ArrayList<String>();
+		FileOutputStream outputStream;
+
+		try {
+		  outputStream = ov.getContext().openFileOutput(filename, Context.MODE_PRIVATE);
+		  
+		  for(Room r : rooms){
+			  line = "Room;"+r.getBounds().flattenToString();
+			  
+			  for(Vector v : r.getDoors().keySet()){
+				  String door = ";"+v.flatten();
+				  door += ";"+r.getDoors().get(v);
+				  line += door;
+			  }
+			  data.add(line);
+		  }
+		  
+		  for(Entity e : world){
+			  line = ";" + e.getClass();
+			  line += e.getLocation().flatten();
+		  }
+		  
+		  for(String s : data)
+			  outputStream.write(s.getBytes());
+		  
+		  outputStream.close();
+		} catch (Exception e) {
+		  e.printStackTrace();
+		}
+		
+		return false;
+	}
 
 	public Player getPlayer() {
 		return this.player;
 	}
 	
+	public void countGhosts(){
+		ghosts = 0;
+		for(Entity e : world)
+			if(e instanceof Ghost)
+				ghosts++;
+	}
+
 	public void logWorldContents(){
 		String w = "";
 		for(Entity e : world)
-//			w+=e.id+",";
-//			if(e instanceof Tile)
-				w+=e.id+",";
-		Log.d("world contents",w);
+			w+=e.id+",";
+			//			if(e instanceof Tile)
+		Log.i("world contents",w);
+	}
+	
+	public boolean getWarn(){
+		return warn;
+	}
+	
+	public void setWarn(boolean warn){
+		this.warn = warn;
 	}
 }
