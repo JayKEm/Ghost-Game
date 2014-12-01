@@ -14,7 +14,7 @@ public class Room {
 	private OurView ov;
 	private Player player;
 	private ArrayList<Entity> items;
-	private ArrayList<Vector> emptyCells;
+	private ArrayList<Vector> emptyCells, cells;
 	private HashMap<Vector, Integer> doors;
 	private Level level;
 	private Room[] adjacentRooms = new Room[4];
@@ -43,13 +43,13 @@ public class Room {
 		this.level = level;
 		this.x = 0;
 		this.y = 0;
-		this.width = (MAX_TILES-MIN_TILES)*Tile.SIZE*2;
-		this.height = (MAX_TILES-MIN_TILES)*Tile.SIZE*2;
+		this.width = (MAX_TILES-MIN_TILES)*Tile.SIZE*ov.zoom;
+		this.height = (MAX_TILES-MIN_TILES)*Tile.SIZE*ov.zoom;
 		doors = new HashMap<Vector, Integer>();
-		id = x/64+":"+y/64+":"+width/64+":"+height/64;
+		id = "<"+x/(Tile.SIZE*ov.zoom)+","+y/(Tile.SIZE*ov.zoom)+"> "+width/(Tile.SIZE*ov.zoom)+":"+height/(Tile.SIZE*ov.zoom);
 
 		bounds = new Rect(x+ov.offsetX, y+ov.offsetY, x+ov.offsetX + width, y+ov.offsetY + height);
-//		createCenter();
+		createCells();
 		createRandom();
 	}
 	
@@ -57,8 +57,8 @@ public class Room {
 		this.ov = ov;
 		this.player = player;
 		this.level = level;
-		this.height = (int) (Math.random()*(MAX_TILES - MIN_TILES) + MIN_TILES) * Tile.SIZE*2;
-		this.width = (int) (Math.random()*(MAX_TILES - MIN_TILES) + MIN_TILES) * Tile.SIZE*2;
+		this.height = (int) (Math.random()*(MAX_TILES - MIN_TILES) + MIN_TILES) * Tile.SIZE*ov.zoom;
+		this.width = (int) (Math.random()*(MAX_TILES - MIN_TILES) + MIN_TILES) * Tile.SIZE*ov.zoom;
 		doors = new HashMap<Vector, Integer>();
 		bounds = new Rect(x, y, width, height);
 	}
@@ -67,24 +67,24 @@ public class Room {
 		bounds = new Rect(x+ov.offsetX, y+ov.offsetY, x+ov.offsetX + width, y+ov.offsetY + height);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void build() {
 		//create cell grid
-		emptyCells = new ArrayList<Vector>();
-		for (int i = 0; i < width; i+=Tile.SIZE*2)
-			for (int j = 0; j < height; j+=Tile.SIZE*2)
-				emptyCells.add(new Vector(i+x, j+y));
+		emptyCells = (ArrayList<Vector>) cells.clone();
 		
 		if(walls[0]==null)
 			createWalls();
 		
 		//remove unwanted doors
 		for(int w = 0; w < 4; w++)
-			if(adjacentRooms[w]==null)
-				for(Vector v : doors.keySet()){
-					Log.d("removing door on wall: "+getWall(w), id+": "+v+" "+getWall(doors.get(v)));
+			if(adjacentRooms[w]==null){
+				ArrayList<Vector> tmp = new ArrayList<Vector>();
+				for(Vector v : doors.keySet())
 					if(doors.get(v) == w)
-						doors.remove(v);
-					}
+						tmp.add(v);
+				for(Vector v: tmp)
+					doors.remove(v);
+			}
 		
 		//remove doors from walls
 		buildDoors();
@@ -109,10 +109,10 @@ public class Room {
 	}
 	
 	private void createWalls() {
-		walls[UP] = new Wall(ov, level, x, y, width/(Tile.SIZE*2) - 1, 1);
-		walls[DOWN] = new Wall(ov, level, x + Tile.SIZE*2, y + height - Tile.SIZE*2, width/(Tile.SIZE*2) - 1, 1);
-		walls[LEFT] = new Wall(ov, level, x, y + Tile.SIZE*2, 1, height/(Tile.SIZE*2) - 1);
-		walls[RIGHT] = new Wall(ov, level, x + width - Tile.SIZE*2, y, 1, height/(Tile.SIZE*2) - 1);
+		walls[UP] = new Wall(ov, level, x, y, width/(Tile.SIZE*ov.zoom) - 1, 1);
+		walls[DOWN] = new Wall(ov, level, x + Tile.SIZE*ov.zoom, y + height - Tile.SIZE*ov.zoom, width/(Tile.SIZE*ov.zoom) - 1, 1);
+		walls[LEFT] = new Wall(ov, level, x, y + Tile.SIZE*ov.zoom, 1, height/(Tile.SIZE*ov.zoom) - 1);
+		walls[RIGHT] = new Wall(ov, level, x + width - Tile.SIZE*ov.zoom, y, 1, height/(Tile.SIZE*ov.zoom) - 1);
 	}
 	
 	public void createCenter(){
@@ -169,11 +169,11 @@ public class Room {
 	public boolean generateAdjacentRoom(int location, Vector doorLocation){
 		if(adjacentRooms[location]!= null) return false; 
 		if(level.getRooms().size() >= level.MAX_ROOMS -1) return false;
-		boolean hasIntersections = true;
+		boolean isInvalid = true;
 		boolean created = false;
 		
 		int failed = 0;
-		while(hasIntersections && failed < 50){
+		while(isInvalid && failed < 50){
 			adjacentRooms[location] = new Room(ov, player, level, x, y);
 			int rx=0, ry=0;
 			
@@ -200,9 +200,11 @@ public class Room {
 			newBounds.set(adjacentRooms[location].getBounds());
 			newBounds.offset(rx, ry);
 			adjacentRooms[location].setBounds(newBounds);
+			adjacentRooms[location].setLocation(new Vector(x + rx, y + ry));
+			adjacentRooms[location].createCells();
 			
-			hasIntersections = isIntersecting(adjacentRooms[location]);
-			if(hasIntersections)
+			isInvalid = isInvalid(adjacentRooms[location]);
+			if(isInvalid)
 				failed++;
 			else {
 				created = true;
@@ -216,28 +218,19 @@ public class Room {
 				
 				switch(location){
 				case UP:
-					dx = 0;
-					dy = -1;
-					break;
+					dx = 0; dy = -1; break;
 				case DOWN:
-					dx = 0;
-					dy = 1;
-					break;
+					dx = 0; dy = 1; break;
 				case LEFT:
-					dx = -1;
-					dy = 0;
-					break;
+					dx = -1; dy = 0; break;
 				case RIGHT:
-					dx = 1;
-					dy = 0;
-					break;
+					dx = 1; dy = 0; break;
 				}
 				
 				addDoor(doorLocation, location);
-				doorLocation.x += dx*Tile.SIZE*2;
-				doorLocation.y += dy*Tile.SIZE*2;
+				doorLocation.x += dx*Tile.SIZE*ov.zoom;
+				doorLocation.y += dy*Tile.SIZE*ov.zoom;
 				adjacentRooms[location].setAdjacentRoom(this, adjacent, doorLocation);
-				adjacentRooms[location].setLocation(new Vector(x + rx, y + ry));
 				level.addRoom(adjacentRooms[location]);
 				if (level.getRooms().size() <= level.MAX_ROOMS-1)
 					adjacentRooms[location].createRandom();
@@ -274,8 +267,8 @@ public class Room {
 				break;
 			}
 			
-			location.x += dx*Tile.SIZE*2;
-			location.y += dy*Tile.SIZE*2;
+			location.x += dx*Tile.SIZE*ov.zoom;
+			location.y += dy*Tile.SIZE*ov.zoom;
 			
 			if(emptyCells.contains(location)){
 				emptyCells.remove(location);
@@ -299,7 +292,7 @@ public class Room {
 				emptyCells.remove(cell);
 				items.add(c);
 			} catch(Exception e){
-				Log.i("could not spawn Coin", "cells: "+emptyCells.size());
+				Log.w("could not spawn Coin", "cells: "+emptyCells.size());
 			}
 		}
 	}
@@ -315,7 +308,7 @@ public class Room {
 				emptyCells.remove(cell);
 				items.add(w);
 			} catch (Exception e){
-				Log.i("could not spawn Coin", "cells: "+emptyCells.size());
+				Log.w("could not spawn Coin", "cells: "+emptyCells.size());
 			}
 		}
 	}
@@ -355,7 +348,8 @@ public class Room {
 	public void setLocation(Vector v){
 		x = v.x;
 		y = v.y;
-		id = x/64+":"+y/64+":"+width/64+":"+height/64;
+		id = "<"+x/(Tile.SIZE*ov.zoom)+","+y/(Tile.SIZE*ov.zoom)+"> "+
+				width/(Tile.SIZE*ov.zoom)+":"+height/(Tile.SIZE*ov.zoom);
 	}
 	
 	public String getWall(int w){
@@ -375,10 +369,29 @@ public class Room {
 		return emptyCells;
 	}
 	
-	public boolean isIntersecting(Room room){
-		for(Room r : level.getRooms())
+	public ArrayList<Vector> getCells(){
+		return cells;
+	}
+	
+	public void createCells(){
+		cells = new ArrayList<Vector>();
+		for (int i = 0; i < width; i+=Tile.SIZE*ov.zoom)
+			for (int j = 0; j < height; j+=Tile.SIZE*ov.zoom)
+				cells.add(new Vector(i+x, j+y));
+	}
+	
+	public boolean isInvalid(Room room){
+		for(Room r : level.getRooms()){
 			if(Rect.intersects(room.getBounds(), r.getBounds()))
 				return true;
+			if(r.getBounds().contains(room.getBounds()))
+				return true;
+			
+			for(Vector cell : r.getCells())
+				if(room.getCells().contains(cell))
+					return true;
+		}
+		
 		return false;
 	}
 	

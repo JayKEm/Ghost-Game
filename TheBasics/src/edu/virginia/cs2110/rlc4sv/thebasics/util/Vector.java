@@ -1,5 +1,8 @@
 package edu.virginia.cs2110.rlc4sv.thebasics.util;
 
+import edu.virginia.cs2110.rc4sv.thebasics.objects.Tile;
+import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
+
 public class Vector {
 
 	public int x;
@@ -27,6 +30,6 @@ public class Vector {
 	}
 	
 	public String toString(){
-		return "<"+(x/64)+","+(y/64)+">";
+		return "<"+(x/(Tile.SIZE*OurView.DEFAULT_ZOOM))+","+(y/(Tile.SIZE*OurView.DEFAULT_ZOOM))+">";
 	}
 }

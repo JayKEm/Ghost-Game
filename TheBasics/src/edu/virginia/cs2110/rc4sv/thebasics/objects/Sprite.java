@@ -28,7 +28,7 @@ public abstract class Sprite extends Entity {
 		height = image.getHeight() / 4; //4 rows
 		width = image.getWidth() / 4;  //4 columns
 		
-		bounds = new Rect(x + width/4, y, x + width*2, y + height*2);
+		bounds = new Rect(x + width/4, y, x + width*ov.zoom, y + height*ov.zoom);
 		
 		MAX_SPEED = DEFAULT_SPEED;
 		velocity = new Vector(DEFAULT_SPEED, 0);

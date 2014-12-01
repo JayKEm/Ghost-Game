@@ -15,13 +15,13 @@ public class Weapon extends Sprite {
 		super(ov, weaponsprite, x, y);
 		width = weaponsprite.getWidth()/6;
 		height = weaponsprite.getHeight()/2;
-		bounds = new Rect(x + width/4, y, x + width*2, y + height*2);	
+		bounds = new Rect(x + width/(2*ov.zoom), y, x + width*ov.zoom, y + height*ov.zoom);	
 	}
 
 	@Override
 	public void update() {
-		bounds.set(location.x + ov.offsetX + width/4, location.y + ov.offsetY, 
-				location.x + ov.offsetX + width*2, location.y + ov.offsetY + height*2);
+		bounds.set(location.x + ov.offsetX + width/(2*ov.zoom), location.y + ov.offsetY, 
+				location.x + ov.offsetX + width*ov.zoom, location.y + ov.offsetY + height*ov.zoom);
 
 		if (System.currentTimeMillis() - times > 100) {
 			times = System.currentTimeMillis();
@@ -53,7 +53,7 @@ public class Weapon extends Sprite {
 		int srcX = sprX * width;
 		Rect src = new Rect(srcX, srcY, srcX + width, srcY + height);
 		Rect dst = new Rect(location.x + ov.offsetX, location.y + ov.offsetY, 
-				location.x + ov.offsetX + width*2, location.y + ov.offsetY + height*2);
+				location.x + ov.offsetX + width*ov.zoom, location.y + ov.offsetY + height*ov.zoom);
 		//canvas.drawRect(bounds, new Paint(Color.RED));
 		canvas.drawBitmap(image, src, dst, null);
 	}

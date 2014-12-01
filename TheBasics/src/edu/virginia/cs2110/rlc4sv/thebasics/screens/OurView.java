@@ -15,6 +15,7 @@ import edu.virginia.cs2110.rc4sv.thebasics.objects.Entity;
 import edu.virginia.cs2110.rc4sv.thebasics.objects.Level;
 import edu.virginia.cs2110.rc4sv.thebasics.objects.Player;
 import edu.virginia.cs2110.rc4sv.thebasics.objects.Sprite;
+import edu.virginia.cs2110.rc4sv.thebasics.objects.Tile;
 import edu.virginia.cs2110.rlc4sv.thebasics.R;
 import edu.virginia.cs2110.rlc4sv.thebasics.util.Vector;
 
@@ -32,7 +33,8 @@ public class OurView extends SurfaceView implements Runnable{
 	private Level myLevel;
 	private Player player;
 	
-	public int dw, dh, zoom =0;
+	public static final int DEFAULT_ZOOM = 2;
+	public int dw, dh, zoom = DEFAULT_ZOOM;
 	public int offsetX, offsetY; //visual offset of level
 	public boolean initialized = false;
 	public Bitmap closedChest, openChest, goldCoin, silverCoin, bronzeCoin, weaponSprites;
@@ -69,7 +71,7 @@ public class OurView extends SurfaceView implements Runnable{
 		canvas.drawColor(Color.BLACK);
 		
 		//level
-		myLevel.render(canvas);
+		myLevel.updateRender(canvas);
 		
 		//gui
 		canvas.drawBitmap(up, null, new Rect(dw, getHeight()- dh*3, dw*2, getHeight()-dh*2), null);
@@ -93,7 +95,7 @@ public class OurView extends SurfaceView implements Runnable{
 		paint.setColor(Color.WHITE);
 		paint.setStyle(Style.FILL);
 		paint.setTextSize(20f);
-		canvas.drawText(""+player.score, getWidth() - cw - 4 - String.valueOf(player.score).length()*12, 23, paint);
+		canvas.drawText(""+player.score, getWidth() - cw - 4 - String.valueOf(player.score).length()*10, 23, paint);
 		
 		//weapon logo
 		if (myLevel.getPlayer().hasWeapon()) {
@@ -108,8 +110,10 @@ public class OurView extends SurfaceView implements Runnable{
 					v.x + player.getWidth()+ ww/2, v.y + 2), null);
 		
 		//debug
-		String debugText = "<"+(int)((player.getLocation().x-offsetX)/64f)+","+(int)((player.getLocation().y-offsetY)/64f)+">";
-		canvas.drawText(debugText, getWidth() - 4 - debugText.length()*12, 50, paint);
+//		String debugText = ""+(1+myLevel.shownRooms)+"/"+myLevel.getRooms().size(); 
+//		String debugText = "       <"+(int)((player.getLocation().x-offsetX)/(Tile.SIZE*zoom))+
+//				","+(int)((player.getLocation().y-offsetY)/(Tile.SIZE*zoom))+">";
+//		canvas.drawText(debugText, getWidth() - 4 - debugText.length()*10, 50, paint);
 	}
 
 	public void pause () {
@@ -141,7 +145,7 @@ public class OurView extends SurfaceView implements Runnable{
 	
 	public void create(){
 		initialized = true;
-		myLevel = new Level(this, 15, 8); //debug level
+		myLevel = new Level(this, 20, 8); //debug level
 		
 		playerSprites = BitmapFactory.decodeResource(getResources(), R.drawable.spritesheet);
 		ghostSprites = BitmapFactory.decodeResource(getResources(), R.drawable.gspritesheet);
