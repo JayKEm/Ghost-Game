@@ -11,11 +11,13 @@
     <string name="title_activity_help_screen">HelpScreen</string>
     <string name="title_activity_highscore_screen">HighscoreScreen</string>
     <string name="title_activity_main_game">MainGame</string>
+    <string name="try_again">Play Again</string>
+    <string name="quit">Main Menu</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_settings_menu">SettingsMenu</string>
     <string name="help_text">
-        <![CDATA[
+<![CDATA[
         This is your character! You can make him run around and the goal is to attack ghosts
         and collect coins.
         \n
@@ -33,5 +35,6 @@
     </string>
     <string name="credits">Brought to you by Ryan, Julian, Alex, Zakey, and Davy.</string>
     <string name="class_info">University of Virginia CS 2110 Fall Semester</string>
-    
+    <string name="title_activity_game_over">GameOver</string>
+
 </resources>
