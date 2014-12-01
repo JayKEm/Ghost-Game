@@ -29,20 +29,23 @@ public class Chest extends Entity {
 		this.level = level;
 		this.player = player;
 		this.openImage = ov.openChest;
-		coins = new ArrayList<Coin>();
+		this.coins = randomizeContents();
 		
 		id = "Chest";
+	}
+	
+	public Chest(OurView ov, Level level, Player player, int x, int y, ArrayList<Coin> coins){
+		super(ov, ov.closedChest, x, y);
+		width = image.getWidth();
+		height = image.getHeight();
+
+		bounds = new Rect(x + width/4, y, x + width*ov.zoom, y + height*ov.zoom);
+		this.level = level;
+		this.player = player;
+		this.openImage = ov.openChest;
+		this.coins = coins;
 		
-		int numCoins = (int) (Math.random()*(MAX_COINS-MIN_COINS)+ MIN_COINS);
-		for (int i = 0; i < numCoins; i++){
-			int value = (int) (Math.random()*100);
-			if (value < 40)
-				coins.add(new Coin(ov, ov.bronzeCoin, location.x, location.y));
-			else if (value < 75)
-				coins.add(new Coin(ov, ov.silverCoin, location.x, location.y));
-			else
-				coins.add(new Coin(ov, ov.goldCoin, location.x, location.y));
-		}
+		id = "Chest";
 	}
 	
 	public void render(Canvas canvas){
@@ -100,5 +103,26 @@ public class Chest extends Entity {
 		} catch (Exception e){
 			return false;
 		}
+	}
+	
+	private ArrayList<Coin> randomizeContents(){
+		ArrayList<Coin> coins = new ArrayList<Coin>();
+		
+		int numCoins = (int) (Math.random()*(MAX_COINS-MIN_COINS)+ MIN_COINS);
+		for (int i = 0; i < numCoins; i++){
+			int value = (int) (Math.random()*100);
+			if (value < 40)
+				coins.add(new Coin(ov, ov.bronzeCoin, location.x, location.y));
+			else if (value < 75)
+				coins.add(new Coin(ov, ov.silverCoin, location.x, location.y));
+			else
+				coins.add(new Coin(ov, ov.goldCoin, location.x, location.y));
+		}
+		
+		return coins;
+	}
+	
+	public ArrayList<Coin> getCoins(){
+		return coins;
 	}
 }

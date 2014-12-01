@@ -63,15 +63,21 @@ public class Room {
 		bounds = new Rect(x, y, width, height);
 	}
 	
+	public Room(OurView ov, Player player, Level level, int x, int y,
+			int width, int height) {
+		this.ov = ov;
+		this.player = player;
+		this.level = level;
+		this.height = height;
+		this.width = width;
+		doors = new HashMap<Vector, Integer>();
+	}
+
 	public void update(){
 		bounds = new Rect(x+ov.offsetX, y+ov.offsetY, x+ov.offsetX + width, y+ov.offsetY + height);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void build() {
-		//create cell grid
-		emptyCells = (ArrayList<Vector>) cells.clone();
-		
 		if(walls[0]==null)
 			createWalls();
 		
@@ -88,13 +94,7 @@ public class Room {
 		
 		//remove doors from walls
 		buildDoors();
-		for(Wall w: walls){
-			w.create();
-			for(Tile t: w.getTiles()){
-				emptyCells.remove(t.getLocation());
-				level.addToWorld(t);
-			}
-		}
+		buildWalls();
 		
 		for(Vector v : emptyCells)
 			level.addToWorld(new Floor(ov, v));
@@ -108,7 +108,7 @@ public class Room {
 		spawnWeapon();
 	}
 	
-	private void createWalls() {
+	public void createWalls() {
 		walls[UP] = new Wall(ov, level, x, y, width/(Tile.SIZE*ov.zoom) - 1, 1);
 		walls[DOWN] = new Wall(ov, level, x + Tile.SIZE*ov.zoom, y + height - Tile.SIZE*ov.zoom, width/(Tile.SIZE*ov.zoom) - 1, 1);
 		walls[LEFT] = new Wall(ov, level, x, y + Tile.SIZE*ov.zoom, 1, height/(Tile.SIZE*ov.zoom) - 1);
@@ -318,6 +318,16 @@ public class Room {
 		addDoor(doorLocation, adjacent);
 	}
 	
+	public void buildWalls(){
+		for(Wall w: walls){
+			w.create();
+			for(Tile t: w.getTiles()){
+				emptyCells.remove(t.getLocation());
+				level.addToWorld(t);
+			}
+		}
+	}
+	
 	public void addDoor(Vector location, int wall){
 		doors.put(location, wall);
 	}
@@ -377,11 +387,14 @@ public class Room {
 		return doors;
 	}
 	
+	//create cell grid
+	@SuppressWarnings("unchecked")
 	public void createCells(){
 		cells = new ArrayList<Vector>();
 		for (int i = 0; i < width; i+=Tile.SIZE*ov.zoom)
 			for (int j = 0; j < height; j+=Tile.SIZE*ov.zoom)
 				cells.add(new Vector(i+x, j+y));
+		emptyCells = (ArrayList<Vector>) cells.clone();
 	}
 	
 	public boolean isInvalid(Room room){

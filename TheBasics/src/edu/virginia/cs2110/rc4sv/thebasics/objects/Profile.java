@@ -1,8 +1,5 @@
 package edu.virginia.cs2110.rc4sv.thebasics.objects;
 
-import android.graphics.Bitmap;
-import android.util.Log;
-import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 
 public class Profile {
 
