@@ -104,4 +104,15 @@ public class Ghost extends Sprite {
 	public void setHasWeapon() {}
 	public void interact(Player player){}
 
+	@Override
+	public void loseHealth() {
+		this.health --;
+		
+	}
+
+	@Override
+	public int getHealth() {
+		return this.health;
+	}
+
 }

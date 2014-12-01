@@ -68,7 +68,9 @@ public class Player extends Sprite {
 		
 		if(System.currentTimeMillis() - damageTimer > 5000) {
 			canGetHurt = true;
+			damageTimer = System.currentTimeMillis();
 		}
+		
 		
 		if(move){
 			ov.offsetX -= velocity.x;
@@ -203,5 +205,11 @@ public class Player extends Sprite {
 
 	public void remove() {
 		interactable = null;
+	}
+
+	@Override
+	public void loseHealth() {
+		this.health --;
+		
 	}
 }

@@ -3,6 +3,7 @@ package edu.virginia.cs2110.rc4sv.thebasics.objects;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+import android.util.Log;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 import edu.virginia.cs2110.rlc4sv.thebasics.util.Vector;
 
@@ -15,8 +16,8 @@ public abstract class Sprite extends Entity {
 	protected int currentFrame = 0;
 	protected int changeFrame = 0;
 	protected int direction = 0;
-	protected boolean move = false;
 	protected int health;
+	protected boolean move = false;
 	protected boolean isDead = false;
 	
 	protected static final int DEFAULT_SPEED = 5;
@@ -119,18 +120,18 @@ public abstract class Sprite extends Entity {
 		move = false;
 	}
 	
-	public void damage() {
-		if (health <= 0) {
-			if (this instanceof Ghost) {
-				level.getPlayer().killGhost();
-			}
-			level.removeFromWorld(this);
-		}
-		else  {
-			health--;
-			if (this instanceof Player) 
+	public void damage() {		
+			this.loseHealth();
+			if (this instanceof Player) {
 		       ((Player)this).setCanGetHurt(false);
-		}
+			}
+			if (this.getHealth() <= 0) {
+				if (this instanceof Ghost) {
+					level.getPlayer().killGhost();
+				}
+				level.removeFromWorld(this);
+			}
+		
 	}
 	
 	public void setImage(int imageIndex){
@@ -143,4 +144,6 @@ public abstract class Sprite extends Entity {
 	
 	public abstract void handleCollision();
 	public abstract void setHasWeapon();
+	public abstract void loseHealth();
+	public abstract int getHealth();
 }

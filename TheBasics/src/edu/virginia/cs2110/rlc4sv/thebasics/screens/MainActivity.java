@@ -18,7 +18,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.splash);
        
         
-        logoMusic = MediaPlayer.create(MainActivity.this, R.raw.splash_sound);
+        logoMusic = MediaPlayer.create(MainActivity.this, R.raw.dungeon_tremors);
         logoMusic.start();
         
         Thread logoTimer = new Thread(){

@@ -72,4 +72,16 @@ public class Fireball extends Sprite {
 	public void setHasWeapon() {}
 	public void interact(Player player){}
 
+	@Override
+	public void loseHealth() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getHealth() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

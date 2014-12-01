@@ -71,4 +71,16 @@ public class Coin extends Sprite {
 		return new Coin(c.ov, c.image, c.location.x, c.location.y);
 	}
 
+	@Override
+	public void loseHealth() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getHealth() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }
