@@ -55,19 +55,20 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int gspritesheet=0x7f020012;
         public static final int heart=0x7f020013;
         public static final int ic_launcher=0x7f020014;
-        public static final int icon=0x7f020015;
-        public static final int left_arrow=0x7f020016;
-        public static final int right_arrow=0x7f020017;
-        public static final int rsz_weaponsprite=0x7f020018;
-        public static final int spritechar=0x7f020019;
-        public static final int spritesheet=0x7f02001a;
-        public static final int swag=0x7f02001b;
-        public static final int tombstone=0x7f02001c;
-        public static final int up_arrow=0x7f02001d;
-        public static final int wall_tile=0x7f02001e;
-        public static final int warning=0x7f02001f;
-        public static final int weaponsprite=0x7f020020;
-        public static final int white_background2=0x7f020021;
+        public static final int icebolt=0x7f020015;
+        public static final int icon=0x7f020016;
+        public static final int left_arrow=0x7f020017;
+        public static final int right_arrow=0x7f020018;
+        public static final int rsz_weaponsprite=0x7f020019;
+        public static final int spritechar=0x7f02001a;
+        public static final int spritesheet=0x7f02001b;
+        public static final int swag=0x7f02001c;
+        public static final int tombstone=0x7f02001d;
+        public static final int up_arrow=0x7f02001e;
+        public static final int wall_tile=0x7f02001f;
+        public static final int warning=0x7f020020;
+        public static final int weaponsprite=0x7f020021;
+        public static final int white_background2=0x7f020022;
     }
     public static final class id {
         public static final int action_settings=0x7f0a0018;

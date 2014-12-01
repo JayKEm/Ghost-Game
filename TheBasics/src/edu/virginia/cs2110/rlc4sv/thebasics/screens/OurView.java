@@ -28,6 +28,7 @@ public class OurView extends SurfaceView implements Runnable{
 	private Bitmap heart;
 	private Bitmap coin;
 	private Bitmap button2;
+	private Bitmap blueball;
 	private Bitmap up, down, left, right;
 	private Level myLevel;
 	private Player player;
@@ -77,8 +78,9 @@ public class OurView extends SurfaceView implements Runnable{
 		canvas.drawBitmap(left, null, new Rect(0, getHeight()- dh*2, dw, getHeight()-dh), null);
 		canvas.drawBitmap(right, null, new Rect(dw*2, getHeight()- dh*2, dw*3, getHeight()-dh), null);
 		canvas.drawBitmap(button2, null, new Rect(dw*4, getHeight()- dh*2, dw*5, getHeight()-dh), null);
+		canvas.drawBitmap(blueball, null, new Rect(dw*6, getHeight()- dh*2, dw*7, getHeight()-dh), null);
 
-		//player health
+		//player health 
 		int hw = heart.getWidth(); int hh = heart.getHeight(); 	int p = 2;
 		
 //		Log.i("health",""+player.getHealth());
@@ -157,6 +159,7 @@ public class OurView extends SurfaceView implements Runnable{
 		right = BitmapFactory.decodeResource(getResources(), R.drawable.right_arrow);
 		weaponLogo = BitmapFactory.decodeResource(getResources(), R.drawable.rsz_weaponsprite);
 		button2 = BitmapFactory.decodeResource(getResources(), R.drawable.fire);
+		blueball = BitmapFactory.decodeResource(getResources(), R.drawable.blueball);
 		openChest = BitmapFactory.decodeResource(getResources(), R.drawable.chest_open);
 		closedChest = BitmapFactory.decodeResource(getResources(), R.drawable.chest_closed);
 		warning = BitmapFactory.decodeResource(getResources(),  R.drawable.warning);

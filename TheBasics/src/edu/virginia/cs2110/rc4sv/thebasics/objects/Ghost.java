@@ -8,7 +8,8 @@ import edu.virginia.cs2110.rlc4sv.thebasics.util.Vector;
 
 public class Ghost extends Sprite {
 
-	private int changeFrame2 = 0;
+	private int changeFrame2, unfreezeFrame = 0;
+	private boolean frozen = false;
 
 	public Ghost(OurView ourView, Bitmap src, int x, int y) {
 		super(ourView, src, x, y);
@@ -48,6 +49,13 @@ public class Ghost extends Sprite {
 			randomDirection();	
 			changeFrame2=0; 
 		}
+		if(frozen){
+		unfreezeFrame++;
+		if(unfreezeFrame==100) {
+			setMove(false);
+			frozen = false;
+		}
+		}
 		//change VALUE for testing
 
 		if(move == false){
@@ -69,7 +77,8 @@ public class Ghost extends Sprite {
 		this.direction = direction;
 		move = true;
 	}
-
+	
+	
 	public void randomDirection() {
 		int x = (int) ((Math.random()*100));
 
@@ -94,13 +103,24 @@ public class Ghost extends Sprite {
 				if (((Player) s).hasWeapon() == true) {
 					this.damage();
 				}
-			if(isColliding(s) && s instanceof Fireball)
+			if(isColliding(s) && frozen && s instanceof Fireball)
 				{
 					this.damage();
 				}
+			if(isColliding(s) && s instanceof Icebolt)
+			{
+				setFrozen();
+			}
 		}
 	}
 
+	
+	public void setFrozen() {
+		this.move=true;
+		frozen = true;
+		unfreezeFrame=0;
+	}
+	
 	public void setHasWeapon() {}
 	public void interact(Player player){}
 

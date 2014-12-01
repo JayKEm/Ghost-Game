@@ -64,7 +64,8 @@ public class MainGame extends Activity implements OnTouchListener {
 		Rect top = new Rect(v.dw, v.getHeight()- v.dh*3, v.dw*2, v.getHeight()-v.dh*2);
 		Rect right = new Rect(v.dw*2, v.getHeight()- v.dh*2, v.dw*3, v.getHeight()-v.dh);
 		Rect bottom =new Rect(v.dw, v.getHeight()- v.dh, v.dw*2, v.getHeight());
-		Rect shoot =new Rect(v.dw*4, v.getHeight()- v.dh*2, v.dw*5, v.getHeight()-v.dh);
+		Rect shoot1 =new Rect(v.dw*4, v.getHeight()- v.dh*2, v.dw*5, v.getHeight()-v.dh);
+		Rect shoot2 =new Rect(v.dw*6, v.getHeight()- v.dh*2, v.dw*7, v.getHeight()-v.dh);
 		if (!this.ov.getMyLevel().getWorld().contains(ov.getPlayer())) {
 			Intent menuIntent = new Intent("edu.virginia.cs2110.rlc4sv.thebasics.MENU");
 			startActivity(menuIntent);
@@ -98,9 +99,13 @@ public class MainGame extends Activity implements OnTouchListener {
 					ov.getPlayer().setMove(true);
 				} else if (ov.getPlayer().getBounds().contains(x, y)){
 					ov.getPlayer().interact();
-				} else if(shoot.contains(x, y)) {
+				} else if(shoot1.contains(x, y)) {
 					Bitmap fireballSprites = BitmapFactory.decodeResource(getResources(), R.drawable.explode);
 					ov.getLevel().spawnFireball(fireballSprites);
+					MediaPlayer.create(ov.getContext(), R.raw.fire).start();
+				} else if(shoot2.contains(x, y)) {
+					Bitmap iceboltSprites = BitmapFactory.decodeResource(getResources(), R.drawable.icebolt);
+					ov.getLevel().spawnIcebolt(iceboltSprites);
 					MediaPlayer.create(ov.getContext(), R.raw.fire).start();
 				}
 			}

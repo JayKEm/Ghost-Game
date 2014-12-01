@@ -177,6 +177,14 @@ public class Level {
 
 		return g;
 	}
+	
+	public Icebolt spawnIcebolt(Bitmap image) {
+		Icebolt g = new Icebolt(ov, image, player.location.x-ov.offsetX, player.location.y-ov.offsetY);
+		g.setVelocity(Vector.clone(player.velocity));
+		addToWorld(g);
+
+		return g;
+	}
 
 	// spawn ghosts across level 
 	// maximum number of ghosts actually spawned is limited by 
