@@ -74,8 +74,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     public static final class id {
         public static final int action_settings=0x7f0a0029;
         public static final int bGenerate=0x7f0a0028;
-        public static final int but1=0x7f0a0002;
-        public static final int but2=0x7f0a0001;
+        public static final int button1=0x7f0a0001;
+        public static final int button2=0x7f0a0002;
         public static final int default_temporary_button=0x7f0a000d;
         public static final int dummy_button=0x7f0a000c;
         public static final int editText1=0x7f0a001c;

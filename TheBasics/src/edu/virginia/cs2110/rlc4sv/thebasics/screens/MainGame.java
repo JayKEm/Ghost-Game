@@ -67,7 +67,9 @@ public class MainGame extends Activity implements OnTouchListener {
 		Rect shoot1 =new Rect(v.dw*4, v.getHeight()- v.dh*2, v.dw*5, v.getHeight()-v.dh);
 		Rect shoot2 =new Rect(v.dw*6, v.getHeight()- v.dh*2, v.dw*7, v.getHeight()-v.dh);
 		if (!this.ov.getMyLevel().getWorld().contains(ov.getPlayer())) {
-			Intent menuIntent = new Intent("edu.virginia.cs2110.rlc4sv.thebasics.MENU");
+			Intent menuIntent = new Intent("edu.virginia.cs2110.rlc4sv.thebasics.GAMEOVER");
+			menuIntent.putExtra("EXTRA_GHOSTS_KILLED" , ov.getLevel().getGhostsKilled() + "");
+			menuIntent.putExtra("EXTRA_COINS_COLLECTED", ov.getLevel().getCoinsCollected() + "");
 			startActivity(menuIntent);
 		}
 

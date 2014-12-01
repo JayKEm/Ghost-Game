@@ -1,5 +1,9 @@
-package edu.virginia.cs2110.rlc4sv.thebasics;
+package edu.virginia.cs2110.rlc4sv.thebasics.screens;
 
+import edu.virginia.cs2110.rlc4sv.thebasics.R;
+import edu.virginia.cs2110.rlc4sv.thebasics.R.id;
+import edu.virginia.cs2110.rlc4sv.thebasics.R.layout;
+import edu.virginia.cs2110.rlc4sv.thebasics.R.menu;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,29 +14,42 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class GameOver extends Activity {
- 
-	@Override 
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game_over);
 		
-		Button but1 = (Button)findViewById(R.id.but1);
-		Button but2 = (Button)findViewById(R.id.but2);
+		Button but1 = (Button)findViewById(R.id.button1);
+		Button but2 = (Button)findViewById(R.id.button2);
 		
-		but2.setOnClickListener(new View.OnClickListener() {
+		but1.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {	
 				startActivity(new Intent("edu.virginia.cs2110.rlc4sv.thebasics.MAINGAME"));	
 			}
 		});
 		
-		but1.setOnClickListener(new View.OnClickListener() {
+		but2.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {	
 				startActivity(new Intent("edu.virginia.cs2110.rlc4sv.thebasics.MENU"));	
 			}
 		});
-
+		String ghostsKilled = "";
+		String coinsCollected = "";
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			ghostsKilled = extras.getString("EXTRA_GHOSTS_KILLED");
+			coinsCollected = extras.getString("EXTRA_COINS_COLLECTED");
+		}
+		TextView score = (TextView)findViewById(R.id.textView1);
+		if(ghostsKilled.equals("1")){
+			score.setText("You killed " + ghostsKilled + " ghost and collected $" + coinsCollected + " worth of coins");
+		}
+		else{
+		score.setText("You killed " + ghostsKilled + " ghosts and collected $" + coinsCollected + " worth of coins");
+		}
 	}
 
 	@Override

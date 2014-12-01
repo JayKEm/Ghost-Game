@@ -129,6 +129,11 @@ public abstract class Sprite extends Entity {
 				if (this instanceof Ghost) {
 					level.getPlayer().killGhost();
 				}
+				if (this instanceof Player) {
+					
+					level.setGhostsKilled(((Player)this).getGhostsKilled());
+					level.setCoinsCollected(((Player)this).score);
+				}
 				level.removeFromWorld(this);
 			}
 		
