@@ -53,7 +53,7 @@ public class Wall extends Entity{
 	public void createSkeleton(){
 		for(int i = 0; i < width; i++)
 			for(int j = 0; j < height; j++)
-				skeletonTiles.add(new Vector(location.x + i * (Tile.SIZE*2), location.y + j * (Tile.SIZE*2)));
+				skeletonTiles.add(new Vector(location.x + i * (Tile.SIZE*ov.zoom), location.y + j * (Tile.SIZE*ov.zoom)));
 	}
 	
 	public void create(){

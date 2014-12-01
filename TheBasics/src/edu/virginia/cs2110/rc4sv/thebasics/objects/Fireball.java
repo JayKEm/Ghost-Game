@@ -17,7 +17,7 @@ public class Fireball extends Sprite {
 		width = image.getWidth() / 5;  //4 columns
 		id = "Fireball";
 		
-		bounds = new Rect(x + width/4, y, x + width*2, y + height*2);
+		bounds = new Rect(x + width/4, y, x + width*ov.zoom, y + height*ov.zoom);
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class Fireball extends Sprite {
 		location.x += velocity.x;
 		location.y += velocity.y;
 		bounds.set(location.x + ov.offsetX + width/4, location.y + ov.offsetY, 
-				location.x + ov.offsetX + width*2, location.y + ov.offsetY + height*2);
+				location.x + ov.offsetX + width*ov.zoom, location.y + ov.offsetY + height*ov.zoom);
 
 		
 		try{
@@ -61,7 +61,8 @@ public class Fireball extends Sprite {
 		int srcY = row * height;
 		int srcX = currentFrame * width;
 		Rect src = new Rect(srcX, srcY, srcX + width, srcY + height);
-		Rect dst = new Rect(location.x+ov.offsetX, location.y+ov.offsetY,location.x +ov.offsetX+ width*2, location.y+ov.offsetY + height*2);
+		Rect dst = new Rect(location.x+ov.offsetX, location.y+ov.offsetY,
+				location.x +ov.offsetX+ width*ov.zoom, location.y+ov.offsetY + height*ov.zoom);
 
 //		drawBounds(canvas);
 		canvas.drawBitmap(image, src, dst, null);
@@ -70,5 +71,17 @@ public class Fireball extends Sprite {
 	public void handleCollision() {}
 	public void setHasWeapon() {}
 	public void interact(Player player){}
+
+	@Override
+	public void loseHealth() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getHealth() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 }

@@ -25,7 +25,7 @@ public class Chest extends Entity {
 		width = image.getWidth();
 		height = image.getHeight();
 
-		bounds = new Rect(x + width/4, y, x + width*2, y + height*2);
+		bounds = new Rect(x + width/4, y, x + width*ov.zoom, y + height*ov.zoom);
 		this.level = level;
 		this.player = player;
 		this.openImage = ov.openChest;
@@ -49,9 +49,9 @@ public class Chest extends Entity {
 		update();
 
 		Rect dst = new Rect(location.x + ov.offsetX, location.y + ov.offsetY, 
-				location.x + ov.offsetX + width*2, location.y + ov.offsetY + height*2);
+				location.x + ov.offsetX + width*ov.zoom, location.y + ov.offsetY + height*ov.zoom);
 		bounds.set(location.x + ov.offsetX + width/4, location.y + ov.offsetY, 
-				location.x + ov.offsetX + width*2, location.y + ov.offsetY + height*2);
+				location.x + ov.offsetX + width*ov.zoom, location.y + ov.offsetY + height*ov.zoom);
 //		drawBounds(canvas);
 		canvas.drawBitmap(image, null, dst, null);
 	}

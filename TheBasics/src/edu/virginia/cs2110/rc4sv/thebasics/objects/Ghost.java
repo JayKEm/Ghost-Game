@@ -16,7 +16,7 @@ public class Ghost extends Sprite {
 		id = "Ghost";
 		width = image.getWidth() / 3;  //3 columns
 		this.health = 1;
-		bounds = new Rect(x + width/4, y, x + width*2, y + height*2);
+		bounds = new Rect(x + width/4, y, x + width*ov.zoom, y + height*ov.zoom);
 		randomDirection();
 	} 
 
@@ -27,7 +27,7 @@ public class Ghost extends Sprite {
 		int srcX = currentFrame * width;
 		Rect src = new Rect(srcX, srcY, srcX + width, srcY + height);
 		Rect dst = new Rect(location.x + ov.offsetX, location.y + ov.offsetY, 
-				location.x + ov.offsetX + width*2, location.y + ov.offsetY + height*2);
+				location.x + ov.offsetX + width*ov.zoom, location.y + ov.offsetY + height*ov.zoom);
 		
 //		drawBounds(canvas);
 		canvas.drawBitmap(image, src, dst, null);
@@ -62,7 +62,7 @@ public class Ghost extends Sprite {
 			location.x += velocity.x;
 			location.y += velocity.y;
 			bounds.set(location.x + ov.offsetX + width/4, location.y + ov.offsetY, 
-					location.x + ov.offsetX + width*2, location.y + ov.offsetY + height*2);
+					location.x + ov.offsetX + width*ov.zoom, location.y + ov.offsetY + height*ov.zoom);
 		}
 		
 		double distance = (new Vector(location.x + ov.offsetX - player.location.x,
@@ -123,5 +123,16 @@ public class Ghost extends Sprite {
 	
 	public void setHasWeapon() {}
 	public void interact(Player player){}
+
+	@Override
+	public void loseHealth() {
+		this.health --;
+		
+	}
+
+	@Override
+	public int getHealth() {
+		return this.health;
+	}
 
 }

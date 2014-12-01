@@ -34,7 +34,7 @@ public class Player extends Sprite {
 	
 	public Player(OurView ov, Bitmap src, int x, int y, int cellX, int cellY){
 		super(ov, src , x, y);
-		bounds = new Rect(x + width/4, y+8, x + width*2, y + 28*2+8);
+		bounds = new Rect(x + width/4, y+8, x + width*ov.zoom, y + 28*ov.zoom+8);
 		
 		ov.offsetX = x - cellX;
 		ov.offsetY = y - cellY;
@@ -68,7 +68,9 @@ public class Player extends Sprite {
 		
 		if(System.currentTimeMillis() - damageTimer > 5000) {
 			canGetHurt = true;
+			damageTimer = System.currentTimeMillis();
 		}
+		
 		
 		if(move){
 			ov.offsetX -= velocity.x;
@@ -89,11 +91,11 @@ public class Player extends Sprite {
 		int srcY = direction * height;
 		int srcX = currentFrame * width;
 		Rect src = new Rect(srcX, srcY, srcX + width, srcY + height);
-		Rect dst = new Rect(location.x, location.y, location.x + width*2, location.y + height*2);
+		Rect dst = new Rect(location.x, location.y, location.x + width*ov.zoom, location.y + height*ov.zoom);
 		
 		updateIBounds();
 //		Paint p = drawBounds(canvas);
-//	    canvas.drawRect(interactBounds, p);
+//		canvas.drawRect(interactBounds, p);
 		canvas.drawBitmap(image, src, dst, null);
 	}
 
@@ -102,12 +104,12 @@ public class Player extends Sprite {
 			if(isColliding(s) && !this.equals(s)){
 				if(s instanceof Ghost && !hasWeapon)
 					if (canGetHurt == true) {
-//						damage();
-//						MediaPlayer.create(ov.getContext(), R.raw.player_hurt).start();
+						damage();
+						MediaPlayer.create(ov.getContext(), R.raw.player_hurt).start();
 					}
-				if(s instanceof Tile || s instanceof Chest)
+				if(s instanceof Tile || s instanceof Chest){
 					reAdjust();
-				if(s instanceof Coin && !locked){
+				} if(s instanceof Coin && !locked){
 					score += ((Coin) s).getValue();
 					MediaPlayer.create(ov.getContext(), R.raw.coin).start();
 					level.removeFromWorld(s);
@@ -124,24 +126,25 @@ public class Player extends Sprite {
 
 	public void interact() {
 		if(interactable!=null){
-			interactable.interact(this);
-			Log.i("interactable:", ""+interactable.location);
+			try{
+				interactable.interact(this);
+			} catch(Exception e){}
 		}
 	}
 	
 	public void updateIBounds(){
 		int offset = 5;
 		if(velocity.x>0 && velocity.y==0){
-			interactBounds.set(location.x, location.y, location.x + (int)(width*3/4f)*2, location.y + height*2);
-			interactBounds.offset(width*2 + offset, 0);
+			interactBounds.set(location.x, location.y, location.x + (int)(width*3/4)*ov.zoom, location.y + height*ov.zoom);
+			interactBounds.offset(width*ov.zoom + offset, 0);
 		} if(velocity.x<0 && velocity.y==0){
-			interactBounds.set(location.x, location.y, location.x + (int)(width*3/4f)*2, location.y + height*2);
+			interactBounds.set(location.x, location.y, location.x + (int)(width*3/4)*ov.zoom, location.y + height*ov.zoom);
 			interactBounds.offset(interactBounds.width()*-1, 0);
 		} if(velocity.x==0 && velocity.y>0){
-			interactBounds.set(location.x, location.y, location.x + width*2, location.y + (int)(height*3/4f)*2);
-			interactBounds.offset(2, height*2);
+			interactBounds.set(location.x, location.y, location.x + width*ov.zoom, location.y + (int)(height*3/4)*ov.zoom);
+			interactBounds.offset(2, height*ov.zoom);
 		} if(velocity.x==0 && velocity.y<0){
-			interactBounds.set(location.x, location.y, location.x + width*2, location.y + (int)(height*3/4f)*2);
+			interactBounds.set(location.x, location.y, location.x + width*ov.zoom, location.y + (int)(height*3/4)*ov.zoom);
 			interactBounds.offset(2, interactBounds.height()*-1);
 		}
 	}
@@ -202,5 +205,11 @@ public class Player extends Sprite {
 
 	public void remove() {
 		interactable = null;
+	}
+
+	@Override
+	public void loseHealth() {
+		this.health --;
+		
 	}
 }

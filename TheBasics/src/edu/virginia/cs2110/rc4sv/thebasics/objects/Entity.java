@@ -1,6 +1,7 @@
 package edu.virginia.cs2110.rc4sv.thebasics.objects;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
@@ -42,17 +43,21 @@ public abstract class Entity {
 
 	public void render(Canvas canvas) {
 		Rect dst = new Rect(location.x + ov.offsetX, location.y + ov.offsetY, 
-				location.x + ov.offsetX + width*2, location.y + ov.offsetY + height*2);
+				location.x + ov.offsetX + width*ov.zoom, location.y + ov.offsetY + height*ov.zoom);
 		
-		bounds.set(location.x + ov.offsetX + width/4, location.y + ov.offsetY, 
-				location.x + ov.offsetX + width*2, location.y + ov.offsetY + height*2);
+		bounds.set(location.x + ov.offsetX, location.y + ov.offsetY, 
+				location.x + ov.offsetX + width*ov.zoom, location.y + ov.offsetY + height*ov.zoom);
 		canvas.drawBitmap(image, null, dst, null);
+//		drawBounds(canvas);
 	}
 	
 	public Paint drawBounds(Canvas canvas){
 		Paint paint = new Paint();
 		paint.setStyle(Paint.Style.STROKE);
-	    paint.setColor(Color.GREEN);
+	    if(id.toLowerCase(Locale.ENGLISH).equals("floor"))
+	    	paint.setColor(Color.BLUE);
+	    else 
+	    	paint.setColor(Color.GREEN);
 	    canvas.drawRect(bounds, paint);
 	    return paint;
 	}

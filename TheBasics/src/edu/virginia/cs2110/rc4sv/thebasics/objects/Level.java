@@ -22,6 +22,10 @@ public class Level {
 	private Player player;
 	private OurView ov;
 	private boolean warn;
+	
+//	public int shownRooms = 0;
+//	private long spawnTime;
+//	private boolean spawning=false;
 
 	public int MAX_ROOMS, MAX_GHOSTS;
 	public int ghosts;
@@ -41,13 +45,27 @@ public class Level {
 		this.MAX_GHOSTS = numGhosts;
 	}
 
-	public void render(Canvas canvas){
+	public void updateRender(Canvas canvas){
 		addToWorld();
+		
+		//debug code, teleports player to each created room
+//		if(spawning){
+//			if(System.currentTimeMillis()-spawnTime >1000){
+//		    	if(shownRooms<rooms.size()-1){
+//		    		shownRooms++;
+//					ov.offsetX = player.getLocation().x - rooms.get(shownRooms).x;
+//					ov.offsetY = player.getLocation().y - rooms.get(shownRooms).y;
+//					spawnTime = System.currentTimeMillis();
+//		    	} else
+//		    		spawning = false;
+//			}
+//		}
 		
 		warn = false;
 		for(Entity f : world)
-			if(f instanceof Floor)
+			if(f instanceof Floor){
 				f.render(canvas);
+			}
 		for(Entity s : world)
 			if (!(s instanceof Floor))
 				s.render(canvas);
@@ -55,9 +73,15 @@ public class Level {
 		Paint paint = new Paint();
 		paint.setStyle(Paint.Style.STROKE);
 	    paint.setColor(Color.MAGENTA);
-	    for(Room r : rooms){
-	    	r.update();
+	    
+//	    for(int i = 0; i<=shownRooms; i++){
+//	    	Room r = rooms.get(i);
+//	    	r.update();
 //	    	canvas.drawRect(r.getBounds(), paint);
+//	    }
+	    
+	    for(Room r: rooms){
+	    	r.update();
 	    }
 
 		removeFromWorld();
@@ -70,12 +94,7 @@ public class Level {
 	public boolean addRoom(Room r){
 		if(rooms.size()==MAX_ROOMS)
 			return false;
-		boolean added = rooms.add(r);
-
-		//		for (Vector cell : emptyCells)
-		//			Log.i("cell location","<"+cell.x+","+cell.y+">");
-
-		return added;
+		return rooms.add(r);
 	}
 
 	public void generate(OurView ov){
@@ -83,7 +102,7 @@ public class Level {
 		addRoom(center);
 		
 		int fails = 0;
-		while(rooms.size()<MAX_ROOMS&& fails <100){
+		while(rooms.size()<MAX_ROOMS&& fails <300){
 			rooms.get(0).createRandom();
 			fails++;
 		}
@@ -93,10 +112,13 @@ public class Level {
 			emptyCells.addAll(r.getEmptyCells());
 		}
 		
-		for(Room r: rooms)
-			r.createItems();		
+		for(Room r: rooms){
+			r.createItems();
+		}
 
-		logWorldContents();
+//		logWorldContents();
+//		spawning = true;
+//		spawnTime = System.currentTimeMillis();
 	}
 
 	public boolean addToWorld(Entity e){
@@ -138,6 +160,7 @@ public class Level {
 		try{
 			Vector cell = (Vector) emptyCells.toArray()[(int) (Math.random()*emptyCells.size())];
 			player = new Player(ov, playerSprites, size.x/2,size.y/2, cell.x, cell.y);
+//			player = new Player(ov, playerSprites, size.x/2,size.y/2, rooms.get(0).x, rooms.get(0).y);
 			player.setWorld(world);
 			emptyCells.remove(cell);
 			addToWorld(player);
@@ -165,7 +188,7 @@ public class Level {
 
 			return g;
 		} catch(Exception e){
-			Log.i("could not spawn Ghost", "cells: "+emptyCells.size());
+			Log.w("could not spawn Ghost", "cells: "+emptyCells.size());
 			return null;
 		}
 	}
@@ -225,7 +248,7 @@ public class Level {
 
 			return c;
 		} catch(Exception e){
-			Log.i("could not spawn Weapon", "cells: "+emptyCells.size());
+			Log.w("could not spawn Weapon", "cells: "+emptyCells.size());
 			return null;
 		}
 	}
@@ -241,7 +264,7 @@ public class Level {
 
 			return c;
 		} catch(Exception e){
-			Log.i("could not spawn Coin", "cells: "+emptyCells.size());
+			Log.w("could not spawn Coin", "cells: "+emptyCells.size());
 			return c;
 		}
 	}
