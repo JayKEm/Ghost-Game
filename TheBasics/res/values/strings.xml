@@ -15,7 +15,7 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_settings_menu">SettingsMenu</string>
     <string name="help_text">
-        <![CDATA[
+<![CDATA[
         This is your character! You can make him run around and the goal is to attack ghosts
         and collect coins.
         \n
@@ -33,5 +33,8 @@
     </string>
     <string name="credits">Brought to you by Ryan, Julian, Alex, Zakey, and Davy.</string>
     <string name="class_info">University of Virginia CS 2110 Fall Semester</string>
-    
+    <string name="title_activity_profile_selector">ProfileSelector</string>
+    <string name="title_activity_the_profile_selector">TheProfileSelector</string>
+    <string name="profile_selector_title">Choose a profile!</string>
+
 </resources>

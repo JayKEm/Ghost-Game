@@ -12,7 +12,7 @@ public class Player extends Sprite {
 	public int score;
 	public int health;
 	private boolean hasWeapon;
-	private int ghostsKilled;
+	public int ghostsKilled;
 	private long weaponTimer;
 	private boolean canGetHurt;
 	private long damageTimer;

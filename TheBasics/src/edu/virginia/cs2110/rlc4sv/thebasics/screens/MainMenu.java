@@ -35,7 +35,7 @@ public class MainMenu extends Activity {
 
 			public void onClick(View v) {
 				buttonSound.start();	
-				startActivity(new Intent("edu.virginia.cs2110.rlc4sv.thebasics.MAINGAME"));	
+				startActivity(new Intent("edu.virginia.cs2110.rlc4sv.thebasics.THEPROFILESELECTOR"));	
 			}
 		});
 

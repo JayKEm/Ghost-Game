@@ -1,0 +1,119 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="edu.virginia.cs2110.rlc4sv.thebasics.screens.TheProfileSelector" >
+
+    <Button
+        android:id="@+id/default_temporary_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="59dp"
+        android:text="@string/hello_world" />
+
+    <TextView
+        android:id="@+id/title_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:text="@string/profile_selector_title"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/profile_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/profile_button_five"
+        android:layout_alignBottom="@+id/profile_button_five"
+        android:layout_toLeftOf="@+id/profile_four"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/profile_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/profile_button_three"
+        android:layout_alignBottom="@+id/profile_button_three"
+        android:layout_alignLeft="@+id/profile_five"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/profile_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/profile_button_one"
+        android:layout_alignBottom="@+id/profile_button_one"
+        android:layout_alignLeft="@+id/profile_three"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/profile_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/profile_button_four"
+        android:layout_alignBottom="@+id/profile_button_four"
+        android:layout_alignLeft="@+id/profile_five"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/profile_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/profile_button_two"
+        android:layout_alignBottom="@+id/profile_button_two"
+        android:layout_alignLeft="@+id/profile_three"
+        android:text="TextView" />
+
+    <Button
+        android:id="@+id/profile_button_five"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/default_temporary_button"
+        android:layout_alignRight="@+id/default_temporary_button"
+        android:text="Button" />
+
+    <Button
+        android:id="@+id/profile_button_four"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/profile_button_five"
+        android:layout_alignLeft="@+id/profile_button_five"
+        android:layout_marginBottom="14dp"
+        android:text="Button" />
+
+    <Button
+        android:id="@+id/profile_button_three"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/profile_button_four"
+        android:layout_alignLeft="@+id/profile_button_four"
+        android:layout_marginBottom="14dp"
+        android:text="Button" />
+
+    <Button
+        android:id="@+id/profile_button_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/profile_button_two"
+        android:layout_alignLeft="@+id/profile_button_two"
+        android:layout_marginBottom="14dp"
+        android:text="Button" />
+
+    <Button
+        android:id="@+id/profile_button_two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/profile_button_three"
+        android:layout_alignLeft="@+id/profile_button_three"
+        android:layout_marginBottom="18dp"
+        android:text="Button" />
+
+</RelativeLayout>

@@ -68,33 +68,48 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int white_background2=0x7f02001f;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a0018;
-        public static final int bGenerate=0x7f0a0017;
+        public static final int action_settings=0x7f0a0027;
+        public static final int bGenerate=0x7f0a0026;
+        public static final int default_temporary_button=0x7f0a000b;
         public static final int dummy_button=0x7f0a000a;
-        public static final int editText1=0x7f0a000b;
+        public static final int editText1=0x7f0a001a;
         public static final int fullscreen_content=0x7f0a0008;
         public static final int fullscreen_content_controls=0x7f0a0009;
         public static final int imageView1=0x7f0a0001;
         public static final int imageView2=0x7f0a0002;
         public static final int imageView3=0x7f0a0003;
-        public static final int menuSweet=0x7f0a0019;
-        public static final int menuToast=0x7f0a001a;
-        public static final int rbBold=0x7f0a0011;
-        public static final int rbCenter=0x7f0a0014;
-        public static final int rbItalic=0x7f0a0010;
-        public static final int rbLeft=0x7f0a0013;
-        public static final int rbNormal=0x7f0a000f;
-        public static final int rbRight=0x7f0a0015;
-        public static final int rgGravity=0x7f0a0012;
-        public static final int rgStyle=0x7f0a000e;
+        public static final int menuSweet=0x7f0a0028;
+        public static final int menuToast=0x7f0a0029;
+        public static final int profile_1=0x7f0a0013;
+        public static final int profile_2=0x7f0a0018;
+        public static final int profile_3=0x7f0a0010;
+        public static final int profile_4=0x7f0a0016;
+        public static final int profile_5=0x7f0a000d;
+        public static final int profile_button_five=0x7f0a000e;
+        public static final int profile_button_four=0x7f0a0017;
+        public static final int profile_button_one=0x7f0a0014;
+        public static final int profile_button_three=0x7f0a0011;
+        public static final int profile_button_two=0x7f0a0019;
+        public static final int profile_five=0x7f0a0012;
+        public static final int profile_four=0x7f0a000f;
+        public static final int profile_three=0x7f0a0015;
+        public static final int rbBold=0x7f0a0020;
+        public static final int rbCenter=0x7f0a0023;
+        public static final int rbItalic=0x7f0a001f;
+        public static final int rbLeft=0x7f0a0022;
+        public static final int rbNormal=0x7f0a001e;
+        public static final int rbRight=0x7f0a0024;
+        public static final int rgGravity=0x7f0a0021;
+        public static final int rgStyle=0x7f0a001d;
         public static final int textView1=0x7f0a0000;
+        public static final int title_text_view=0x7f0a000c;
         public static final int tutorial1=0x7f0a0007;
         public static final int tutorial2=0x7f0a0006;
         public static final int tutorial3=0x7f0a0005;
         public static final int tutorial4=0x7f0a0004;
-        public static final int tvChange=0x7f0a0016;
-        public static final int tvGravity=0x7f0a000d;
-        public static final int tvStyle=0x7f0a000c;
+        public static final int tvChange=0x7f0a0025;
+        public static final int tvGravity=0x7f0a001c;
+        public static final int tvStyle=0x7f0a001b;
     }
     public static final class layout {
         public static final int about=0x7f030000;
@@ -103,8 +118,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int activity_main=0x7f030003;
         public static final int activity_main_game=0x7f030004;
         public static final int activity_settings_menu=0x7f030005;
-        public static final int splash=0x7f030006;
-        public static final int tutorial1=0x7f030007;
+        public static final int activity_the_profile_selector=0x7f030006;
+        public static final int splash=0x7f030007;
+        public static final int tutorial1=0x7f030008;
     }
     public static final class menu {
         public static final int help_screen=0x7f090000;
@@ -112,6 +128,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int main=0x7f090002;
         public static final int main_menu=0x7f090003;
         public static final int settings_menu=0x7f090004;
+        public static final int the_profile_selector=0x7f090005;
     }
     public static final class raw {
         public static final int button_click=0x7f040000;
@@ -130,10 +147,13 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int hello_world3=0x7f070005;
         public static final int hello_world4=0x7f070006;
         public static final int help_text=0x7f07000d;
+        public static final int profile_selector_title=0x7f070012;
         public static final int title_activity_help_screen=0x7f070007;
         public static final int title_activity_highscore_screen=0x7f070008;
         public static final int title_activity_main_game=0x7f070009;
+        public static final int title_activity_profile_selector=0x7f070010;
         public static final int title_activity_settings_menu=0x7f07000c;
+        public static final int title_activity_the_profile_selector=0x7f070011;
     }
     public static final class style {
         /** 

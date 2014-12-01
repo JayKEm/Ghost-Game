@@ -113,6 +113,8 @@ public class OurView extends SurfaceView implements Runnable{
 		initialized = true;
 		myLevel = new Level(3, 8); //debug level
 		
+		
+		//Change playerSprites variable setting into a giant if-else-else... to correlate playerSprites to profile selection.
 		playerSprites = BitmapFactory.decodeResource(getResources(), R.drawable.spritesheet);
 		ghostSprites = BitmapFactory.decodeResource(getResources(), R.drawable.gspritesheet);
 		goldCoin = BitmapFactory.decodeResource(getResources(), R.drawable.coin_gold);

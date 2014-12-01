@@ -88,9 +88,24 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.virginia.cs2110.rlc4sv.thebasics.MainMenu" />
+        </activity>
+        <activity
+            android:name="edu.virginia.cs2110.rlc4sv.thebasics.screens.TheProfileSelector"
+            android:label="@string/title_activity_the_profile_selector"
+            android:parentActivityName=".screens.MainMenu" >
+             <intent-filter>
+                <action android:name="edu.virginia.cs2110.rlc4sv.thebasics.THEPROFILESELECTOR" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.virginia.cs2110.rlc4sv.thebasics.screens.MainMenu" />
+            
         </activity>
     </application>
 
