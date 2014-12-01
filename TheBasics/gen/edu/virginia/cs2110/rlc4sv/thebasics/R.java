@@ -125,7 +125,6 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int player_hurt=0x7f040006;
         public static final int power_down=0x7f040007;
         public static final int power_up=0x7f040008;
-        public static final int splash_sound=0x7f040009;
     }
     public static final class string {
         public static final int action_settings=0x7f070002;

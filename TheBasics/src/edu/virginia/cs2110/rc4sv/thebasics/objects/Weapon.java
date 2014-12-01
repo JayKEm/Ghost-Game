@@ -61,4 +61,16 @@ public class Weapon extends Sprite {
 	public void setHasWeapon() {}
 	public void handleCollision() {}
 	public void interact(Player player){}
+
+	@Override
+	public void loseHealth() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getHealth() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

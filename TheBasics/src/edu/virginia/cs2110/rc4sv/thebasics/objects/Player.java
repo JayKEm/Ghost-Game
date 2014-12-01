@@ -68,7 +68,9 @@ public class Player extends Sprite {
 		
 		if(System.currentTimeMillis() - damageTimer > 5000) {
 			canGetHurt = true;
+			damageTimer = System.currentTimeMillis();
 		}
+		
 		
 		if(move){
 			ov.offsetX -= velocity.x;
@@ -102,7 +104,7 @@ public class Player extends Sprite {
 			if(isColliding(s) && !this.equals(s)){
 				if(s instanceof Ghost && !hasWeapon)
 					if (canGetHurt == true) {
-//						damage();
+						damage();
 //						MediaPlayer.create(ov.getContext(), R.raw.player_hurt).start();
 					}
 				if(s instanceof Tile || s instanceof Chest)
@@ -202,5 +204,11 @@ public class Player extends Sprite {
 
 	public void remove() {
 		interactable = null;
+	}
+
+	@Override
+	public void loseHealth() {
+		this.health --;
+		
 	}
 }
