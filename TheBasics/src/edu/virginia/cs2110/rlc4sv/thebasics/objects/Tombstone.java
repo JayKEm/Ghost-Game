@@ -23,7 +23,7 @@ public class Tombstone extends Entity {
 	//explosion!!!
 	public void interact(Player player) {
 		player.remove();
-		if(System.currentTimeMillis()-usageTimer<100)
+		if(System.currentTimeMillis()-usageTimer<10000)
 			return;
 
 		MediaPlayer.create(ov.getContext(), R.raw.tombstone).start();

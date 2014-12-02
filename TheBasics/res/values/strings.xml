@@ -18,19 +18,27 @@
     <string name="title_activity_settings_menu">SettingsMenu</string>
     <string name="help_text">
 <![CDATA[
-        This is your character! You can make him run around and the goal is to attack ghosts
-        and collect coins.
+ 		This is your character! You can make him run around and the goal is to attack ghosts
+        and collect coins
         \n
         \n
-        This is a ghost. You should do your best to avoid them until you are able to destroy
-        them. There are special items you can use to eviscerate these floating fiends!
+        This is a ghost. You can press the red button below to kill them and earn points
         \n
         \n
-        These are the special items that you can use to takedown the ghosts. Just run your
-        character over them to pick them up.
+        This is the button you can press to send out a fireball to kill ghosts
         \n
         \n
-        Picking up coins will help you to increase your score.
+        This is a treasure chest that you can stand in front of, click your character and then get 
+        extra coins
+        \n
+        \n
+        This is a shield you can pick up that will protect you from the ghosts
+        \n
+        \n
+        Picking up coins will help you to increase your score
+        \n
+        \n
+        You get 6 lives, which means you can only let a ghost touch you six times before game over
         ]]>
     </string>
     <string name="credits">Brought to you by Ryan, Julian, Alex, Zakey, and Davy.</string>
@@ -39,5 +47,6 @@
     <string name="title_activity_the_profile_selector">TheProfileSelector</string>
     <string name="profile_selector_title">Choose a profile!</string>
     <string name="title_activity_game_over">GameOver</string>
+    <string name="goodluck">Good Luck!</string>
 
 </resources>

@@ -16,33 +16,88 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:text="@string/help_text"
+        android:textColor="@color/black_overlay"
+        android:textSize="13sp"
         android:width="200dp" />
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/imageView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textView1"
-        android:layout_marginRight="32dp"
-        android:layout_marginTop="22dp"
-        android:layout_toLeftOf="@+id/textView1"
-        android:src="@drawable/spritechar" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/imageView3"
+        android:adjustViewBounds="true"
+        android:src="@drawable/coin_bronzepart" />
 
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/imageView1"
         android:layout_below="@+id/imageView1"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="37dp"
+        android:layout_toRightOf="@+id/imageView6"
+        android:adjustViewBounds="true"
         android:src="@drawable/gspritechar" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/imageView2"
+        android:layout_alignTop="@+id/textView1"
+        android:layout_marginTop="24dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/spritechar" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView2"
+        android:layout_marginTop="27dp"
+        android:layout_toRightOf="@+id/imageView6"
+        android:adjustViewBounds="true"
+        android:maxHeight="30dp"
+        android:maxWidth="30dp"
+        android:src="@drawable/fire" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView1"
+        android:layout_alignRight="@+id/imageView5"
+        android:layout_marginBottom="46dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/coin_silverpart" />
 
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textView1"
-        android:layout_alignLeft="@+id/imageView2"
+        android:layout_above="@+id/imageView7"
+        android:layout_alignLeft="@+id/imageView5"
+        android:adjustViewBounds="true"
         android:src="@drawable/coin_goldpart" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView4"
+        android:layout_marginTop="46dp"
+        android:layout_toRightOf="@+id/imageView6"
+        android:adjustViewBounds="true"
+        android:src="@drawable/chest_closed" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/imageView6"
+        android:layout_marginBottom="26dp"
+        android:layout_toRightOf="@+id/imageView6"
+        android:adjustViewBounds="true"
+        android:src="@drawable/shield" />
 
 </RelativeLayout>

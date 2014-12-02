@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.util.Log;
@@ -35,8 +36,7 @@ public class Player extends Sprite {
 	
 	public Player(OurView ov, Bitmap src, int x, int y, int cellX, int cellY){
 		super(ov, src , x, y);
-//		bounds = new Rect(x + width/4, y+8, x + width*ov.zoom, y + 28*ov.zoom+8);
-		bounds = new Rect(x + Tile.SIZE/4, y+Tile.SIZE/4, x + Tile.SIZE*ov.zoom, y + Tile.SIZE*ov.zoom);
+		bounds = new Rect(x + width/4 + 3, y+10, x + width*ov.zoom -12, y + 28*ov.zoom+6);
 		
 		ov.offsetX = x - cellX;
 		ov.offsetY = y - cellY;

@@ -281,7 +281,7 @@ public class Room {
 	public void spawnTombstone(){
 		double tomb = Math.random()*100;
 		
-		if(tomb<20){
+		if(tomb<10){
 			Vector v = (Vector) emptyCells.toArray()[emptyCells.size()/2];
 			emptyCells.remove(v);
 			items.add(new Tombstone(ov, level, ov.tombstone, v.x, v.y));

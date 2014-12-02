@@ -457,6 +457,25 @@ public class Level {
 		}
 	}
 
+	public int getNumSavedLevels(){
+		int id = 1;
+		boolean failed = false;
+		FileInputStream fis = null;
+
+		while(!failed){
+			try{
+				String filename = "level"+id+".txt";
+				fis = ov.getContext().openFileInput(filename);
+				fis.close();
+				id++;
+			} catch (Exception e){
+				Log.e("determining id", "level"+id+".txt not found");
+				failed = true;
+			}
+		}
+		return id;
+	}
+
 	public Player getPlayer() {
 		return this.player;
 	}

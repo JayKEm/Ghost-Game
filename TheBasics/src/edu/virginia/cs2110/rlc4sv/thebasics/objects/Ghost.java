@@ -116,7 +116,6 @@ public class Ghost extends Sprite {
 			}
 		}
 	}
-
 	
 	public void setFrozen() {
 		this.move=true;
