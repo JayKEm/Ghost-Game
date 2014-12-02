@@ -79,6 +79,7 @@ public class MainGame extends Activity implements OnTouchListener {
 		Rect bottom =new Rect(v.dw, v.getHeight()- v.dh, v.dw*2, v.getHeight());
 		Rect shoot1 =new Rect(v.dw*4, v.getHeight()- v.dh*2, v.dw*5, v.getHeight()-v.dh);
 		Rect shoot2 =new Rect(v.dw*6, v.getHeight()- v.dh*2, v.dw*7, v.getHeight()-v.dh);
+		Rect pause = new Rect(v.dw*8, v.getHeight()- v.dh*2, v.dw*9, v.getHeight()-v.dh);
 
 		if (player.isDead) {
 			ov.playSound(R.raw.game_over);
@@ -124,6 +125,8 @@ public class MainGame extends Activity implements OnTouchListener {
 						Bitmap iceboltSprites = BitmapFactory.decodeResource(getResources(), R.drawable.icebolt);
 						ov.getLevel().spawnIcebolt(iceboltSprites);
 						ov.playSound(R.raw.ice);
+					} else if(pause.contains(x, y)) {
+						ov.setIsPaused(!ov.getIsPaused());
 					}
 				}
 				break;

@@ -32,11 +32,13 @@ public class OurView extends SurfaceView implements Runnable{
 	private Bitmap coin;
 	private Bitmap button2;
 	private Bitmap blueball;
+	private Bitmap pausebutton;
 	private Bitmap playerSprites, ghostSprites, warning;
 	private Bitmap up, down, left, right, vignette, shield, fireball, icebolt;
 	private Level myLevel;
 	private Player player;
 	private ArrayList<MediaPlayer> sounds, soundsToRemove, soundsToAdd;
+	private boolean isPaused;
 	private float volume;
 	
 	public static final int DEFAULT_ZOOM = 2;
@@ -93,7 +95,9 @@ public class OurView extends SurfaceView implements Runnable{
 		canvas.drawColor(Color.BLACK);
 		
 		//level
+		if (this.isPaused == false) {
 		myLevel.updateRender(canvas);
+		}
 		
 		canvas.drawBitmap(vignette, null, new Rect(0,0,getWidth(),getHeight()), null);
 		
@@ -104,6 +108,7 @@ public class OurView extends SurfaceView implements Runnable{
 		canvas.drawBitmap(right, null, new Rect(dw*2, getHeight()- dh*2, dw*3, getHeight()-dh), null);
 		canvas.drawBitmap(button2, null, new Rect(dw*4, getHeight()- dh*2, dw*5, getHeight()-dh), null);
 		canvas.drawBitmap(blueball, null, new Rect(dw*6, getHeight()- dh*2, dw*7, getHeight()-dh), null);
+		canvas.drawBitmap(pausebutton , null, new Rect(dw*8, getHeight()- dh*2, dw*9, getHeight()-dh), null);
 
 		//player health 
 		int hw = heart.getWidth(); int hh = heart.getHeight(); 	int p = 2;
@@ -208,6 +213,7 @@ public class OurView extends SurfaceView implements Runnable{
 		fireball = BitmapFactory.decodeResource(getResources(), R.drawable.explode);
 		icebolt = BitmapFactory.decodeResource(getResources(), R.drawable.icebolt);
 		tombstone = BitmapFactory.decodeResource(getResources(), R.drawable.tombstone);
+		pausebutton = BitmapFactory.decodeResource(getResources(), R.drawable.pause_button);
 		volume = 1f;
 		
 		dw = up.getWidth();
@@ -266,5 +272,13 @@ public class OurView extends SurfaceView implements Runnable{
 	
 	public float getVolume() {
 		return volume;
+	}
+	
+	public void setIsPaused(boolean pause) {
+		this.isPaused=pause;
+	}
+	
+	public boolean getIsPaused() {
+		return this.isPaused;
 	}
 }
