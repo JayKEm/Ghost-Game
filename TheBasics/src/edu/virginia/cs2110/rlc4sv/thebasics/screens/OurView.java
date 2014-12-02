@@ -29,7 +29,7 @@ public class OurView extends SurfaceView implements Runnable{
 	private Bitmap coin;
 	private Bitmap button2;
 	private Bitmap blueball;
-	private Bitmap up, down, left, right;
+	private Bitmap up, down, left, right, vignette, shield;
 	private Level myLevel;
 	private Player player;
 	
@@ -46,7 +46,7 @@ public class OurView extends SurfaceView implements Runnable{
 
 	public void run() {
 		if(!initialized){
-			
+			create();
 		}
 		
 		while(!paused) {
@@ -74,6 +74,8 @@ public class OurView extends SurfaceView implements Runnable{
 		
 		//level
 		myLevel.updateRender(canvas);
+		
+		canvas.drawBitmap(vignette, null, new Rect(0,0,getWidth(),getHeight()), null);
 		
 		//gui
 		canvas.drawBitmap(up, null, new Rect(dw, getHeight()- dh*3, dw*2, getHeight()-dh*2), null);
@@ -152,6 +154,10 @@ public class OurView extends SurfaceView implements Runnable{
 	
 	public Bitmap getPlayerSprites(){
 		return playerSprites;
+	} 
+	
+	public Bitmap getShield(){
+		return shield;
 	}
 	
 	public void create(){
@@ -177,6 +183,8 @@ public class OurView extends SurfaceView implements Runnable{
 		openChest = BitmapFactory.decodeResource(getResources(), R.drawable.chest_open);
 		closedChest = BitmapFactory.decodeResource(getResources(), R.drawable.chest_closed);
 		warning = BitmapFactory.decodeResource(getResources(),  R.drawable.warning);
+		vignette = BitmapFactory.decodeResource(getResources(), R.drawable.vignette);
+		shield = BitmapFactory.decodeResource(getResources(), R.drawable.shield);
 		
 		dw = up.getWidth();
 		dh = up.getHeight();
@@ -184,6 +192,7 @@ public class OurView extends SurfaceView implements Runnable{
 		//create level
 		myLevel.generate(this);
 		player = myLevel.spawnPlayer(playerSprites);
+		((MainGame) getContext()).setPlayer(player);
 		myLevel.spawnGhosts(ghostSprites);
 		
 		for(Entity s : myLevel.getWorld())

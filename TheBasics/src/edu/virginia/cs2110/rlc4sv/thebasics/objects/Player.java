@@ -97,6 +97,8 @@ public class Player extends Sprite {
 //		Paint p = drawBounds(canvas);
 //		canvas.drawRect(interactBounds, p);
 		canvas.drawBitmap(image, src, dst, null);
+		if(hasWeapon)
+			canvas.drawBitmap(ov.getShield(), null, dst, null);
 	}
 
 	public void handleCollision() {

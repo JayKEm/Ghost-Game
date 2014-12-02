@@ -29,14 +29,16 @@ public class MainGame extends Activity implements OnTouchListener {
 	private Player player;
 	private int x, y;
 	private MediaPlayer logoMusic;
+	
+	public void setPlayer(Player player){
+		this.player = player;
+	}
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ov = new OurView(this);
 		ov.setOnTouchListener(this);
 
-		ov.create();
-		player = ov.getPlayer();
 		logoMusic = MediaPlayer.create(this, R.raw.dungeon_tremors);
 		logoMusic.start();
 		logoMusic.setLooping(true);
@@ -79,6 +81,7 @@ public class MainGame extends Activity implements OnTouchListener {
 				menuIntent.putExtra("EXTRA_COINS_COLLECTED", ov.getLevel().getCoinsCollected() + "");
 				startActivity(menuIntent);
 			}
+		}
 
 			try {
 				Thread.sleep(50);
@@ -127,7 +130,5 @@ public class MainGame extends Activity implements OnTouchListener {
 			}
 
 			return true;
-		}
-		return false;
 	}
 }

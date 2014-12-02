@@ -1,9 +1,5 @@
 package edu.virginia.cs2110.rlc4sv.thebasics.screens;
 
-import edu.virginia.cs2110.rlc4sv.thebasics.R;
-import edu.virginia.cs2110.rlc4sv.thebasics.R.id;
-import edu.virginia.cs2110.rlc4sv.thebasics.R.layout;
-import edu.virginia.cs2110.rlc4sv.thebasics.R.menu;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +7,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+import edu.virginia.cs2110.rlc4sv.thebasics.R;
 
 public class GameOver extends Activity {
 
