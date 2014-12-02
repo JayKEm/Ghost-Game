@@ -3,12 +3,12 @@
     package="edu.virginia.cs2110.rlc4sv.thebasics"
     android:versionCode="1"
     android:versionName="1.0" >
-            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-            <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <uses-sdk
         android:minSdkVersion="17"
         android:targetSdkVersion="19" />
+   
+    
 
     <application
         android:allowBackup="true"
@@ -119,5 +119,5 @@
             </intent-filter>
         </activity>
     </application>
-
+     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /><uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 </manifest>

@@ -1,20 +1,24 @@
 package edu.virginia.cs2110.rlc4sv.thebasics.objects;
 
-import java.io.DataInputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.media.MediaScannerConnection;
+import android.os.Environment;
 import android.util.Log;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 import edu.virginia.cs2110.rlc4sv.thebasics.util.Vector;
@@ -269,55 +273,72 @@ public class Level {
 	}
 
 	//load a predefinied level
-	@SuppressWarnings("deprecation")
 	public boolean loadFromFile(String filename){
 		//TODO complete file parsing
-		
 		if(!ov.isExternalStorageReadable())
 			return false;
-		
-		FileInputStream fis = null;
+
+		BufferedReader br = null;
 		emptyCells = new ArrayList<Vector>();
 		world = new ArrayList<Entity>();
+		File path = Environment.getDataDirectory();
 
 		try {
-			fis = ov.getContext().openFileInput(filename);
-			DataInputStream dataIO = new DataInputStream(fis);
-			String[] data, lines;
-			String file = "";
+			File levelData = new File(path, filename);
+			br = new BufferedReader(new FileReader(levelData));
+			String[] data;
+			String line = "";
 
-			while ((file = dataIO.readLine()) != null) {
-				lines = file.split(":");
+			while ((line = br.readLine()) != null) {
+				data = line.split(";");
+				Rect bounds = Rect.unflattenFromString(data[1]);
+				Vector location = Vector.unflatten(data[2]);
 
-				for(String line: lines){
-					data = line.split(";");
-					Rect bounds = Rect.unflattenFromString(data[1]);
-					Vector location = Vector.unflatten(data[2]);
+				if(data[0].equals("room")){
+					Room r;
+					Vector dimensions = Vector.unflatten(data[3]);
+					String[] doors = data[4].split("/");
 
-					if(data[0].equals("room")){
-						Room r;
-						Vector dimensions = Vector.unflatten(data[3]);
-						String[] doors = data[4].split("/");
+					r = new Room(ov, player, this, location.x, location.y, dimensions.x, dimensions.y);
+					r.setBounds(bounds);
+					for(String s : doors){
+						String[] tmp = s.split(" ");
+						r.addDoor(Vector.unflatten(tmp[0]), Integer.parseInt(tmp[1]));
+					}
 
-						r = new Room(ov, player, this, location.x, location.y, dimensions.x, dimensions.y);
-						r.setBounds(bounds);
-						for(String s : doors){
-							String[] tmp = s.split(" ");
-							r.addDoor(Vector.unflatten(tmp[0]), Integer.parseInt(tmp[1]));
-						}
+					r.createCells();
+					r.createWalls();
+					r.buildDoors();
+					r.buildWalls();
+					emptyCells.addAll(r.getEmptyCells());
+					rooms.add(r);
+				} if (data[0].equals("ghost")){
+					Ghost g = new Ghost(ov, ov.getGhostSprites(), location.x, location.y);
+					g.setDirection(Sprite.determineDirection(Vector.unflatten(data[3])));
+					world.add(g);
+				} if(data[0].equals("coin")){
+					int value = Integer.parseInt(data[1]);
+					Bitmap image = null;
 
-						r.createCells();
-						r.createWalls();
-						r.buildDoors();
-						r.buildWalls();
-						emptyCells.addAll(r.getEmptyCells());
-						rooms.add(r);
-					} if (data[0].equals("ghost")){
-						Ghost g = new Ghost(ov, ov.getGhostSprites(), location.x, location.y);
-						g.setDirection(Sprite.determineDirection(Vector.unflatten(data[3])));
-						world.add(g);
-					} if(data[0].equals("coin")){
-						int value = Integer.parseInt(data[1]);
+					switch(value){
+					case Coin.BRONZE_VALUE:
+						image = ov.bronzeCoin; 
+						break;
+					case Coin.SILVER_VALUE:
+						image = ov.silverCoin; 
+						break;
+					case Coin.GOLD_VALUE:
+						image = ov.goldCoin; 
+						break;
+					}
+
+					world.add(new Coin(ov, image, location.x, location.y));
+				} if(data[0].equals("chest")){
+					ArrayList<Coin> coins = new ArrayList<Coin>();
+					String[] tmp = data[3].split(" ");
+
+					for(String s : tmp){
+						int value = Integer.parseInt(s);
 						Bitmap image = null;
 
 						switch(value){
@@ -332,43 +353,19 @@ public class Level {
 							break;
 						}
 
-						world.add(new Coin(ov, image, location.x, location.y));
-					} if(data[0].equals("chest")){
-						ArrayList<Coin> coins = new ArrayList<Coin>();
-						String[] tmp = data[3].split(" ");
-
-						for(String s : tmp){
-							int value = Integer.parseInt(s);
-							Bitmap image = null;
-
-							switch(value){
-							case Coin.BRONZE_VALUE:
-								image = ov.bronzeCoin; 
-								break;
-							case Coin.SILVER_VALUE:
-								image = ov.silverCoin; 
-								break;
-							case Coin.GOLD_VALUE:
-								image = ov.goldCoin; 
-								break;
-							}
-
-							coins.add(new Coin(ov, image, location.x, location.y));
-						}
-
-						world.add(new Chest(ov, this, player, location.x, location.y, coins));
-					} if(data[0].equals("weapon")){
-						world.add(new Weapon(ov, ov.weaponSprites, location.x, location.y));
-					} if(data[0].equals("tombstone")){
-						world.add(new Tombstone(ov, this, ov.tombstone, location.x, location.y));
+						coins.add(new Coin(ov, image, location.x, location.y));
 					}
-					Log.e("reading",""+file);
+
+					world.add(new Chest(ov, this, player, location.x, location.y, coins));
+				} if(data[0].equals("weapon")){
+					world.add(new Weapon(ov, ov.weaponSprites, location.x, location.y));
+				} if(data[0].equals("tombstone")){
+					world.add(new Tombstone(ov, this, ov.tombstone, location.x, location.y));
 				}
+				Log.e("reading",""+line);
 			}
 
-			dataIO.close();
-			fis.close();
-
+			br.close();
 			logWorldContents();
 			return true;
 		}
@@ -382,12 +379,17 @@ public class Level {
 		//TODO
 		String line = "", filename = "level" + id + ".txt";
 		ArrayList<String> data = new ArrayList<String>();
-		
+		File path = Environment.getDataDirectory();
+
 		if(!ov.isExternalStorageWritable())
 			return false;
 
 		try {
-			FileOutputStream writer = ov.getContext().openFileOutput(filename, Context.MODE_PRIVATE);
+			File levelData = new File(path, filename);
+			BufferedWriter writer = new BufferedWriter(new FileWriter(levelData, true));
+			if(!levelData.exists())
+				levelData.createNewFile();
+
 			for(Room r : rooms){
 				line = "Room;";
 				line += r.getBounds().flattenToString()+";";
@@ -428,11 +430,14 @@ public class Level {
 			}
 
 			for(String s : data)
-				writer.write(s.getBytes());
+				writer.write(s);
+			MediaScannerConnection.scanFile(ov.getContext(),new String[] { levelData.toString() },
+					null, null);
 
+			writer.flush();
 			writer.close();
 		} catch (Exception e) {
-			Log.e("failed", e.getMessage());
+			Log.e("failed to save level", e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -442,13 +447,15 @@ public class Level {
 	private void determineID(){
 		id = 1;
 		boolean failed = false;
-		FileInputStream fis = null;
+		BufferedReader reader = null;
 
 		while(!failed){
 			try{
 				String filename = "level"+id+".txt";
-				fis = ov.getContext().openFileInput(filename);
-				fis.close();
+				File path = Environment.getDataDirectory();
+				File levelData = new File(path, filename);
+				reader = new BufferedReader(new FileReader(levelData));
+				reader.close();
 				id++;
 			} catch (Exception e){
 				Log.e("determining id", "level"+id+".txt not found");

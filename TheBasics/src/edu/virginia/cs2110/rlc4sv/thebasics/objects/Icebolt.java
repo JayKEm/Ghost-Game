@@ -20,7 +20,6 @@ public class Icebolt extends Sprite {
 		bounds = new Rect(x + width/4, y, x + width*2, y + height*2);
 	}
 
-	@Override 
 	public void update() {
 		try {
 			Thread.sleep(0);
@@ -36,23 +35,13 @@ public class Icebolt extends Sprite {
 				row=++row%6;
 				if(row==5)
 					level.removeFromWorld(this);
-					
 			}
-			
 		}
 
 		location.x += velocity.x;
 		location.y += velocity.y;
 		bounds.set(location.x + ov.offsetX + width/4, location.y + ov.offsetY, 
 				location.x + ov.offsetX + width*2, location.y + ov.offsetY + height*2);
-
-		
-		try{
-			//handleCollision();
-		} catch(NullPointerException e){
-			Log.d(id, "World must be set before collision can handled.");
-		}
-	
 	}	
 	
 	public void render(Canvas canvas) {
@@ -63,23 +52,15 @@ public class Icebolt extends Sprite {
 		Rect src = new Rect(srcX, srcY, srcX + width, srcY + height);
 		Rect dst = new Rect(location.x+ov.offsetX, location.y+ov.offsetY,location.x +ov.offsetX+ width*2, location.y+ov.offsetY + height*2);
 
-//		drawBounds(canvas);
 		canvas.drawBitmap(image, src, dst, null);
+//		drawBounds(canvas);
 	}
 	
 	public void handleCollision() {}
 	public void setHasWeapon() {}
 	public void interact(Player player){}
-
-	@Override
-	public void loseHealth() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
+	public void loseHealth() {}
 	public int getHealth() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

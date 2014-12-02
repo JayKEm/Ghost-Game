@@ -126,7 +126,7 @@ public abstract class Sprite extends Entity {
 		location.x = location.x - velocity.x;
 		location.y = location.y - velocity.y;
 		
-		bounds.offset(-velocity.x, - velocity.y);
+		bounds.offset(-velocity.x*2, - velocity.y*2);
 		move = false;
 	}
 	

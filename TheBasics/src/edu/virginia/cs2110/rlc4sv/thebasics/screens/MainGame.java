@@ -8,6 +8,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -64,6 +66,8 @@ public class MainGame extends Activity implements OnTouchListener {
 		ov.pause();
 		logoMusic.release();
 	}
+	
+	
 
 	public boolean onTouch(View s, MotionEvent me) {
 		OurView v = (OurView) s;
@@ -131,6 +135,13 @@ public class MainGame extends Activity implements OnTouchListener {
 			}
 
 			return true;
+	}
+
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		MenuInflater awesome = getMenuInflater();
+		awesome.inflate(R.menu.main_menu, menu);
+		return true;
 	}
 
 	public MediaPlayer getMusic() {

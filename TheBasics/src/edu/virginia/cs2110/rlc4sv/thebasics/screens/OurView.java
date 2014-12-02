@@ -36,7 +36,7 @@ public class OurView extends SurfaceView implements Runnable{
 	private Bitmap up, down, left, right, vignette, shield, fireball, icebolt;
 	private Level myLevel;
 	private Player player;
-	private ArrayList<MediaPlayer> sounds, soundsToRemove;
+	private ArrayList<MediaPlayer> sounds, soundsToRemove, soundsToAdd;
 	private float volume;
 	
 	public static final int DEFAULT_ZOOM = 2;
@@ -50,6 +50,7 @@ public class OurView extends SurfaceView implements Runnable{
 		holder = getHolder();
 		sounds = new ArrayList<MediaPlayer>();
 		soundsToRemove = new ArrayList<MediaPlayer>();
+		soundsToAdd = new ArrayList<MediaPlayer>();
 	}
 
 	public void run() {
@@ -69,12 +70,16 @@ public class OurView extends SurfaceView implements Runnable{
 			if (myLevel.ghosts <= 0)
 				Log.i("no ghosts on level","");
 			
+			sounds.addAll(soundsToAdd);
 			for(MediaPlayer m: sounds)
 				if(!m.isPlaying()){
 					m.release();
 					soundsToRemove.add(m);
 				}
 			sounds.removeAll(soundsToRemove);
+			
+			soundsToAdd = new ArrayList<MediaPlayer>();
+			soundsToRemove = new ArrayList<MediaPlayer>();
 		}
 	}
 	
@@ -249,7 +254,7 @@ public class OurView extends SurfaceView implements Runnable{
 		MediaPlayer m = MediaPlayer.create(getContext(), resid);
 		m.setVolume(volume, volume);
 		m.start();
-		sounds.add(m);
+		soundsToAdd.add(m);
 	}
 	
 	public void setVolume(float v){
