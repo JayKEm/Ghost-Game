@@ -80,6 +80,9 @@ public class MainGame extends Activity implements OnTouchListener {
 		Rect shoot1 =new Rect(v.dw*4, v.getHeight()- v.dh*2, v.dw*5, v.getHeight()-v.dh);
 		Rect shoot2 =new Rect(v.dw*6, v.getHeight()- v.dh*2, v.dw*7, v.getHeight()-v.dh);
 		Rect pause = new Rect(v.dw*8, v.getHeight()- v.dh*2, v.dw*9, v.getHeight()-v.dh);
+		//Rect resume
+		//Rect quit
+		//Rect newGame
 
 		if (player.isDead) {
 			ov.playSound(R.raw.game_over);
@@ -126,8 +129,25 @@ public class MainGame extends Activity implements OnTouchListener {
 						ov.getLevel().spawnIcebolt(iceboltSprites);
 						ov.playSound(R.raw.ice);
 					} else if(pause.contains(x, y)) {
-						ov.setIsPaused(!ov.getIsPaused());
+						ov.setIsPaused(true);
 					}
+					/**
+					 * else if (resume.contains(x , y) {
+					 * ov.setIsPaused(false);
+					 * }
+					 * else if (quit.contains (x, y) {
+					 * 	ov.playSound(R.raw.game_over);
+			Intent menuIntent = new Intent("edu.virginia.cs2110.rlc4sv.thebasics.GAMEOVER");
+			menuIntent.putExtra("EXTRA_GHOSTS_KILLED" , player.ghostsKilled + "");
+			menuIntent.putExtra("EXTRA_COINS_COLLECTED", player.score + "");
+			startActivity(menuIntent);
+					 * }
+					 * else if (newGame.contains (x, y) {
+					 * Intent menuIntent = new Intent(edu.virginia.cs2110.rlc4sv.thebasics.MAINGAME");
+					 * startActivity(menuIntent);
+					 * }
+					 *
+					 */
 				}
 				break;
 			case MotionEvent.ACTION_MOVE:
