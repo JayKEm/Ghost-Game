@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.media.MediaPlayer;
 import edu.virginia.cs2110.rlc4sv.thebasics.R;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 
@@ -80,7 +79,7 @@ public class Chest extends Entity {
 			return;
 		open = true;
 		image = openImage;
-		MediaPlayer.create(ov.getContext(), R.raw.chest).start();
+		ov.playSound(R.raw.chest);
 		
 		this.player = player;
 		player.locked = true;
@@ -94,7 +93,7 @@ public class Chest extends Entity {
 			level.removeFromWorld(current);
 			current = (Coin) coins.toArray()[(int) Math.random()*coins.size()];
 			
-			MediaPlayer.create(ov.getContext(), R.raw.coin).start();
+			ov.playSound(R.raw.coin);
 			level.addToWorld(current);
 			coins.remove(current);
 			player.score += current.getValue();

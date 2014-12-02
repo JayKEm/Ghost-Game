@@ -5,9 +5,7 @@ import java.util.Locale;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Rect;
-import android.media.MediaPlayer;
 import android.util.Log;
 import edu.virginia.cs2110.rlc4sv.thebasics.R;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
@@ -64,7 +62,7 @@ public class Player extends Sprite {
 		}
 		
 		if(hasWeapon() && (System.currentTimeMillis() - weaponTimer > 25000)) {
-			MediaPlayer.create(ov.getContext(), R.raw.power_down).start();
+			ov.playSound(R.raw.power_down);
 			loseWeapon();
 		}
 		
@@ -108,19 +106,19 @@ public class Player extends Sprite {
 				if(s instanceof Ghost && !hasWeapon)
 					if (canGetHurt == true) {
 						damage();
-						MediaPlayer.create(ov.getContext(), R.raw.player_hurt).start();
+						ov.playSound(R.raw.player_hurt);
 					}
 				if(s instanceof Tile || s instanceof Chest){
 					reAdjust();
 				} if(s instanceof Coin && !locked){
 					score += ((Coin) s).getValue();
 					coinsCollected++;
-					MediaPlayer.create(ov.getContext(), R.raw.coin).start();
+					ov.playSound(R.raw.coin);
 					level.removeFromWorld(s);
 				} if(s instanceof Weapon){
 					setHasWeapon();
 					level.removeFromWorld(s);
-					MediaPlayer.create(ov.getContext(), R.raw.power_up).start();
+					ov.playSound(R.raw.power_up);
 				} 
 			} if(Rect.intersects(s.getBounds(), interactBounds))
 				if(interactableList.contains(s.id.toLowerCase(Locale.getDefault())))
@@ -131,10 +129,10 @@ public class Player extends Sprite {
 	public void damage() {		
 		this.loseHealth();
 		setCanGetHurt(false);
-
-
+		
 		if (this.getHealth() <= 0) {
 			isDead = true;
+			
 		}
 	}
 
@@ -192,7 +190,7 @@ public class Player extends Sprite {
 	public void killGhost() {
 		this.ghostsKilled++;
 		score+=100;
-		MediaPlayer.create(ov.getContext(), R.raw.ghost).start();
+		ov.playSound(R.raw.ghost);
 	}
 	
 	public int getGhostsKilled () {

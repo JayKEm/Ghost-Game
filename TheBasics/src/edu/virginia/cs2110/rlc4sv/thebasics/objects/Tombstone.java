@@ -1,7 +1,6 @@
 package edu.virginia.cs2110.rlc4sv.thebasics.objects;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
-import android.media.MediaPlayer;
 import edu.virginia.cs2110.rlc4sv.thebasics.R;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 import edu.virginia.cs2110.rlc4sv.thebasics.util.Vector;
@@ -26,7 +25,7 @@ public class Tombstone extends Entity {
 		if(System.currentTimeMillis()-usageTimer<10000)
 			return;
 
-		MediaPlayer.create(ov.getContext(), R.raw.tombstone).start();
+		ov.playSound(R.raw.tombstone);
 		usageTimer = System.currentTimeMillis();
 		Fireball f = new Fireball(ov, ov.getFireball(), location.x, location.y);
 		f.setVelocity(new Vector(Sprite.DEFAULT_SPEED*2, 0));

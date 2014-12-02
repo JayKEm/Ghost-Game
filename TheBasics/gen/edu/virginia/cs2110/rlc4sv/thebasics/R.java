@@ -154,14 +154,15 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int coin=0x7f040002;
         public static final int dungeon_tremors=0x7f040003;
         public static final int fire=0x7f040004;
-        public static final int ghost=0x7f040005;
-        public static final int ghost_freeze=0x7f040006;
-        public static final int ice=0x7f040007;
-        public static final int player_hurt=0x7f040008;
-        public static final int power_down=0x7f040009;
-        public static final int power_up=0x7f04000a;
-        public static final int splash_sound=0x7f04000b;
-        public static final int tombstone=0x7f04000c;
+        public static final int game_over=0x7f040005;
+        public static final int ghost=0x7f040006;
+        public static final int ghost_freeze=0x7f040007;
+        public static final int ice=0x7f040008;
+        public static final int player_hurt=0x7f040009;
+        public static final int power_down=0x7f04000a;
+        public static final int power_up=0x7f04000b;
+        public static final int splash_sound=0x7f04000c;
+        public static final int tombstone=0x7f04000d;
     }
     public static final class string {
         public static final int action_settings=0x7f070002;

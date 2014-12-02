@@ -77,6 +77,7 @@ public class MainGame extends Activity implements OnTouchListener {
 		Rect shoot2 =new Rect(v.dw*6, v.getHeight()- v.dh*2, v.dw*7, v.getHeight()-v.dh);
 
 		if (player.isDead) {
+			ov.playSound(R.raw.game_over);
 			Intent menuIntent = new Intent("edu.virginia.cs2110.rlc4sv.thebasics.GAMEOVER");
 			menuIntent.putExtra("EXTRA_GHOSTS_KILLED" , player.ghostsKilled + "");
 			menuIntent.putExtra("EXTRA_COINS_COLLECTED", player.score + "");
@@ -114,11 +115,11 @@ public class MainGame extends Activity implements OnTouchListener {
 					} else if(shoot1.contains(x, y)) {
 						Bitmap fireballSprites = BitmapFactory.decodeResource(getResources(), R.drawable.explode);
 						ov.getLevel().spawnFireball(fireballSprites);
-						MediaPlayer.create(ov.getContext(), R.raw.fire).start();
+						ov.playSound(R.raw.fire);
 					} else if(shoot2.contains(x, y)) {
 						Bitmap iceboltSprites = BitmapFactory.decodeResource(getResources(), R.drawable.icebolt);
 						ov.getLevel().spawnIcebolt(iceboltSprites);
-						MediaPlayer.create(ov.getContext(), R.raw.ice).start();
+						ov.playSound(R.raw.ice);
 					}
 				}
 				break;
@@ -130,5 +131,9 @@ public class MainGame extends Activity implements OnTouchListener {
 			}
 
 			return true;
+	}
+
+	public MediaPlayer getMusic() {
+		return logoMusic;
 	}
 }

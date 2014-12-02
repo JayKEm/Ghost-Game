@@ -3,7 +3,6 @@ package edu.virginia.cs2110.rlc4sv.thebasics.objects;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.media.MediaPlayer;
 import edu.virginia.cs2110.rlc4sv.thebasics.R;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 import edu.virginia.cs2110.rlc4sv.thebasics.util.Vector;
@@ -111,7 +110,7 @@ public class Ghost extends Sprite {
 				}
 			if(isColliding(s) && s instanceof Icebolt){
 				if(!frozen)
-					MediaPlayer.create(ov.getContext(), R.raw.ghost_freeze).start();
+					ov.playSound(R.raw.ghost_freeze);
 				setFrozen();
 			}
 		}

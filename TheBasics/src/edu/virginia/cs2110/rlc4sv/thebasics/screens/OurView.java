@@ -1,5 +1,7 @@
 package edu.virginia.cs2110.rlc4sv.thebasics.screens;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
+import android.media.MediaPlayer;
 import android.os.Environment;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -33,6 +36,8 @@ public class OurView extends SurfaceView implements Runnable{
 	private Bitmap up, down, left, right, vignette, shield, fireball, icebolt;
 	private Level myLevel;
 	private Player player;
+	private ArrayList<MediaPlayer> sounds, soundsToRemove;
+	private float volume;
 	
 	public static final int DEFAULT_ZOOM = 2;
 	public int dw, dh, zoom = DEFAULT_ZOOM;
@@ -43,6 +48,8 @@ public class OurView extends SurfaceView implements Runnable{
 	public OurView(Context context) {
 		super(context);
 		holder = getHolder();
+		sounds = new ArrayList<MediaPlayer>();
+		soundsToRemove = new ArrayList<MediaPlayer>();
 	}
 
 	public void run() {
@@ -61,6 +68,13 @@ public class OurView extends SurfaceView implements Runnable{
 			
 			if (myLevel.ghosts <= 0)
 				Log.i("no ghosts on level","");
+			
+			for(MediaPlayer m: sounds)
+				if(!m.isPlaying()){
+					m.release();
+					soundsToRemove.add(m);
+				}
+			sounds.removeAll(soundsToRemove);
 		}
 	}
 	
@@ -189,6 +203,7 @@ public class OurView extends SurfaceView implements Runnable{
 		fireball = BitmapFactory.decodeResource(getResources(), R.drawable.explode);
 		icebolt = BitmapFactory.decodeResource(getResources(), R.drawable.icebolt);
 		tombstone = BitmapFactory.decodeResource(getResources(), R.drawable.tombstone);
+		volume = 1f;
 		
 		dw = up.getWidth();
 		dh = up.getHeight();
@@ -228,5 +243,23 @@ public class OurView extends SurfaceView implements Runnable{
 	        return true;
 	    }
 	    return false;
+	}
+
+	public void playSound(int resid) {
+		MediaPlayer m = MediaPlayer.create(getContext(), resid);
+		m.setVolume(volume, volume);
+		m.start();
+		sounds.add(m);
+	}
+	
+	public void setVolume(float v){
+		volume = v;
+		MediaPlayer m = ((MainGame) getContext()).getMusic();
+		if (m!=null)
+			m.setVolume(volume, volume);
+	}
+	
+	public float getVolume() {
+		return volume;
 	}
 }
