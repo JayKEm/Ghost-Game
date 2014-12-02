@@ -55,6 +55,7 @@ public class MainGame extends Activity implements OnTouchListener {
 		} catch (IllegalStateException e){
 			logoMusic = MediaPlayer.create(this, R.raw.dungeon_tremors);
 			logoMusic.start();
+			logoMusic.setLooping(true);
 		}
 	}
 
@@ -66,6 +67,7 @@ public class MainGame extends Activity implements OnTouchListener {
 
 	public boolean onTouch(View s, MotionEvent me) {
 		OurView v = (OurView) s;
+		if(player==null) return false; //if user taps the screen when level is initializing
 
 		Rect left = new Rect(0, v.getHeight()- v.dh*2, v.dw, v.getHeight()-v.dh);
 		Rect top = new Rect(v.dw, v.getHeight()- v.dh*3, v.dw*2, v.getHeight()-v.dh*2);
@@ -75,12 +77,10 @@ public class MainGame extends Activity implements OnTouchListener {
 		Rect shoot2 =new Rect(v.dw*6, v.getHeight()- v.dh*2, v.dw*7, v.getHeight()-v.dh);
 
 		if (player.isDead) {
-			if (!this.ov.getMyLevel().getWorld().contains(ov.getPlayer())) {
-				Intent menuIntent = new Intent("edu.virginia.cs2110.rlc4sv.thebasics.GAMEOVER");
-				menuIntent.putExtra("EXTRA_GHOSTS_KILLED" , player.ghostsKilled + "");
-				menuIntent.putExtra("EXTRA_COINS_COLLECTED", ov.getLevel().getCoinsCollected() + "");
-				startActivity(menuIntent);
-			}
+			Intent menuIntent = new Intent("edu.virginia.cs2110.rlc4sv.thebasics.GAMEOVER");
+			menuIntent.putExtra("EXTRA_GHOSTS_KILLED" , player.ghostsKilled + "");
+			menuIntent.putExtra("EXTRA_COINS_COLLECTED", player.score + "");
+			startActivity(menuIntent);
 		}
 
 			try {
@@ -118,7 +118,7 @@ public class MainGame extends Activity implements OnTouchListener {
 					} else if(shoot2.contains(x, y)) {
 						Bitmap iceboltSprites = BitmapFactory.decodeResource(getResources(), R.drawable.icebolt);
 						ov.getLevel().spawnIcebolt(iceboltSprites);
-						MediaPlayer.create(ov.getContext(), R.raw.fire).start();
+						MediaPlayer.create(ov.getContext(), R.raw.ice).start();
 					}
 				}
 				break;

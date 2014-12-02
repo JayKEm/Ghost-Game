@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
+import android.os.Environment;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -23,13 +24,13 @@ public class OurView extends SurfaceView implements Runnable{
 	private Thread t = null;
 	private SurfaceHolder holder;
 	private boolean paused = false;
-	private Bitmap playerSprites, ghostSprites, warning;
 	private Bitmap weaponLogo;
 	private Bitmap heart;
 	private Bitmap coin;
 	private Bitmap button2;
 	private Bitmap blueball;
-	private Bitmap up, down, left, right, vignette, shield;
+	private Bitmap playerSprites, ghostSprites, warning;
+	private Bitmap up, down, left, right, vignette, shield, fireball, icebolt;
 	private Level myLevel;
 	private Player player;
 	
@@ -37,7 +38,7 @@ public class OurView extends SurfaceView implements Runnable{
 	public int dw, dh, zoom = DEFAULT_ZOOM;
 	public int offsetX, offsetY; //visual offset of level
 	public boolean initialized = false;
-	public Bitmap closedChest, openChest, goldCoin, silverCoin, bronzeCoin, weaponSprites;
+	public Bitmap closedChest, openChest, goldCoin, silverCoin, bronzeCoin, weaponSprites, tombstone;
 	
 	public OurView(Context context) {
 		super(context);
@@ -115,9 +116,9 @@ public class OurView extends SurfaceView implements Runnable{
 					v.x + player.getWidth()+ ww/2, v.y + 2), null);
 		
 		//debug
-//		String debugText = ""+(1+myLevel.shownRooms)+"/"+myLevel.getRooms().size(); 
 //		String debugText = "       <"+(int)((player.getLocation().x-offsetX)/(Tile.SIZE*zoom))+
 //				","+(int)((player.getLocation().y-offsetY)/(Tile.SIZE*zoom))+">";
+//		String debugText = ""+player.isDead+" : "+player.health;
 //		canvas.drawText(debugText, getWidth() - 4 - debugText.length()*10, 50, paint);
 	}
 
@@ -162,7 +163,7 @@ public class OurView extends SurfaceView implements Runnable{
 	
 	public void create(){
 		initialized = true;
-		myLevel = new Level(this, 20, 8); //debug level
+		myLevel = new Level(this, 10, 8); //debug level
 		
 		//Change playerSprites variable setting into a giant if-else-else... to correlate playerSprites to profile selection.
 		playerSprites = BitmapFactory.decodeResource(getResources(), R.drawable.spritesheet);
@@ -185,6 +186,9 @@ public class OurView extends SurfaceView implements Runnable{
 		warning = BitmapFactory.decodeResource(getResources(),  R.drawable.warning);
 		vignette = BitmapFactory.decodeResource(getResources(), R.drawable.vignette);
 		shield = BitmapFactory.decodeResource(getResources(), R.drawable.shield);
+		fireball = BitmapFactory.decodeResource(getResources(), R.drawable.explode);
+		icebolt = BitmapFactory.decodeResource(getResources(), R.drawable.icebolt);
+		tombstone = BitmapFactory.decodeResource(getResources(), R.drawable.tombstone);
 		
 		dw = up.getWidth();
 		dh = up.getHeight();
@@ -193,10 +197,36 @@ public class OurView extends SurfaceView implements Runnable{
 		myLevel.generate(this);
 		player = myLevel.spawnPlayer(playerSprites);
 		((MainGame) getContext()).setPlayer(player);
-		myLevel.spawnGhosts(ghostSprites);
 		
 		for(Entity s : myLevel.getWorld())
 			if (s instanceof Sprite)
 				((Sprite) s).setWorld(myLevel.getWorld());
+	}
+
+	public Bitmap getFireball() {
+		return fireball;
+	}
+	
+	public Bitmap getIcebolt(){
+		return icebolt;
+	}
+	
+	/* Checks if external storage is available for read and write */
+	public boolean isExternalStorageWritable() {
+	    String state = Environment.getExternalStorageState();
+	    if (Environment.MEDIA_MOUNTED.equals(state)) {
+	        return true;
+	    }
+	    return false;
+	}
+
+	/* Checks if external storage is available to at least read */
+	public boolean isExternalStorageReadable() {
+	    String state = Environment.getExternalStorageState();
+	    if (Environment.MEDIA_MOUNTED.equals(state) ||
+	        Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+	        return true;
+	    }
+	    return false;
 	}
 }

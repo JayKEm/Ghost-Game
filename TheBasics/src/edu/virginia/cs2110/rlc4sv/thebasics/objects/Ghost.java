@@ -3,6 +3,8 @@ package edu.virginia.cs2110.rlc4sv.thebasics.objects;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.media.MediaPlayer;
+import edu.virginia.cs2110.rlc4sv.thebasics.R;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 import edu.virginia.cs2110.rlc4sv.thebasics.util.Vector;
 
@@ -50,11 +52,11 @@ public class Ghost extends Sprite {
 			changeFrame2=0; 
 		}
 		if(frozen){
-		unfreezeFrame++;
-		if(unfreezeFrame==100) {
-			setMove(false);
-			frozen = false;
-		}
+			unfreezeFrame++;
+			if(unfreezeFrame==100) {
+				setMove(false);
+				frozen = false;
+			}
 		}
 		//change VALUE for testing
 
@@ -64,7 +66,7 @@ public class Ghost extends Sprite {
 			bounds.set(location.x + ov.offsetX + width/4, location.y + ov.offsetY, 
 					location.x + ov.offsetX + width*ov.zoom, location.y + ov.offsetY + height*ov.zoom);
 		}
-		
+
 		double distance = (new Vector(location.x + ov.offsetX - player.location.x,
 				location.y + ov.offsetY - player.location.y)).magnitude();
 		if(distance < 500)
@@ -80,6 +82,7 @@ public class Ghost extends Sprite {
 	
 	
 	public void randomDirection() {
+		if (frozen) return;
 		int x = (int) ((Math.random()*100));
 
 		if(x < 25)
@@ -103,12 +106,12 @@ public class Ghost extends Sprite {
 				if (((Player) s).hasWeapon() == true) {
 					this.damage();
 				}
-			if(isColliding(s) && frozen && s instanceof Fireball)
-				{
+			if(isColliding(s) && frozen && s instanceof Fireball){
 					this.damage();
 				}
-			if(isColliding(s) && s instanceof Icebolt)
-			{
+			if(isColliding(s) && s instanceof Icebolt){
+				if(!frozen)
+					MediaPlayer.create(ov.getContext(), R.raw.ghost_freeze).start();
 				setFrozen();
 			}
 		}

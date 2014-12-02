@@ -18,7 +18,7 @@ public class Player extends Sprite {
 	public boolean locked = false, isDead = false;
 	public Entity interactable;
 	private boolean hasWeapon;
-	public int ghostsKilled;
+	public int ghostsKilled, coinsCollected;
 	private long weaponTimer;
 	private boolean canGetHurt;
 	private long damageTimer;
@@ -27,6 +27,7 @@ public class Player extends Sprite {
 	
 	static {
 		interactableList.add("chest");
+		interactableList.add("tombstone");
 	}
 	
 	public static int MAX_HEALTH = 6;
@@ -34,7 +35,8 @@ public class Player extends Sprite {
 	
 	public Player(OurView ov, Bitmap src, int x, int y, int cellX, int cellY){
 		super(ov, src , x, y);
-		bounds = new Rect(x + width/4, y+8, x + width*ov.zoom, y + 28*ov.zoom+8);
+//		bounds = new Rect(x + width/4, y+8, x + width*ov.zoom, y + 28*ov.zoom+8);
+		bounds = new Rect(x + Tile.SIZE/4, y+Tile.SIZE/4, x + Tile.SIZE*ov.zoom, y + Tile.SIZE*ov.zoom);
 		
 		ov.offsetX = x - cellX;
 		ov.offsetY = y - cellY;
@@ -71,7 +73,6 @@ public class Player extends Sprite {
 			damageTimer = System.currentTimeMillis();
 		}
 		
-		
 		if(move){
 			ov.offsetX -= velocity.x;
 			ov.offsetY -= velocity.y;
@@ -81,7 +82,7 @@ public class Player extends Sprite {
 			remove();
 			handleCollision();
 		} catch(NullPointerException e){
-			Log.i(id, "World must be set before collision can handled.");
+			Log.i(id, "World must be set before collision can be handled.");
 		}
 	}
 
@@ -94,11 +95,11 @@ public class Player extends Sprite {
 		Rect dst = new Rect(location.x, location.y, location.x + width*ov.zoom, location.y + height*ov.zoom);
 		
 		updateIBounds();
-//		Paint p = drawBounds(canvas);
-//		canvas.drawRect(interactBounds, p);
 		canvas.drawBitmap(image, src, dst, null);
 		if(hasWeapon)
 			canvas.drawBitmap(ov.getShield(), null, dst, null);
+//		Paint p = drawBounds(canvas);
+//		canvas.drawRect(interactBounds, p);
 	}
 
 	public void handleCollision() {
@@ -113,6 +114,7 @@ public class Player extends Sprite {
 					reAdjust();
 				} if(s instanceof Coin && !locked){
 					score += ((Coin) s).getValue();
+					coinsCollected++;
 					MediaPlayer.create(ov.getContext(), R.raw.coin).start();
 					level.removeFromWorld(s);
 				} if(s instanceof Weapon){

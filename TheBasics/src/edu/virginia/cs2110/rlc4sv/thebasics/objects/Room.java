@@ -102,6 +102,7 @@ public class Room {
 		//spawn items
 		items = new ArrayList<Entity>();
 		spawnChest();
+		spawnTombstone();
 		spawnCoins(ov.bronzeCoin, 5);
 		spawnCoins(ov.silverCoin, 4, -3);
 		spawnCoins(ov.goldCoin, 4);
@@ -275,6 +276,16 @@ public class Room {
 				items.add(new Chest(ov, level, player, location.x, location.y));
 			}	
 		}	
+	}
+	
+	public void spawnTombstone(){
+		double tomb = Math.random()*100;
+		
+		if(tomb<20){
+			Vector v = (Vector) emptyCells.toArray()[emptyCells.size()/2];
+			emptyCells.remove(v);
+			items.add(new Tombstone(ov, level, ov.tombstone, v.x, v.y));
+		}
 	}
 	
 	public void spawnCoins(Bitmap image, int max){

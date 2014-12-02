@@ -24,8 +24,8 @@ public class Tile extends Entity{
 		
 		bounds.set(location.x + ov.offsetX + width/4, location.y + ov.offsetY + height/4, 
 				location.x + ov.offsetX + width*ov.zoom, location.y + ov.offsetY + height*ov.zoom);
-//		drawBounds(canvas);
 		canvas.drawBitmap(image, null, dst, null);
+//		drawBounds(canvas);
 	}
 
 	public void interact(Player player){}
