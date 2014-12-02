@@ -102,13 +102,14 @@ public class OurView extends SurfaceView implements Runnable{
 		canvas.drawBitmap(vignette, null, new Rect(0,0,getWidth(),getHeight()), null);
 		
 		//gui
+		if (this.isPaused == true) {
 		canvas.drawBitmap(up, null, new Rect(dw, getHeight()- dh*3, dw*2, getHeight()-dh*2), null);
 		canvas.drawBitmap(down, null, new Rect(dw, getHeight()- dh, dw*2, getHeight()), null);
 		canvas.drawBitmap(left, null, new Rect(0, getHeight()- dh*2, dw, getHeight()-dh), null);
 		canvas.drawBitmap(right, null, new Rect(dw*2, getHeight()- dh*2, dw*3, getHeight()-dh), null);
 		canvas.drawBitmap(button2, null, new Rect(dw*4, getHeight()- dh*2, dw*5, getHeight()-dh), null);
 		canvas.drawBitmap(blueball, null, new Rect(dw*6, getHeight()- dh*2, dw*7, getHeight()-dh), null);
-		canvas.drawBitmap(pausebutton , null, new Rect(dw*8, getHeight()- dh*2, dw*9, getHeight()-dh), null);
+		canvas.drawBitmap(pausebutton , null, new Rect(dw*8, getHeight()- dh*2, dw*9, getHeight()-dh), null);}
 
 		//player health 
 		int hw = heart.getWidth(); int hh = heart.getHeight(); 	int p = 2;
