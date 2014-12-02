@@ -30,11 +30,11 @@ public class Icebolt extends Sprite {
 		
 		changeFrame++;
 		if(changeFrame == 2){
-			currentFrame = ++currentFrame % 5;
+			currentFrame = ++currentFrame % 6;
 			changeFrame=0;
-			if(currentFrame % 5==0){
-				row=++row%5;
-				if(row==4)
+			if(currentFrame % 6==0){
+				row=++row%6;
+				if(row==5)
 					level.removeFromWorld(this);
 					
 			}
