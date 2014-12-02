@@ -1,6 +1,6 @@
 package edu.virginia.cs2110.rlc4sv.thebasics.util;
 
-import edu.virginia.cs2110.rc4sv.thebasics.objects.Tile;
+import edu.virginia.cs2110.rlc4sv.thebasics.objects.Tile;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 
 public class Vector {

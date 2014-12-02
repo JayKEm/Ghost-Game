@@ -11,11 +11,11 @@ import android.graphics.Rect;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import edu.virginia.cs2110.rc4sv.thebasics.objects.Entity;
-import edu.virginia.cs2110.rc4sv.thebasics.objects.Level;
-import edu.virginia.cs2110.rc4sv.thebasics.objects.Player;
-import edu.virginia.cs2110.rc4sv.thebasics.objects.Sprite;
 import edu.virginia.cs2110.rlc4sv.thebasics.R;
+import edu.virginia.cs2110.rlc4sv.thebasics.objects.Entity;
+import edu.virginia.cs2110.rlc4sv.thebasics.objects.Level;
+import edu.virginia.cs2110.rlc4sv.thebasics.objects.Player;
+import edu.virginia.cs2110.rlc4sv.thebasics.objects.Sprite;
 import edu.virginia.cs2110.rlc4sv.thebasics.util.Vector;
 
 public class OurView extends SurfaceView implements Runnable{
@@ -45,8 +45,10 @@ public class OurView extends SurfaceView implements Runnable{
 	}
 
 	public void run() {
-		if(!initialized)
-			create();
+		if(!initialized){
+			
+		}
+		
 		while(!paused) {
 			if(!holder.getSurface().isValid()) {
 				continue;

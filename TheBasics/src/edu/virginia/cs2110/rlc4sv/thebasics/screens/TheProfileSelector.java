@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import edu.virginia.cs2110.rc4sv.thebasics.objects.Profile;
 import edu.virginia.cs2110.rlc4sv.thebasics.R;
+import edu.virginia.cs2110.rlc4sv.thebasics.objects.Profile;
 
 
 public class TheProfileSelector extends Activity {

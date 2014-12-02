@@ -1,4 +1,4 @@
-package edu.virginia.cs2110.rc4sv.thebasics.objects;
+package edu.virginia.cs2110.rlc4sv.thebasics.objects;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -15,7 +15,7 @@ public class Player extends Sprite {
 
 	public int score;
 	public int health;
-	public boolean locked = false;
+	public boolean locked = false, isDead = false;
 	public Entity interactable;
 	private boolean hasWeapon;
 	public int ghostsKilled;
@@ -121,6 +121,16 @@ public class Player extends Sprite {
 			} if(Rect.intersects(s.getBounds(), interactBounds))
 				if(interactableList.contains(s.id.toLowerCase(Locale.getDefault())))
 					interactable = s;
+		}
+	}
+	
+	public void damage() {		
+		this.loseHealth();
+		setCanGetHurt(false);
+
+
+		if (this.getHealth() <= 0) {
+			isDead = true;
 		}
 	}
 

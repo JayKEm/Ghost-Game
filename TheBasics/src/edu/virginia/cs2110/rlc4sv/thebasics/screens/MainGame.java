@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import edu.virginia.cs2110.rlc4sv.thebasics.R;
+import edu.virginia.cs2110.rlc4sv.thebasics.objects.Player;
 import edu.virginia.cs2110.rlc4sv.thebasics.util.SystemUiHider;
 
 /**
@@ -25,6 +26,7 @@ import edu.virginia.cs2110.rlc4sv.thebasics.util.SystemUiHider;
 public class MainGame extends Activity implements OnTouchListener {
 
 	private OurView ov;
+	private Player player;
 	private int x, y;
 	private MediaPlayer logoMusic;
 
@@ -32,6 +34,9 @@ public class MainGame extends Activity implements OnTouchListener {
 		super.onCreate(savedInstanceState);
 		ov = new OurView(this);
 		ov.setOnTouchListener(this);
+		
+		ov.create();
+		player = ov.getPlayer();
 		logoMusic = MediaPlayer.create(this, R.raw.dungeon_tremors);
 		logoMusic.start();
 		logoMusic.setLooping(true);
@@ -66,7 +71,8 @@ public class MainGame extends Activity implements OnTouchListener {
 		Rect bottom =new Rect(v.dw, v.getHeight()- v.dh, v.dw*2, v.getHeight());
 		Rect shoot1 =new Rect(v.dw*4, v.getHeight()- v.dh*2, v.dw*5, v.getHeight()-v.dh);
 		Rect shoot2 =new Rect(v.dw*6, v.getHeight()- v.dh*2, v.dw*7, v.getHeight()-v.dh);
-		if (!this.ov.getMyLevel().getWorld().contains(ov.getPlayer())) {
+		
+		if (player.isDead) {
 			Intent menuIntent = new Intent("edu.virginia.cs2110.rlc4sv.thebasics.MENU");
 			startActivity(menuIntent);
 		}
@@ -82,23 +88,23 @@ public class MainGame extends Activity implements OnTouchListener {
 			x = (int) me.getX();
 			y = (int) me.getY();
 
-			if(ov.getPlayer()== null)
+			if(player== null)
 				return false;
-			if(!ov.getPlayer().locked){
+			if(!player.locked){
 				if(left.contains(x, y)) {
-					ov.getPlayer().setDirection("left");
-					ov.getPlayer().setMove(true);
+					player.setDirection("left");
+					player.setMove(true);
 				} else if(top.contains(x, y)) {
-					ov.getPlayer().setDirection("up");
-					ov.getPlayer().setMove(true);
+					player.setDirection("up");
+					player.setMove(true);
 				} else if(right.contains(x, y)) {
-					ov.getPlayer().setDirection("right");
-					ov.getPlayer().setMove(true);
+					player.setDirection("right");
+					player.setMove(true);
 				} else if(bottom.contains(x, y)) {
-					ov.getPlayer().setDirection("down");
-					ov.getPlayer().setMove(true);
-				} else if (ov.getPlayer().getBounds().contains(x, y)){
-					ov.getPlayer().interact();
+					player.setDirection("down");
+					player.setMove(true);
+				} else if (player.getBounds().contains(x, y)){
+					player.interact();
 				} else if(shoot1.contains(x, y)) {
 					Bitmap fireballSprites = BitmapFactory.decodeResource(getResources(), R.drawable.explode);
 					ov.getLevel().spawnFireball(fireballSprites);
@@ -113,7 +119,7 @@ public class MainGame extends Activity implements OnTouchListener {
 		case MotionEvent.ACTION_MOVE:
 			break; 
 		case MotionEvent.ACTION_UP:
-			ov.getPlayer().setMove(false);
+			player.setMove(false);
 			break;
 		}
 
