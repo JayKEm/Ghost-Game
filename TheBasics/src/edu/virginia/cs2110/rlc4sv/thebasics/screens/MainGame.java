@@ -34,7 +34,7 @@ public class MainGame extends Activity implements OnTouchListener {
 		super.onCreate(savedInstanceState);
 		ov = new OurView(this);
 		ov.setOnTouchListener(this);
-		
+
 		ov.create();
 		player = ov.getPlayer();
 		logoMusic = MediaPlayer.create(this, R.raw.dungeon_tremors);
@@ -71,58 +71,63 @@ public class MainGame extends Activity implements OnTouchListener {
 		Rect bottom =new Rect(v.dw, v.getHeight()- v.dh, v.dw*2, v.getHeight());
 		Rect shoot1 =new Rect(v.dw*4, v.getHeight()- v.dh*2, v.dw*5, v.getHeight()-v.dh);
 		Rect shoot2 =new Rect(v.dw*6, v.getHeight()- v.dh*2, v.dw*7, v.getHeight()-v.dh);
-		
+
 		if (player.isDead) {
-			Intent menuIntent = new Intent("edu.virginia.cs2110.rlc4sv.thebasics.MENU");
-			startActivity(menuIntent);
-		}
-
-		try {
-			Thread.sleep(50);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-		switch(me.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-			x = (int) me.getX();
-			y = (int) me.getY();
-
-			if(player== null)
-				return false;
-			if(!player.locked){
-				if(left.contains(x, y)) {
-					player.setDirection("left");
-					player.setMove(true);
-				} else if(top.contains(x, y)) {
-					player.setDirection("up");
-					player.setMove(true);
-				} else if(right.contains(x, y)) {
-					player.setDirection("right");
-					player.setMove(true);
-				} else if(bottom.contains(x, y)) {
-					player.setDirection("down");
-					player.setMove(true);
-				} else if (player.getBounds().contains(x, y)){
-					player.interact();
-				} else if(shoot1.contains(x, y)) {
-					Bitmap fireballSprites = BitmapFactory.decodeResource(getResources(), R.drawable.explode);
-					ov.getLevel().spawnFireball(fireballSprites);
-					MediaPlayer.create(ov.getContext(), R.raw.fire).start();
-				} else if(shoot2.contains(x, y)) {
-					Bitmap iceboltSprites = BitmapFactory.decodeResource(getResources(), R.drawable.icebolt);
-					ov.getLevel().spawnIcebolt(iceboltSprites);
-					MediaPlayer.create(ov.getContext(), R.raw.fire).start();
-				}
+			if (!this.ov.getMyLevel().getWorld().contains(ov.getPlayer())) {
+				Intent menuIntent = new Intent("edu.virginia.cs2110.rlc4sv.thebasics.GAMEOVER");
+				menuIntent.putExtra("EXTRA_GHOSTS_KILLED" , player.ghostsKilled + "");
+				menuIntent.putExtra("EXTRA_COINS_COLLECTED", ov.getLevel().getCoinsCollected() + "");
+				startActivity(menuIntent);
 			}
-			break;
-		case MotionEvent.ACTION_MOVE:
-			break; 
-		case MotionEvent.ACTION_UP:
-			player.setMove(false);
-			break;
-		}
 
-		return true;
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+			switch(me.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				x = (int) me.getX();
+				y = (int) me.getY();
+
+				if(player== null)
+					return false;
+				if(!player.locked){
+					if(left.contains(x, y)) {
+						player.setDirection("left");
+						player.setMove(true);
+					} else if(top.contains(x, y)) {
+						player.setDirection("up");
+						player.setMove(true);
+					} else if(right.contains(x, y)) {
+						player.setDirection("right");
+						player.setMove(true);
+					} else if(bottom.contains(x, y)) {
+						player.setDirection("down");
+						player.setMove(true);
+					} else if (player.getBounds().contains(x, y)){
+						player.interact();
+					} else if(shoot1.contains(x, y)) {
+						Bitmap fireballSprites = BitmapFactory.decodeResource(getResources(), R.drawable.explode);
+						ov.getLevel().spawnFireball(fireballSprites);
+						MediaPlayer.create(ov.getContext(), R.raw.fire).start();
+					} else if(shoot2.contains(x, y)) {
+						Bitmap iceboltSprites = BitmapFactory.decodeResource(getResources(), R.drawable.icebolt);
+						ov.getLevel().spawnIcebolt(iceboltSprites);
+						MediaPlayer.create(ov.getContext(), R.raw.fire).start();
+					}
+				}
+				break;
+			case MotionEvent.ACTION_MOVE:
+				break; 
+			case MotionEvent.ACTION_UP:
+				player.setMove(false);
+				break;
+			}
+
+			return true;
+		}
+		return false;
 	}
 }

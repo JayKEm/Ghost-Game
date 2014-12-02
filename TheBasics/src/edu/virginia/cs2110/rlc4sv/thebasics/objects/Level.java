@@ -28,7 +28,12 @@ public class Level {
 	private Player player;
 	private OurView ov;
 	private boolean warn;
+
+	private int ghostsKilled=0;
+	private int coinsCollected=0;
+
 	private int id;
+
 	
 //	public int shownRooms = 0;
 //	private long spawnTime;
@@ -472,5 +477,21 @@ public class Level {
 	
 	public void setWarn(boolean warn){
 		this.warn = warn;
+	}
+
+	public int getGhostsKilled() {
+		return ghostsKilled;
+	}
+
+	public void setGhostsKilled(int ghostsKilled) {
+		this.ghostsKilled = ghostsKilled;
+	}
+
+	public int getCoinsCollected() {
+		return coinsCollected;
+	}
+
+	public void setCoinsCollected(int coinsCollected) {
+		this.coinsCollected = coinsCollected;
 	}
 }
