@@ -5,12 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import android.content.Context;
-import android.util.Log;
 
 public class Profile {
 
-	String profileName;
-	int profileHighScore;
+	private String profileName;
+	private int profileHighScore;
 
 	@SuppressWarnings("deprecation")
 	public Profile(String nm, Context cx) {
@@ -30,9 +29,7 @@ public class Profile {
 			dataIO.close();
 		} catch (FileNotFoundException e) {
 			profileHighScore = 0;
-			Log.e("failed not found", e.getMessage());
 		} catch (Exception e){
-			Log.e("failed other error", e.getMessage());
 			profileHighScore = 0;
 		}
 	}

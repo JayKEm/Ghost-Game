@@ -3,7 +3,6 @@ package edu.virginia.cs2110.rlc4sv.thebasics.objects;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.util.Log;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 
 public class Icebolt extends Sprite {

@@ -32,7 +32,7 @@ public class OurView extends SurfaceView implements Runnable{
 	private Bitmap coin;
 	private Bitmap button2;
 	private Bitmap blueball;
-	private Bitmap pausebutton, quit, resume, newgame;
+	private Bitmap pausebutton, quit, resume, newGame;
 	private Bitmap playerSprites, ghostSprites, warning;
 	private Bitmap up, down, left, right, vignette, shield, fireball, icebolt;
 	private Level myLevel;
@@ -42,7 +42,7 @@ public class OurView extends SurfaceView implements Runnable{
 	private float volume;
 	
 	public static final int DEFAULT_ZOOM = 2;
-	public int dw, dh, zoom = DEFAULT_ZOOM;
+	public int dw, dh, bw, bh, zoom = DEFAULT_ZOOM;
 	public int offsetX, offsetY; //visual offset of level
 	public boolean initialized = false;
 	public Bitmap closedChest, openChest, goldCoin, silverCoin, bronzeCoin, weaponSprites, tombstone;
@@ -96,24 +96,24 @@ public class OurView extends SurfaceView implements Runnable{
 		
 		//level
 		if (this.isPaused == false) {
-		myLevel.updateRender(canvas);
+			myLevel.updateRender(canvas);
 		}
 		
 		canvas.drawBitmap(vignette, null, new Rect(0,0,getWidth(),getHeight()), null);
 		
 		//gui
-		if (this.isPaused == false) {
-		canvas.drawBitmap(up, null, new Rect(dw, getHeight()- dh*3, dw*2, getHeight()-dh*2), null);
-		canvas.drawBitmap(down, null, new Rect(dw, getHeight()- dh, dw*2, getHeight()), null);
-		canvas.drawBitmap(left, null, new Rect(0, getHeight()- dh*2, dw, getHeight()-dh), null);
-		canvas.drawBitmap(right, null, new Rect(dw*2, getHeight()- dh*2, dw*3, getHeight()-dh), null);
-		canvas.drawBitmap(button2, null, new Rect(dw*4, getHeight()- dh*2, dw*5, getHeight()-dh), null);
-		canvas.drawBitmap(blueball, null, new Rect(dw*6, getHeight()- dh*2, dw*7, getHeight()-dh), null);
-		canvas.drawBitmap(pausebutton , null, new Rect(dw*8, getHeight()- dh*2, dw*9, getHeight()-dh), null);}
-		if (this.isPaused == true) {
-			canvas.drawBitmap(quit, null, new Rect(dw*4, getHeight()- dh*2, dw*5, getHeight()-dh), null);
-			canvas.drawBitmap(resume, null, new Rect(dw*6, getHeight()- dh*2, dw*7, getHeight()-dh), null);
-			canvas.drawBitmap(newgame , null, new Rect(dw*8, getHeight()- dh*2, dw*9, getHeight()-dh), null);
+		if (!isPaused) {
+			canvas.drawBitmap(up, null, new Rect(dw, getHeight()- dh*3, dw*2, getHeight()-dh*2), null);
+			canvas.drawBitmap(down, null, new Rect(dw, getHeight()- dh, dw*2, getHeight()), null);
+			canvas.drawBitmap(left, null, new Rect(0, getHeight()- dh*2, dw, getHeight()-dh), null);
+			canvas.drawBitmap(right, null, new Rect(dw*2, getHeight()- dh*2, dw*3, getHeight()-dh), null);
+			canvas.drawBitmap(button2, null, new Rect(dw*4, getHeight()- dh*2, dw*5, getHeight()-dh), null);
+			canvas.drawBitmap(blueball, null, new Rect(dw*6, getHeight()- dh*2, dw*7, getHeight()-dh), null);
+			canvas.drawBitmap(pausebutton , null, new Rect(dw*8, getHeight()- dh*2, dw*9, getHeight()-dh), null);
+		} else {
+			canvas.drawBitmap(resume, null, new Rect(getWidth()/2-bw/2, getHeight()/2-bh/2-bh*2, getWidth()/2 + bw/2, getHeight()/2+bh/2-bh*2), null);
+			canvas.drawBitmap(newGame, null, new Rect(getWidth()/2-bw/2, getHeight()/2-bh/2, getWidth()/2 + bw/2, getHeight()/2+bh/2), null);
+			canvas.drawBitmap(quit, null, new Rect(getWidth()/2-bw/2, getHeight()/2-bh/2+bh*2, getWidth()/2 + bw/2, getHeight()/2+bh/2+bh*2), null);
 		}
 
 		//player health 
@@ -141,7 +141,7 @@ public class OurView extends SurfaceView implements Runnable{
 		//ghost alert
 		Vector v = player.getLocation();
 		int ww = warning.getWidth(); int wh = warning.getHeight();
-		if(myLevel.getWarn())
+		if(myLevel.getWarn()&&!isPaused)
 			canvas.drawBitmap(warning, null, new Rect(v.x + player.getWidth()/2 + ww/4 + ww/2, v.y-wh+2,
 					v.x + player.getWidth()+ ww/2, v.y + 2), null);
 		
@@ -196,38 +196,40 @@ public class OurView extends SurfaceView implements Runnable{
 		initialized = true;
 		myLevel = new Level(this, 10, 8); //debug level
 		
-		//Change playerSprites variable setting into a giant if-else-else... to correlate playerSprites to profile selection.
+		//load image resources
+		weaponLogo = BitmapFactory.decodeResource(getResources(), R.drawable.rsz_weaponsprite);
+		weaponSprites = BitmapFactory.decodeResource(getResources(), R.drawable.weaponsprite);
 		playerSprites = BitmapFactory.decodeResource(getResources(), R.drawable.spritesheet);
 		ghostSprites = BitmapFactory.decodeResource(getResources(), R.drawable.gspritesheet);
-		goldCoin = BitmapFactory.decodeResource(getResources(), R.drawable.coin_gold);
+		closedChest = BitmapFactory.decodeResource(getResources(), R.drawable.chest_closed);
+		pausebutton = BitmapFactory.decodeResource(getResources(), R.drawable.pause_button);
 		silverCoin = BitmapFactory.decodeResource(getResources(), R.drawable.coin_silver);
 		bronzeCoin = BitmapFactory.decodeResource(getResources(), R.drawable.coin_bronze);
-		weaponSprites = BitmapFactory.decodeResource(getResources(), R.drawable.weaponsprite);
-		heart = BitmapFactory.decodeResource(getResources(), R.drawable.heart);
+		openChest = BitmapFactory.decodeResource(getResources(), R.drawable.chest_open);
+		tombstone = BitmapFactory.decodeResource(getResources(), R.drawable.tombstone);
+		goldCoin = BitmapFactory.decodeResource(getResources(), R.drawable.coin_gold);
 		coin = BitmapFactory.decodeResource(getResources(), R.drawable.coin_goldpart);
-		up = BitmapFactory.decodeResource(getResources(), R.drawable.up_arrow);
+		blueball = BitmapFactory.decodeResource(getResources(), R.drawable.blueball);
+		vignette = BitmapFactory.decodeResource(getResources(), R.drawable.vignette);
+		right = BitmapFactory.decodeResource(getResources(), R.drawable.right_arrow);
+		warning = BitmapFactory.decodeResource(getResources(),  R.drawable.warning);
+		fireball = BitmapFactory.decodeResource(getResources(), R.drawable.explode);
+		newGame = BitmapFactory.decodeResource(getResources(), R.drawable.new_game);
+		icebolt = BitmapFactory.decodeResource(getResources(), R.drawable.icebolt);
 		down = BitmapFactory.decodeResource(getResources(), R.drawable.down_arrow);
 		left = BitmapFactory.decodeResource(getResources(), R.drawable.left_arrow);
-		right = BitmapFactory.decodeResource(getResources(), R.drawable.right_arrow);
-		weaponLogo = BitmapFactory.decodeResource(getResources(), R.drawable.rsz_weaponsprite);
-		button2 = BitmapFactory.decodeResource(getResources(), R.drawable.fire);
-		blueball = BitmapFactory.decodeResource(getResources(), R.drawable.blueball);
-		openChest = BitmapFactory.decodeResource(getResources(), R.drawable.chest_open);
-		closedChest = BitmapFactory.decodeResource(getResources(), R.drawable.chest_closed);
-		warning = BitmapFactory.decodeResource(getResources(),  R.drawable.warning);
-		vignette = BitmapFactory.decodeResource(getResources(), R.drawable.vignette);
-		shield = BitmapFactory.decodeResource(getResources(), R.drawable.shield);
-		fireball = BitmapFactory.decodeResource(getResources(), R.drawable.explode);
-		icebolt = BitmapFactory.decodeResource(getResources(), R.drawable.icebolt);
-		tombstone = BitmapFactory.decodeResource(getResources(), R.drawable.tombstone);
-		pausebutton = BitmapFactory.decodeResource(getResources(), R.drawable.pause_button);
-		quit = BitmapFactory.decodeResource(getResources(), R.drawable.quit);
 		resume = BitmapFactory.decodeResource(getResources(), R.drawable.resume);
-		newgame = BitmapFactory.decodeResource(getResources(), R.drawable.new_game);
+		shield = BitmapFactory.decodeResource(getResources(), R.drawable.shield);
+		button2 = BitmapFactory.decodeResource(getResources(), R.drawable.fire);
+		heart = BitmapFactory.decodeResource(getResources(), R.drawable.heart);
+		up = BitmapFactory.decodeResource(getResources(), R.drawable.up_arrow);
+		quit = BitmapFactory.decodeResource(getResources(), R.drawable.quit);
 		volume = 1f;
 		
 		dw = up.getWidth();
 		dh = up.getHeight();
+		bw = quit.getWidth()/3;
+		bh = quit.getHeight()/3;
 
 		//create level
 		myLevel.generate(this);
