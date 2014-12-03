@@ -12,6 +12,12 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 
+/**
+ * @author
+ * Team 103-04
+ * arb4jr, jm2af, rlc4sv, sds7yd, zaf2xk
+ */
+
 public class TutorialOne extends Activity implements OnCheckedChangeListener{
 	
 	TextView textOut;

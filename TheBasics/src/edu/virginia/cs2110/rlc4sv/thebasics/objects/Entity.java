@@ -10,7 +10,12 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
-import edu.virginia.cs2110.rlc4sv.thebasics.util.Vector;
+
+/**
+ * @author
+ * Team 103-04
+ * arb4jr, jm2af, rlc4sv, sds7yd, zaf2xk
+ */
 
 @SuppressLint("DrawAllocation")
 public abstract class Entity {

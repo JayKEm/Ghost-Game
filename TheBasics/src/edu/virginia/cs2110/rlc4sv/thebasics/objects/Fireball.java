@@ -6,6 +6,12 @@ import android.graphics.Rect;
 import android.util.Log;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 
+/**
+ * @author
+ * Team 103-04
+ * arb4jr, jm2af, rlc4sv, sds7yd, zaf2xk
+ */
+
 public class Fireball extends Sprite {
 	private int row;
 	int x=location.x-ov.offsetX;

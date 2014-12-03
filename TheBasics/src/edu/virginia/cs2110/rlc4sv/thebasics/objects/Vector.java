@@ -1,7 +1,12 @@
-package edu.virginia.cs2110.rlc4sv.thebasics.util;
+package edu.virginia.cs2110.rlc4sv.thebasics.objects;
 
-import edu.virginia.cs2110.rlc4sv.thebasics.objects.Tile;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
+
+/**
+ * @author
+ * Team 103-04
+ * arb4jr, jm2af, rlc4sv, sds7yd, zaf2xk
+ */
 
 public class Vector {
 
@@ -46,6 +51,6 @@ public class Vector {
 	}
 	
 	public String toString(){
-		return "<"+(x/(Tile.SIZE*OurView.DEFAULT_ZOOM))+","+(y/(Tile.SIZE*OurView.DEFAULT_ZOOM))+">";
+		return "<"+(x/(Tile.SIZE*OurView.DEFAULT_ZOOM))+", "+(y/(Tile.SIZE*OurView.DEFAULT_ZOOM))+">";
 	}
 }

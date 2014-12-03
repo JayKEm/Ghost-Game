@@ -6,6 +6,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+/**
+ * @author
+ * Team 103-04
+ * arb4jr, jm2af, rlc4sv, sds7yd, zaf2xk
+ */
+
 public class SettingsMenu extends Activity {
 
 	@Override

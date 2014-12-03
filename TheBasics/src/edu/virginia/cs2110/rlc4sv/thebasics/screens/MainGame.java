@@ -13,19 +13,17 @@ import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import edu.virginia.cs2110.rlc4sv.thebasics.R;
 import edu.virginia.cs2110.rlc4sv.thebasics.objects.Player;
-import edu.virginia.cs2110.rlc4sv.thebasics.util.SystemUiHider;
+
 
 /**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
- * 
- * @see SystemUiHider
+ * @author
+ * Team 103-04
+ * arb4jr, jm2af, rlc4sv, sds7yd, zaf2xk
  */
 
 @SuppressLint("ClickableViewAccessibility")
@@ -71,12 +69,11 @@ public class MainGame extends Activity implements OnTouchListener {
 		logoMusic.release();
 	}
 
-
-
 	public boolean onTouch(View s, MotionEvent me) {
 		OurView v = (OurView) s;
 		if(player==null) return false; //if user taps the screen when level is initializing
 
+		//bounds of buttons
 		Rect left = new Rect(0, v.getHeight()- v.dh*2, v.dw, v.getHeight()-v.dh);
 		Rect top = new Rect(v.dw, v.getHeight()- v.dh*3, v.dw*2, v.getHeight()-v.dh*2);
 		Rect right = new Rect(v.dw*2, v.getHeight()- v.dh*2, v.dw*3, v.getHeight()-v.dh);
@@ -94,7 +91,6 @@ public class MainGame extends Activity implements OnTouchListener {
 			menuIntent.putExtra("EXTRA_GHOSTS_KILLED" , player.ghostsKilled + "");
 			menuIntent.putExtra("EXTRA_COINS_COLLECTED", player.score + "");
 
-			// SAVING HIGH SCORE
 			saveHighScores();
 
 			startActivity(menuIntent);
@@ -181,13 +177,14 @@ public class MainGame extends Activity implements OnTouchListener {
 			fos = openFileOutput(profName, Context.MODE_PRIVATE);
 			fos.write(String.valueOf(player.score).getBytes());
 		} catch (FileNotFoundException e) {
-			Log.e("failed other error", e.getMessage());
+			
 		} catch (IOException e) {
-			Log.e("failed other error", e.getMessage());
+			
 		} finally {
 			try {
 				fos.close();
 			} catch (IOException e) {
+				
 			}
 		}
 	}

@@ -21,11 +21,16 @@ import android.media.MediaScannerConnection;
 import android.os.Environment;
 import android.util.Log;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
-import edu.virginia.cs2110.rlc4sv.thebasics.util.Vector;
+
+/**
+ * @author
+ * Team 103-04
+ * arb4jr, jm2af, rlc4sv, sds7yd, zaf2xk
+ */
 
 @SuppressLint("WrongCall")
 public class Level {
-
+	
 	//	private int width, height;
 	private ArrayList<Room> rooms;
 	private ArrayList<Entity> world, toRemove, toAdd;

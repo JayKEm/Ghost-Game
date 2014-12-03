@@ -8,6 +8,12 @@ import android.graphics.Rect;
 import edu.virginia.cs2110.rlc4sv.thebasics.R;
 import edu.virginia.cs2110.rlc4sv.thebasics.screens.OurView;
 
+/**
+ * @author
+ * Team 103-04
+ * arb4jr, jm2af, rlc4sv, sds7yd, zaf2xk
+ */
+
 public class Chest extends Entity {
 	
 	public boolean open = false, timing = false;

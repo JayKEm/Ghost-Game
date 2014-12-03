@@ -12,6 +12,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+/**
+ * @author
+ * Team 103-04
+ * arb4jr, jm2af, rlc4sv, sds7yd, zaf2xk
+ */
+
 public class MainMenu extends Activity {
 
 	private MediaPlayer logoMusic;

@@ -7,6 +7,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import edu.virginia.cs2110.rlc4sv.thebasics.R;
 
+/**
+ * @author
+ * Team 103-04
+ * arb4jr, jm2af, rlc4sv, sds7yd, zaf2xk
+ */
 
 public class SplashScreen extends Activity {
 
