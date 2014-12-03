@@ -27,8 +27,6 @@ public class MainMenu extends Activity {
 
 		//Setting up the button references
 		Button tut1 = (Button)findViewById(R.id.tutorial1);
-		Button tut2 = (Button)findViewById(R.id.tutorial2);
-		Button tut3 = (Button)findViewById(R.id.tutorial3);
 		Button tut4 = (Button)findViewById(R.id.tutorial4);
 
 		tut1.setOnClickListener(new View.OnClickListener() {
@@ -40,21 +38,6 @@ public class MainMenu extends Activity {
 		});
 
 
-		tut2.setOnClickListener(new View.OnClickListener() {
-
-			public void onClick(View v) {
-				buttonSound.start();		
-				startActivity(new Intent("edu.virginia.cs2110.rlc4sv.thebasics.HIGHSCORESCREEN"));	
-			}
-		});
-
-		tut3.setOnClickListener(new View.OnClickListener() {
-
-			public void onClick(View v) {
-				buttonSound.start();		
-				startActivity(new Intent("edu.virginia.cs2110.rlc4sv.thebasics.SETTINGSMENU"));	
-			}
-		});
 
 		tut4.setOnClickListener(new View.OnClickListener() {
 

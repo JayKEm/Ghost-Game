@@ -32,7 +32,7 @@ public class OurView extends SurfaceView implements Runnable{
 	private Bitmap coin;
 	private Bitmap button2;
 	private Bitmap blueball;
-	private Bitmap pausebutton;
+	private Bitmap pausebutton, quit, resume, newgame;
 	private Bitmap playerSprites, ghostSprites, warning;
 	private Bitmap up, down, left, right, vignette, shield, fireball, icebolt;
 	private Level myLevel;
@@ -102,7 +102,7 @@ public class OurView extends SurfaceView implements Runnable{
 		canvas.drawBitmap(vignette, null, new Rect(0,0,getWidth(),getHeight()), null);
 		
 		//gui
-		if (this.isPaused == true) {
+		if (this.isPaused == false) {
 		canvas.drawBitmap(up, null, new Rect(dw, getHeight()- dh*3, dw*2, getHeight()-dh*2), null);
 		canvas.drawBitmap(down, null, new Rect(dw, getHeight()- dh, dw*2, getHeight()), null);
 		canvas.drawBitmap(left, null, new Rect(0, getHeight()- dh*2, dw, getHeight()-dh), null);
@@ -110,6 +110,11 @@ public class OurView extends SurfaceView implements Runnable{
 		canvas.drawBitmap(button2, null, new Rect(dw*4, getHeight()- dh*2, dw*5, getHeight()-dh), null);
 		canvas.drawBitmap(blueball, null, new Rect(dw*6, getHeight()- dh*2, dw*7, getHeight()-dh), null);
 		canvas.drawBitmap(pausebutton , null, new Rect(dw*8, getHeight()- dh*2, dw*9, getHeight()-dh), null);}
+		if (this.isPaused == true) {
+			canvas.drawBitmap(quit, null, new Rect(dw*4, getHeight()- dh*2, dw*5, getHeight()-dh), null);
+			canvas.drawBitmap(resume, null, new Rect(dw*6, getHeight()- dh*2, dw*7, getHeight()-dh), null);
+			canvas.drawBitmap(newgame , null, new Rect(dw*8, getHeight()- dh*2, dw*9, getHeight()-dh), null);
+		}
 
 		//player health 
 		int hw = heart.getWidth(); int hh = heart.getHeight(); 	int p = 2;
@@ -187,6 +192,7 @@ public class OurView extends SurfaceView implements Runnable{
 	}
 	
 	public void create(){
+
 		initialized = true;
 		myLevel = new Level(this, 10, 8); //debug level
 		
@@ -215,6 +221,9 @@ public class OurView extends SurfaceView implements Runnable{
 		icebolt = BitmapFactory.decodeResource(getResources(), R.drawable.icebolt);
 		tombstone = BitmapFactory.decodeResource(getResources(), R.drawable.tombstone);
 		pausebutton = BitmapFactory.decodeResource(getResources(), R.drawable.pause_button);
+		quit = BitmapFactory.decodeResource(getResources(), R.drawable.quit);
+		resume = BitmapFactory.decodeResource(getResources(), R.drawable.resume);
+		newgame = BitmapFactory.decodeResource(getResources(), R.drawable.new_game);
 		volume = 1f;
 		
 		dw = up.getWidth();
