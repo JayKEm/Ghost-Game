@@ -12,11 +12,11 @@ import edu.virginia.cs2110.rlc4sv.thebasics.objects.Profile;
 
 public class TheProfileSelector extends Activity {
 
-	public final static String PROFILE_ONE = "com.example.myfirstapp.MESSAGE1";
-	public final static String PROFILE_TWO = "com.example.myfirstapp.MESSAGE2";
-	public final static String PROFILE_THREE = "com.example.myfirstapp.MESSAGE3";
-	public final static String PROFILE_FOUR = "com.example.myfirstapp.MESSAGE4";
-	public final static String PROFILE_FIVE = "com.example.myfirstapp.MESSAGE5";
+	public final static String PROFILE = "com.example.myfirstapp.MESSAGE1";
+	//public final static String PROFILE_TWO = "com.example.myfirstapp.MESSAGE2";
+	//public final static String PROFILE_THREE = "com.example.myfirstapp.MESSAGE3";
+	//public final static String PROFILE_FOUR = "com.example.myfirstapp.MESSAGE4";
+	//public final static String PROFILE_FIVE = "com.example.myfirstapp.MESSAGE5";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class TheProfileSelector extends Activity {
 						"edu.virginia.cs2110.rlc4sv.thebasics.MAINGAME");
 				String playerName = ((TextView) findViewById(R.id.profile_1))
 						.getText().toString();
-				intent.putExtra(PROFILE_ONE, playerName);
+				intent.putExtra(PROFILE, playerName);
 				startActivity(intent);
 			}
 		});
@@ -47,7 +47,7 @@ public class TheProfileSelector extends Activity {
 						"edu.virginia.cs2110.rlc4sv.thebasics.MAINGAME");
 				String playerName = ((TextView) findViewById(R.id.profile_2))
 						.getText().toString();
-				intent.putExtra(PROFILE_TWO, playerName);
+				intent.putExtra(PROFILE, playerName);
 				startActivity(intent);
 			}
 		});
@@ -61,7 +61,7 @@ public class TheProfileSelector extends Activity {
 						"edu.virginia.cs2110.rlc4sv.thebasics.MAINGAME");
 				String playerName = ((TextView) findViewById(R.id.profile_3))
 						.getText().toString();
-				intent.putExtra(PROFILE_THREE, playerName);
+				intent.putExtra(PROFILE, playerName);
 				startActivity(intent);
 			}
 		});
@@ -75,7 +75,7 @@ public class TheProfileSelector extends Activity {
 						"edu.virginia.cs2110.rlc4sv.thebasics.MAINGAME");
 				String playerName = ((TextView) findViewById(R.id.profile_4))
 						.getText().toString();
-				intent.putExtra(PROFILE_FOUR, playerName);
+				intent.putExtra(PROFILE, playerName);
 				startActivity(intent);
 			}
 		});
@@ -89,7 +89,7 @@ public class TheProfileSelector extends Activity {
 						"edu.virginia.cs2110.rlc4sv.thebasics.MAINGAME");
 				String playerName = ((TextView) findViewById(R.id.profile_5))
 						.getText().toString();
-				intent.putExtra(PROFILE_FIVE, playerName);
+				intent.putExtra(PROFILE, playerName);
 				startActivity(intent);
 			}
 		});
@@ -106,17 +106,23 @@ public class TheProfileSelector extends Activity {
 			}
 		});
 
-		Profile Zakey = new Profile("Zakey");
-		Profile Julian = new Profile("Julian");
-		Profile Ryan = new Profile("Ryan");
-		Profile Alex = new Profile("Alex");
-		Profile Davy = new Profile("Davy");
+		Profile Zakey = new Profile("Zakey", this);
+		Profile Julian = new Profile("Julian", this);
+		Profile Ryan = new Profile("Ryan", this);
+		Profile Alex = new Profile("Alex", this);
+		Profile Davy = new Profile("Davy", this);
 
 		((TextView) (findViewById(R.id.profile_1))).setText(Zakey.getProfileName());
 		((TextView) (findViewById(R.id.profile_2))).setText(Julian.getProfileName());
 		((TextView) (findViewById(R.id.profile_3))).setText(Ryan.getProfileName());
 		((TextView) (findViewById(R.id.profile_4))).setText(Alex.getProfileName());
 		((TextView) (findViewById(R.id.profile_5))).setText(Davy.getProfileName());
+
+		((TextView) (findViewById(R.id.hs1))).setText("High Score: " + Zakey.getProfileHighScore());
+		((TextView) (findViewById(R.id.hs2))).setText("High Score: " + Julian.getProfileHighScore());
+		((TextView) (findViewById(R.id.hs3))).setText("High Score: " + Ryan.getProfileHighScore());
+		((TextView) (findViewById(R.id.hs4))).setText("High Score: " + Alex.getProfileHighScore());
+		((TextView) (findViewById(R.id.hs5))).setText("High Score: " + Davy.getProfileHighScore());
 
 	}
 

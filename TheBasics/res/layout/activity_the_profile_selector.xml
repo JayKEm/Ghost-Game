@@ -26,7 +26,9 @@
         android:layout_marginTop="18dp"
         android:text="@string/profile_selector_title"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="30sp" />
+        android:textSize="50sp"
+        android:textStyle="bold"
+        android:typeface="serif" />
 
     <TextView
         android:id="@+id/profile_5"
@@ -35,25 +37,85 @@
         android:layout_alignBaseline="@+id/profile_button_five"
         android:layout_alignBottom="@+id/profile_button_five"
         android:layout_toLeftOf="@+id/profile_four"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/profile_3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/profile_button_three"
-        android:layout_alignBottom="@+id/profile_button_three"
-        android:layout_alignLeft="@+id/profile_five"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textSize="40sp" />
 
     <TextView
         android:id="@+id/profile_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/profile_button_one"
-        android:layout_alignBottom="@+id/profile_button_one"
-        android:layout_alignLeft="@+id/profile_three"
-        android:text="TextView" />
+        android:layout_alignLeft="@+id/profile_2"
+        android:layout_below="@+id/title_text_view"
+        android:layout_marginTop="68dp"
+        android:text="TextView"
+        android:textSize="40sp" />
+
+    <Button
+        android:id="@+id/profile_button_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/profile_1"
+        android:layout_alignBottom="@+id/profile_1"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="35dp"
+        android:text="Button"
+        android:textSize="50sp" />
+
+    <Button
+        android:id="@+id/profile_button_two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/profile_button_one"
+        android:layout_alignTop="@+id/profile_2"
+        android:text="Button"
+        android:textSize="50sp" />
+
+    <Button
+        android:id="@+id/profile_button_three"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/profile_button_two"
+        android:layout_alignTop="@+id/profile_3"
+        android:text="Button"
+        android:textSize="50sp" />
+
+    <TextView
+        android:id="@+id/profile_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/profile_3"
+        android:layout_below="@+id/profile_button_one"
+        android:layout_marginTop="84dp"
+        android:text="TextView"
+        android:textSize="40sp" />
+
+    <TextView
+        android:id="@+id/profile_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/profile_4"
+        android:layout_centerVertical="true"
+        android:text="TextView"
+        android:textSize="40sp" />
+
+    <Button
+        android:id="@+id/profile_button_five"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/default_temporary_button"
+        android:layout_alignLeft="@+id/profile_button_four"
+        android:text="Button"
+        android:textSize="50sp" />
+
+    <Button
+        android:id="@+id/profile_button_four"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/profile_button_five"
+        android:layout_alignLeft="@+id/profile_button_three"
+        android:layout_marginBottom="63dp"
+        android:text="Button"
+        android:textSize="50sp" />
 
     <TextView
         android:id="@+id/profile_4"
@@ -61,60 +123,49 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/profile_button_four"
         android:layout_alignBottom="@+id/profile_button_four"
-        android:layout_alignLeft="@+id/profile_five"
+        android:layout_alignLeft="@+id/profile_5"
+        android:text="TextView"
+        android:textSize="40sp" />
+
+    <TextView
+        android:id="@+id/hs1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/profile_1"
+        android:layout_below="@+id/profile_1"
+        android:layout_marginRight="43dp"
         android:text="TextView" />
 
     <TextView
-        android:id="@+id/profile_2"
+        android:id="@+id/hs2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/profile_button_two"
-        android:layout_alignBottom="@+id/profile_button_two"
-        android:layout_alignLeft="@+id/profile_three"
+        android:layout_alignRight="@+id/hs1"
+        android:layout_below="@+id/profile_2"
         android:text="TextView" />
 
-    <Button
-        android:id="@+id/profile_button_five"
+    <TextView
+        android:id="@+id/hs3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/default_temporary_button"
-        android:layout_alignRight="@+id/default_temporary_button"
-        android:text="Button" />
+        android:layout_alignLeft="@+id/hs2"
+        android:layout_below="@+id/profile_3"
+        android:text="TextView" />
 
-    <Button
-        android:id="@+id/profile_button_four"
+    <TextView
+        android:id="@+id/hs4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/profile_button_five"
-        android:layout_alignLeft="@+id/profile_button_five"
-        android:layout_marginBottom="14dp"
-        android:text="Button" />
+        android:layout_alignBottom="@+id/profile_button_four"
+        android:layout_alignLeft="@+id/hs3"
+        android:text="TextView" />
 
-    <Button
-        android:id="@+id/profile_button_three"
+    <TextView
+        android:id="@+id/hs5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/profile_button_four"
-        android:layout_alignLeft="@+id/profile_button_four"
-        android:layout_marginBottom="14dp"
-        android:text="Button" />
-
-    <Button
-        android:id="@+id/profile_button_one"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/profile_button_two"
-        android:layout_alignLeft="@+id/profile_button_two"
-        android:layout_marginBottom="14dp"
-        android:text="Button" />
-
-    <Button
-        android:id="@+id/profile_button_two"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/profile_button_three"
-        android:layout_alignLeft="@+id/profile_button_three"
-        android:layout_marginBottom="18dp"
-        android:text="Button" />
+        android:layout_alignBottom="@+id/profile_button_five"
+        android:layout_alignLeft="@+id/hs4"
+        android:text="TextView" />
 
 </RelativeLayout>
