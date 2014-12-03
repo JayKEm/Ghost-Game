@@ -86,7 +86,9 @@ public class MainGame extends Activity implements OnTouchListener {
 		Rect shoot1 =new Rect(v.dw*4, v.getHeight()- v.dh*2, v.dw*5, v.getHeight()-v.dh);
 		Rect shoot2 =new Rect(v.dw*6, v.getHeight()- v.dh*2, v.dw*7, v.getHeight()-v.dh);
 		Rect pause = new Rect(v.dw*8, v.getHeight()- v.dh*2, v.dw*9, v.getHeight()-v.dh);
-
+		Rect resume =new Rect(v.dw*6, v.getHeight()- v.dh*2, v.dw*7, v.getHeight()-v.dh);
+		Rect quit = new Rect(v.dw*4, v.getHeight()- v.dh*2, v.dw*5, v.getHeight()-v.dh);
+		Rect newGame = new Rect(v.dw*8, v.getHeight()- v.dh*2, v.dw*9, v.getHeight()-v.dh);
 		if (player.isDead) {
 			ov.playSound(R.raw.game_over);
 			Intent menuIntent = new Intent("edu.virginia.cs2110.rlc4sv.thebasics.GAMEOVER");
@@ -94,27 +96,8 @@ public class MainGame extends Activity implements OnTouchListener {
 			menuIntent.putExtra("EXTRA_COINS_COLLECTED", player.score + "");
 			
 			// SAVING HIGH SCORE
-
-						Intent intent = getIntent();
-						String profName = intent
-								.getStringExtra(TheProfileSelector.PROFILE) +".txt";
-
-						FileOutputStream fos = null;
-
-						try {
-							fos = openFileOutput(profName, Context.MODE_PRIVATE);
-							fos.write(String.valueOf(player.score).getBytes());
-						} catch (FileNotFoundException e) {
-							Log.e("failed other error", e.getMessage());
-						} catch (IOException e) {
-							Log.e("failed other error", e.getMessage());
-						} finally {
-							try {
-								fos.close();
-							} catch (IOException e) {
-							}
-						}
-			
+			saveHighScores();
+				
 			startActivity(menuIntent);
 		}
 
@@ -128,7 +111,24 @@ public class MainGame extends Activity implements OnTouchListener {
 			case MotionEvent.ACTION_DOWN:
 				x = (int) me.getX();
 				y = (int) me.getY();
-
+				
+				if (ov.getIsPaused()==true){
+					if (resume.contains(x , y)) {
+						  ov.setIsPaused(false);
+						  }
+						  else if (quit.contains (x, y)) {
+						  	ov.playSound(R.raw.game_over);
+				Intent menuIntent = new Intent("edu.virginia.cs2110.rlc4sv.thebasics.GAMEOVER");
+				menuIntent.putExtra("EXTRA_GHOSTS_KILLED" , player.ghostsKilled + "");
+				menuIntent.putExtra("EXTRA_COINS_COLLECTED", player.score + "");
+				startActivity(menuIntent);
+						  }
+						  else if (newGame.contains (x, y)) {
+						  Intent menuIntent = new Intent("edu.virginia.cs2110.rlc4sv.thebasics.MAINGAME");
+						  startActivity(menuIntent);
+						 }
+					}
+				
 				if(player== null)
 					return false;
 				if(!player.locked){
@@ -146,16 +146,16 @@ public class MainGame extends Activity implements OnTouchListener {
 						player.setMove(true);
 					} else if (player.getBounds().contains(x, y)){
 						player.interact();
-					} else if(shoot1.contains(x, y)) {
+					} else if(shoot1.contains(x, y) && ov.getIsPaused()==false) {
 						Bitmap fireballSprites = BitmapFactory.decodeResource(getResources(), R.drawable.explode);
 						ov.getLevel().spawnFireball(fireballSprites);
 						ov.playSound(R.raw.fire);
-					} else if(shoot2.contains(x, y)) {
+					} else if(shoot2.contains(x, y) && ov.getIsPaused()==false) {
 						Bitmap iceboltSprites = BitmapFactory.decodeResource(getResources(), R.drawable.icebolt);
 						ov.getLevel().spawnIcebolt(iceboltSprites);
 						ov.playSound(R.raw.ice);
 					} else if(pause.contains(x, y)) {
-						ov.setIsPaused(!ov.getIsPaused());
+						ov.setIsPaused(true);
 					}
 				}
 				break;
@@ -167,6 +167,28 @@ public class MainGame extends Activity implements OnTouchListener {
 			}
 
 			return true;
+	}
+
+	private void saveHighScores() {
+		Intent intent = getIntent();
+		String profName = intent
+				.getStringExtra(TheProfileSelector.PROFILE) +".txt";
+
+		FileOutputStream fos = null;
+
+		try {
+			fos = openFileOutput(profName, Context.MODE_PRIVATE);
+			fos.write(String.valueOf(player.score).getBytes());
+		} catch (FileNotFoundException e) {
+			Log.e("failed other error", e.getMessage());
+		} catch (IOException e) {
+			Log.e("failed other error", e.getMessage());
+		} finally {
+			try {
+				fos.close();
+			} catch (IOException e) {
+			}
+		}
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {

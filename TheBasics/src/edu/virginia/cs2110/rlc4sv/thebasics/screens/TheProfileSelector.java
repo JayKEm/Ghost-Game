@@ -118,11 +118,11 @@ public class TheProfileSelector extends Activity {
 		((TextView) (findViewById(R.id.profile_4))).setText(Alex.getProfileName());
 		((TextView) (findViewById(R.id.profile_5))).setText(Davy.getProfileName());
 
-		((TextView) (findViewById(R.id.hs1))).setText("High Score: " + Zakey.getProfileHighScore());
-		((TextView) (findViewById(R.id.hs2))).setText("High Score: " + Julian.getProfileHighScore());
-		((TextView) (findViewById(R.id.hs3))).setText("High Score: " + Ryan.getProfileHighScore());
-		((TextView) (findViewById(R.id.hs4))).setText("High Score: " + Alex.getProfileHighScore());
-		((TextView) (findViewById(R.id.hs5))).setText("High Score: " + Davy.getProfileHighScore());
+		((TextView) (findViewById(R.id.hs1))).setText("Most Recent Score: " + Zakey.getProfileHighScore());
+		((TextView) (findViewById(R.id.hs2))).setText("Most Recent Score: " + Julian.getProfileHighScore());
+		((TextView) (findViewById(R.id.hs3))).setText("Most Recent Score: " + Ryan.getProfileHighScore());
+		((TextView) (findViewById(R.id.hs4))).setText("Most Recent Score: " + Alex.getProfileHighScore());
+		((TextView) (findViewById(R.id.hs5))).setText("Most Recent Score: " + Davy.getProfileHighScore());
 
 	}
 
